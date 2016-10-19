@@ -8,6 +8,12 @@ var CountDown = function(left, display, startBtn, stopBtn) {
     this.f2 = 1;
 };
 
+var bgIcon = '<i class="fa fa-circle fa-stack-2x"></i>';
+var startIcon = bgIcon + '<i class="fa fa-play fa-inverse fa-stack-1x"></i>';
+var suspendIcon = bgIcon + '<i class="fa fa-pause fa-inverse fa-stack-1x"></i>';
+var stopIcon = bgIcon + '<i class="fa fa-stop fa-inverse fa-stack-1x"></i>';
+var resetIcon = bgIcon + '<i class="fa fa-repeat fa-inverse fa-stack-1x"></i>';
+
 CountDown.prototype.start = function() {
     this.f1 = 0;
     this.display.innerText = convertTime(this.left);
@@ -21,12 +27,12 @@ CountDown.prototype.start = function() {
             CountDown.prototype.start.call(_this);
         }, 1000);
     }
-    this.startBtn.innerText = "Suspend";
+    this.startBtn.innerHTML = suspendIcon;
 };
 
 CountDown.prototype.suspend = function() {
     this.f1 = 1;
-    this.startBtn.innerText = "Start";
+    this.startBtn.innerHTML = startIcon;
     clearTimeout(this.timeId);
 };
 
@@ -35,7 +41,7 @@ CountDown.prototype.stop = function() {
     clearTimeout(this.timeId);
     this.display.innerText = "00:00";
     this.left = 0;
-    this.stopBtn.innerText = "Reset";
+    this.stopBtn.innerHTML= resetIcon;
     this.startBtn.style.visibility = "hidden";
 };
 
@@ -45,8 +51,8 @@ CountDown.prototype.reset = function() {
     if(this.timeId) clearTimeout(this.timeId);
     this.left = this.orig;
     this.display.innerText = convertTime(this.orig);
-    this.stopBtn.innerText = "Stop";
-    this.startBtn.innerText = "Start";
+    this.stopBtn.innerHTML= stopIcon;
+    this.startBtn.innerHTML= startIcon;
     this.startBtn.style.visibility = "visible";
 };
 
@@ -87,7 +93,7 @@ function init(left1, left2) {
     var link = document.createElement('a');
     link.innerText = roundname[pos];
     pos = (pos + 1) % length;
-    link.href = "#";
+    link.className = "myButton nextBtn";
     link.onclick = getCallback(pos);
     nextBtn.replaceChild(link, nextBtn.firstChild);
 }
@@ -108,6 +114,7 @@ function getCallback(i) {
         timer2.reset();
         pos = i;
         init(zftime[i], fftime[i]);
+        stepList.classList.remove('active');
     }
     return fun;
 };
@@ -167,9 +174,19 @@ window.onload = function() {
         var li = document.createElement('li');
         var link = document.createElement('a');
         link.innerText = roundname[i];
-        link.href = "#";
+        link.className = "myButton";
         link.onclick = getCallback(i);
         li.appendChild(link);
         stepList.appendChild(li);
     }
+    document.getElementById('stepBtn').onclick = function() {
+        stepList.classList.toggle('active');
+    };
+    document.getElementById('subtitle').innerText = subtitle;
+    var teamNames = document.getElementsByClassName('teamName');
+    teamNames[0].appendChild(document.createTextNode(zfname));
+    teamNames[1].insertAdjacentText('afterbegin',ffname);
+    var views = document.getElementsByClassName('view');
+    views[0].appendChild(document.createTextNode(zfbian));
+    views[1].appendChild(document.createTextNode(ffbian));
 };

@@ -4,24 +4,61 @@
 <head>
     <meta charset="utf-8">
     <title>Timer</title>
-    <script src="main.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="main.css">
+    <script src="assets/main.js" charset="utf-8"></script>
+    <script src="roundname.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="assets/normalize.css">
+    <link rel="stylesheet" href="assets/main.css">
+    <link rel="stylesheet" href="assets/font-awesome.min.css">
 </head>
 
 <body>
-    <div class="">
-        <button type="button" name="button" id="start1" class="startBtn">Start</button>
-        <button type="button" name="button" id="stop1" class="stopBtn">Stop</button>
-        <p id="display1"></p>
+    <div class="site-header">
+        <div class="header-wrapper">
+            <div class="clearfix">
+                <span class="site-title">计算机学院新生杯辩论赛 - <span id="subtitle"></span></span>
+                <a class="myButton" id="stepBtn">环节</a>
+            </div>
+            <ul id="stepList"></ul>
+        </div>
     </div>
-    <div class="">
-        <button type="button" name="button" id="start2" class="startBtn">Start</button>
-        <button type="button" name="button" id="stop2" class="stopBtn">Stop</button>
-        <p id="display2"></p>
+
+    <div class="wrapper">
+        <div class="container">
+            <div class="timer team">
+                <p class="teamName"><span class="meta">正方</span> </p>
+                <p class="view"></p>
+            </div>
+            <div class="middle"></div>
+            <div class="timer team team-r">
+                <p class="teamName"> <span class="meta">反方</span></p>
+                <p class="view"></p>
+            </div>
+        </div>
+        <div class="container">
+            <p id="display1" class="display timer"></p>
+            <div class="btn turn middle">
+                <span id="turnBtn" class="fa-stack fa-2x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-arrows-h fa-stack-1x fa-inverse"></i>
+                </span>
+            </div>
+            <p id="display2" class="display timer"></p>
+        </div>
+        <div class="container">
+            <div class="btn timer">
+                <span id="start1" class="fa-stack fa-2x"></span>
+                <span id="stop1" class="fa-stack fa-2x"></span>
+            </div>
+
+            <div id="next" class="btn middle">firstChild</div>
+
+            <div class="btn timer">
+                <span id="start2" class="fa-stack fa-2x"></span>
+                <span id="stop2" class="fa-stack fa-2x"></span>
+            </div>
+        </div>
     </div>
-    <button type="button" name="button" id="turnBtn">Turn</button>
-    <div id="next">firstChild</div>
-    <ul id="stepList"></ul>
+
 </body>
 
 </html>
