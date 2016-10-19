@@ -8,6 +8,10 @@ var CountDown = function(left, display, startBtn, stopBtn) {
     this.f2 = 1;
 };
 
+var startSound = new Audio("assets/audio/begin.wav");
+var stopSound = new Audio("assets/audio/stop.wav");
+var alertSound = new Audio("assets/audio/alert.wav");
+
 var bgIcon = '<i class="fa fa-circle fa-stack-2x"></i>';
 var startIcon = bgIcon + '<i class="fa fa-play fa-inverse fa-stack-1x"></i>';
 var suspendIcon = bgIcon + '<i class="fa fa-pause fa-inverse fa-stack-1x"></i>';
@@ -16,6 +20,7 @@ var resetIcon = bgIcon + '<i class="fa fa-repeat fa-inverse fa-stack-1x"></i>';
 
 CountDown.prototype.start = function() {
     this.f1 = 0;
+    if(this.left<=5 && this.left>0 || this.left == 30) alertSound.play();
     this.display.innerText = convertTime(this.left);
     if (this.left <= 0) {
         this.stop();
@@ -38,6 +43,7 @@ CountDown.prototype.suspend = function() {
 
 CountDown.prototype.stop = function() {
     this.f2 = 0;
+    stopSound.play();
     clearTimeout(this.timeId);
     this.display.innerText = "00:00";
     this.left = 0;
@@ -58,6 +64,7 @@ CountDown.prototype.reset = function() {
 
 CountDown.prototype.startF = function() {
     if (this.f1 === 1) {
+        startSound.play();
         this.start();
     } else {
         this.suspend();
