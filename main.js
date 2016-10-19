@@ -132,25 +132,29 @@ function getCallback(i) {
 };
 
 function next() {
-    var e = document.getElementById('next');
     var link = document.createElement('a');
     link.innerText = roundname[pos];
     pos = (pos + 1) % length;
     link.href = "#";
     link.onclick = getCallback(pos);
-    e.replaceChild(link, e.firstChild);
+    nextBtn.replaceChild(link, nextBtn.firstChild);
 }
-
-var pos = 0;
-var zftime = [],
-    fftime = [],
-    roundname = [];
 
 function pushRound(zf, ff, name) {
     zftime.push(zf);
     fftime.push(ff);
     roundname.push(name);
 }
+
+var timer1 = null, timer2 = null,
+    startBtn1 = null, stopBtn1 = null, display1 = null,
+    startBtn2 = null, stopBtn2 = null, display2 = null,
+    stepList = null, turnBtn = null, nextBtn = null;
+var pos = 0,length;
+var zftime = [],
+    fftime = [],
+    roundname = [];
+
 pushRound(180, 90, "正方立论");
 pushRound(90, 180, "反方立论");
 pushRound(90, 90, "对辩环节");
@@ -159,7 +163,8 @@ pushRound(90, 90, "攻辩小结");
 pushRound(90, 0, "暂停休整");
 pushRound(240, 240, "自由辩论");
 pushRound(240, 240, "总结陈词");
-var length = zftime.length;
+
+length = zftime.length;
 
 window.onload = function() {
     startBtn1 = document.getElementById("start1");
@@ -168,7 +173,10 @@ window.onload = function() {
     startBtn2 = document.getElementById("start2");
     stopBtn2 = document.getElementById("stop2");
     display2 = document.getElementById("display2");
-    init(180, 90);
+    stepList = document.getElementById("stepList");
+    turnBtn = document.getElementById("turnBtn");
+    nextBtn = document.getElementById('next');
+    init(zftime[0], fftime[0]);
     next();
     for (var i = 0; i < length; i++) {
         var li = document.createElement('li');
@@ -177,6 +185,7 @@ window.onload = function() {
         link.href = "#";
         link.onclick = getCallback(i);
         li.appendChild(link);
-        document.getElementById("stepList").appendChild(li);
+        stepList.appendChild(li);
     }
+    turnBtn.onclick = turn;
 };
