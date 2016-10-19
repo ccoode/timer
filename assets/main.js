@@ -64,7 +64,7 @@ CountDown.prototype.reset = function() {
 
 CountDown.prototype.startF = function() {
     if (this.f1 === 1) {
-        startSound.play();
+        if(this.left == this.orig) startSound.play();
         this.start();
     } else {
         this.suspend();
