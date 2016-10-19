@@ -10,7 +10,7 @@ var CountDown = function(left, display, startBtn, stopBtn) {
 
 CountDown.prototype.start = function() {
     this.f1 = 0;
-    document.getElementById(this.display).innerText = convertTime(this.left);
+    this.display.innerText = convertTime(this.left);
     if (this.left <= 0) {
         this.stop();
     }
@@ -21,33 +21,33 @@ CountDown.prototype.start = function() {
             CountDown.prototype.start.call(_this);
         }, 1000);
     }
-    document.getElementById(this.startBtn).innerText = "Suspend";
+    this.startBtn.innerText = "Suspend";
 };
 
 CountDown.prototype.suspend = function() {
     this.f1 = 1;
-    document.getElementById(this.startBtn).innerText = "Start";
+    this.startBtn.innerText = "Start";
     clearTimeout(this.timeId);
 };
 
 CountDown.prototype.stop = function() {
-    this.f1 = 1;
     this.f2 = 0;
     clearTimeout(this.timeId);
-    document.getElementById(this.display).innerText = "00:00";
+    this.display.innerText = "00:00";
     this.left = 0;
-    document.getElementById(this.stopBtn).innerText = "Reset";
-    document.getElementById(this.startBtn).innerText = "Start";
-    document.getElementById(this.startBtn).style.visibility = "hidden";
+    this.stopBtn.innerText = "Reset";
+    this.startBtn.style.visibility = "hidden";
 };
 
 CountDown.prototype.reset = function() {
+    this.f1 = 1;
     this.f2 = 1;
-    clearTimeout(this.timeId);
+    if(this.timeId) clearTimeout(this.timeId);
     this.left = this.orig;
-    document.getElementById(this.display).innerText = convertTime(this.orig);
-    document.getElementById(this.stopBtn).innerText = "Stop";
-    document.getElementById(this.startBtn).style.visibility = "visible";
+    this.display.innerText = convertTime(this.orig);
+    this.stopBtn.innerText = "Stop";
+    this.startBtn.innerText = "Start";
+    this.startBtn.style.visibility = "visible";
 };
 
 CountDown.prototype.startF = function() {
@@ -66,12 +66,6 @@ CountDown.prototype.stopF = function() {
     }
 };
 
-CountDown.prototype.endF = function() {
-    this.reset();
-    document.getElementById(this.startBtn).onclick = null;
-    document.getElementById(this.stopBtn).onclick = null;
-}
-
 function pad(number) {
     if (number < 10) {
         return '0' + number;
@@ -83,33 +77,20 @@ function convertTime(time) {
     return pad(Math.floor(time / 60)) + ":" + pad(time % 60);
 }
 
-function init(l1, l2) {
-    timer1 = new CountDown(l1, "display1", "start1", "stop1");
-    startBtn1.innerText = "Start";
-    stopBtn1.innerText = "Stop";
-    display1.innerText = convertTime(timer1.left);
-    timer2 = new CountDown(l2, "display2", "start2", "stop2");
-    startBtn2.innerText = "Start";
-    stopBtn2.innerText = "Stop";
-    display2.innerText = convertTime(timer2.left);
-    startBtn1.onclick = function() {
-        timer1.startF();
-    };
-    stopBtn1.onclick = function() {
-        timer1.stopF();
-    };
-    startBtn2.onclick = function() {
-        timer2.startF();
-    };
-    stopBtn2.onclick = function() {
-        timer2.stopF();
-    };
+function init(left1, left2) {
+    /* 初始化 timer */
+    timer1 = new CountDown(left1, display1, startBtn1, stopBtn1);
+    timer2 = new CountDown(left2, display2, startBtn2, stopBtn2);
+    timer1.reset();
+    timer2.reset();
+    /* 初始化 nextBtn */
+    var link = document.createElement('a');
+    link.innerText = roundname[pos];
+    pos = (pos + 1) % length;
+    link.href = "#";
+    link.onclick = getCallback(pos);
+    nextBtn.replaceChild(link, nextBtn.firstChild);
 }
-
-function endUp() {
-    timer1.endF();
-    timer2.endF();
-};
 
 function turn() {
     if (timer1.f1 === 1 && timer1.f2 === 1 && (timer2.f1 === 0 || timer2.f2 === 0)) {
@@ -123,22 +104,13 @@ function turn() {
 
 function getCallback(i) {
     var fun = function() {
-        endUp();
+        timer1.reset();
+        timer2.reset();
         pos = i;
         init(zftime[i], fftime[i]);
-        next();
     }
     return fun;
 };
-
-function next() {
-    var link = document.createElement('a');
-    link.innerText = roundname[pos];
-    pos = (pos + 1) % length;
-    link.href = "#";
-    link.onclick = getCallback(pos);
-    nextBtn.replaceChild(link, nextBtn.firstChild);
-}
 
 function pushRound(zf, ff, name) {
     zftime.push(zf);
@@ -177,7 +149,20 @@ window.onload = function() {
     turnBtn = document.getElementById("turnBtn");
     nextBtn = document.getElementById('next');
     init(zftime[0], fftime[0]);
-    next();
+    startBtn1.onclick = function() {
+        timer1.startF();
+    };
+    stopBtn1.onclick = function() {
+        timer1.stopF();
+    };
+    startBtn2.onclick = function() {
+        timer2.startF();
+    };
+    stopBtn2.onclick = function() {
+        timer2.stopF();
+    };
+    turnBtn.onclick = turn;
+    /* stepList 初始化 */
     for (var i = 0; i < length; i++) {
         var li = document.createElement('li');
         var link = document.createElement('a');
@@ -187,5 +172,4 @@ window.onload = function() {
         li.appendChild(link);
         stepList.appendChild(li);
     }
-    turnBtn.onclick = turn;
 };
