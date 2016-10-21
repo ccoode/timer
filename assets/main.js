@@ -201,7 +201,7 @@
         document.getElementById('subtitle').innerText = subtitle;
         var teamNames = document.getElementsByClassName('teamName');
         teamNames[0].appendChild(document.createTextNode(zfname));
-        teamNames[1].insertAdjacentText('afterbegin', ffname);
+        teamNames[1].insertAdjacentHTML('afterbegin', ffname);
         var views = document.getElementsByClassName('view');
         views[0].appendChild(document.createTextNode(zfbian));
         views[1].appendChild(document.createTextNode(ffbian));

@@ -2,115 +2,137 @@ body {
     background-color: #fff;
     color: #000;
     font-size: 16px;
-    font-family: sans-serif;
+    font-family: "Noto Sans", "Helvetica Neue", Helvetica, Georgia, "Times New Roman", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans CN", "Inziu Roboto SC", "Microsoft YaHei", STXihei, Simhei, sans-serif;
 }
+
 .site-header {
     height: 56px;
     border-bottom: 1px solid #eee;
 }
+
 .site-title {
     line-height: 56px;
     font-size: 24px;
 }
+
 .clearfix {
-  overflow: hidden;
-  zoom: 1;
+    overflow: hidden;
+    zoom: 1;
 }
+
 a.nextBtn {
     font-size: 24px;
 }
+
 #stepList {
     display: none;
     position: absolute;
     list-style: none;
-    right:-50px;
+    right: -50px;
     top: 40px;
 }
+
 #stepList.active {
     display: list-item;
 }
+
 .fa-stack-2x {
     color: #555;
 }
+
 .fa-stack-1x:hover {
-    color:#f6f6f6;
+    color: #f6f6f6;
 }
+
 .fa {
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .display {
     text-align: center;
     font-size: 80px;
 }
+
 .wrapper {
     max-width: 700px;
     margin: 0 auto;
 }
+
 .header-wrapper {
     position: relative;
     max-width: 800px;
     margin: 0 auto;
     padding: 0 10px;
 }
+
 .container {
     display: flex;
 }
+
 .timer {
     -webkit-flex: 1;
-        flex: 1;
+    flex: 1;
 }
 
 .btn {
     display: flex;
     -webkit-align-items: center;
-        align-items: center;
--webkit-justify-content: center;
-        justify-content: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
 }
 
 .middle {
-    width:150px;
+    width: 150px;
 }
+
 .team-r {
     text-align: right;
 }
+
 .meta {
     background-color: #000;
     color: #fff;
     font-size: 18px;
 }
+
 .teamName {
     font-size: 36px;
     margin: 15px 0;
 }
+
 .view {
     font-size: 24px;
     margin: 10px 0 0;
 }
+
 .myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #eee;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #eee;
-	box-shadow:inset 0px 1px 0px 0px #eee;
+    -moz-box-shadow: inset 0px 1px 0px 0px #eee;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #eee;
+    box-shadow: inset 0px 1px 0px 0px #eee;
     background-color: #fff;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	cursor:pointer;
-	color:#666666;
-	font-size:20px;
-	padding:12px 12px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #eee;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #dcdcdc;
+    display: inline-block;
+    cursor: pointer;
+    color: #666666;
+    font-size: 20px;
+    padding: 12px 12px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0px #eee;
 }
+
 .myButton:hover {
-	background-color:#f6f6f6;
+    background-color: #f6f6f6;
 }
+
 .myButton:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
+
 #stepBtn {
     float: right;
     margin: 4px 0;
