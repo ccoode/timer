@@ -1,5 +1,9 @@
+html {
+    color: #fdfdfd;
+    height: 100%;
+}
+
 body {
-    background-color: #fff;
     color: #000;
     font-size: 16px;
     font-family: "Noto Sans", "Helvetica Neue", Helvetica, Georgia, "Times New Roman", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans CN", "Inziu Roboto SC", "Microsoft YaHei", STXihei, Simhei, sans-serif;
@@ -37,11 +41,11 @@ a.nextBtn {
 }
 
 .fa-stack-2x {
-    color: #555;
+    color: #444;
 }
 
-.fa-stack-1x:hover {
-    color: #f6f6f6;
+.fa-stack-1x {
+    color: #fdfdfd;
 }
 
 .fa {
@@ -110,7 +114,7 @@ a.nextBtn {
     -moz-box-shadow: inset 0px 1px 0px 0px #eee;
     -webkit-box-shadow: inset 0px 1px 0px 0px #eee;
     box-shadow: inset 0px 1px 0px 0px #eee;
-    background-color: #fff;
+    background-color: transparent;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     border-radius: 6px;

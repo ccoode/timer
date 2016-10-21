@@ -14,10 +14,10 @@
     var alertSound = new Audio("assets/audio/alert.wav");
 
     var bgIcon = '<i class="fa fa-circle fa-stack-2x"></i>';
-    var startIcon = bgIcon + '<i class="fa fa-play fa-inverse fa-stack-1x"></i>';
-    var suspendIcon = bgIcon + '<i class="fa fa-pause fa-inverse fa-stack-1x"></i>';
-    var stopIcon = bgIcon + '<i class="fa fa-stop fa-inverse fa-stack-1x"></i>';
-    var resetIcon = bgIcon + '<i class="fa fa-repeat fa-inverse fa-stack-1x"></i>';
+    var startIcon = bgIcon + '<i class="fa fa-play fa-stack-1x"></i>';
+    var suspendIcon = bgIcon + '<i class="fa fa-pause fa-stack-1x"></i>';
+    var stopIcon = bgIcon + '<i class="fa fa-stop fa-stack-1x"></i>';
+    var resetIcon = bgIcon + '<i class="fa fa-repeat fa-stack-1x"></i>';
 
     CountDown.prototype.start = function() {
         this.f1 = 0;
