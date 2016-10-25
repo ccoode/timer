@@ -27,11 +27,8 @@
             this.stop();
         }
         this.left -= 1;
-        var _this = this;
         if (this.left >= 0) {
-            this.timeId = setTimeout(function() {
-                CountDown.prototype.start.call(_this);
-            }, 1000);
+            this.timeId = setTimeout(arguments.callee.bind(this), 1000);
         }
         this.startBtn.innerHTML = suspendIcon;
     };
@@ -123,7 +120,7 @@
             pos = i;
             init(zftime[i], fftime[i]);
             stepList.classList.remove('active');
-        }
+        };
         return fun;
     };
 
