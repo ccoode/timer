@@ -1,3 +1,15 @@
+@font-face {
+    font-family: inziu;
+    src: url('../fonts/inziu.ttf') format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Noto Serif";
+    src: url('../fonts/NotoSerif-Regular.ttf') format("truetype");
+    font-style: normal;
+}
+
 html {
     color: #fdfdfd;
     height: 100%;
@@ -6,8 +18,13 @@ html {
 body {
     color: #000;
     font-size: 16px;
-    font-family: "Noto Sans", "Helvetica Neue", Helvetica, Georgia, "Times New Roman", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans CN", "Inziu Roboto SC", "Microsoft YaHei", STXihei, Simhei, sans-serif;
+    font-family: "Noto Serif", inziu,
+    "Noto Sans", "Helvetica Neue", Helvetica, Georgia, "Times New Roman",
+    "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans CN", "Inziu Roboto SC",
+    "Microsoft YaHei", STXihei, Simhei, sans-serif;
 }
+
+
 
 .site-header {
     height: 56px;
@@ -106,6 +123,9 @@ a.nextBtn {
 }
 
 .view {
+    font-family: "Noto Sans", "Helvetica Neue", Helvetica, Georgia, "Times New Roman",
+    "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans CN", "Inziu Roboto SC",
+    "Microsoft YaHei", STXihei, Simhei, sans-serif!important;
     font-size: 24px;
     margin: 10px 0 0;
 }
