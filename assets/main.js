@@ -158,49 +158,48 @@
 
     length = zftime.length;
 
-    window.onload = function() {
-        startBtn1 = document.getElementById("start1");
-        stopBtn1 = document.getElementById("stop1");
-        display1 = document.getElementById("display1");
-        startBtn2 = document.getElementById("start2");
-        stopBtn2 = document.getElementById("stop2");
-        display2 = document.getElementById("display2");
-        stepList = document.getElementById("stepList");
-        turnBtn = document.getElementById("turnBtn");
-        nextBtn = document.getElementById('next');
-        init(zftime[0], fftime[0]);
-        startBtn1.onclick = function() {
-            timer1.startF();
-        };
-        stopBtn1.onclick = function() {
-            timer1.stopF();
-        };
-        startBtn2.onclick = function() {
-            timer2.startF();
-        };
-        stopBtn2.onclick = function() {
-            timer2.stopF();
-        };
-        turnBtn.onclick = turn;
-        /* stepList 初始化 */
-        for (var i = 0; i < length; i++) {
-            var li = document.createElement('li');
-            var link = document.createElement('a');
-            link.innerText = roundname[i];
-            link.className = "myButton";
-            link.onclick = getCallback(i);
-            li.appendChild(link);
-            stepList.appendChild(li);
-        }
-        document.getElementById('stepBtn').onclick = function() {
-            stepList.classList.toggle('active');
-        };
-        document.getElementById('subtitle').innerText = subtitle;
-        var teamNames = document.getElementsByClassName('teamName');
-        teamNames[0].appendChild(document.createTextNode(zfname));
-        teamNames[1].insertAdjacentHTML('afterbegin', ffname);
-        var views = document.getElementsByClassName('view');
-        views[0].appendChild(document.createTextNode(zfbian));
-        views[1].appendChild(document.createTextNode(ffbian));
+    startBtn1 = document.getElementById("start1");
+    stopBtn1 = document.getElementById("stop1");
+    display1 = document.getElementById("display1");
+    startBtn2 = document.getElementById("start2");
+    stopBtn2 = document.getElementById("stop2");
+    display2 = document.getElementById("display2");
+    stepList = document.getElementById("stepList");
+    turnBtn = document.getElementById("turnBtn");
+    nextBtn = document.getElementById('next');
+    init(zftime[0], fftime[0]);
+    startBtn1.onclick = function() {
+        timer1.startF();
     };
+    stopBtn1.onclick = function() {
+        timer1.stopF();
+    };
+    startBtn2.onclick = function() {
+        timer2.startF();
+    };
+    stopBtn2.onclick = function() {
+        timer2.stopF();
+    };
+    turnBtn.onclick = turn;
+    /* stepList 初始化 */
+    for (var i = 0; i < length; i++) {
+        var li = document.createElement('li');
+        var link = document.createElement('a');
+        link.innerText = roundname[i];
+        link.className = "myButton";
+        link.onclick = getCallback(i);
+        li.appendChild(link);
+        stepList.appendChild(li);
+    }
+    document.getElementById('stepBtn').onclick = function() {
+        stepList.classList.toggle('active');
+    };
+    document.getElementById('subtitle').innerText = subtitle;
+    var teamNames = document.getElementsByClassName('teamName');
+    teamNames[0].appendChild(document.createTextNode(zfname));
+    teamNames[1].insertAdjacentHTML('afterbegin', ffname);
+    var views = document.getElementsByClassName('view');
+    views[0].appendChild(document.createTextNode(zfbian));
+    views[1].appendChild(document.createTextNode(ffbian));
+
 })();
