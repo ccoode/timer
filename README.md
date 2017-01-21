@@ -8,11 +8,14 @@ Timer
 * [百度网盘](https://pan.baidu.com/s/1gfJniDH#list/path=%2FShared%2Ftimer&parentPath=%2FShared)
 * [Releases · ccoode/timer](https://github.com/ccoode/timer/releases)
 
+
+### 使用
+
+直接修改 `config.js`，打开 `index.html`。
+
 ### 编译
 
 安装 [Node.js](https://nodejs.org/en/)
-
-修改`config.json`配置文件
 
 命令行/Terminal 输入
 

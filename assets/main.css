@@ -53,23 +53,6 @@ main {
     text-align: center;
 }
 
-.clearfix {
-    overflow: hidden;
-    zoom: 1; 
-}
-
-.stepList {
-    visibility: hidden;
-    position: absolute;
-    list-style: none;
-    right: 2rem;
-    top: 40px;
-}
-
-.stepList.active {
-    visibility: visible;
-}
-
 .fa-stack-2x {
     color: #173640;
 }
@@ -185,10 +168,11 @@ main {
 .menu-container {
     margin-right: 3em;
     float: right;
-
 }
 
 .menu-container:hover {
+    background: -webkit-linear-gradient(hsla(0,0%,100%,.2), #fff);
+    background: -o-linear-gradient(hsla(0,0%,100%,.2), #fff);
     background: linear-gradient(hsla(0,0%,100%,.2), #fff);
 }
 

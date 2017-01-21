@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import config from '../config.json';
+require("../config.js");
 
 function Step(props) {
     return <a onClick= {() => props.onClick()} href="#">

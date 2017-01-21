@@ -13,6 +13,10 @@ module.exports = {
         test: /\.js[x]?$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: require.resolve('./config'),
+        loader: 'imports-loader'
       }
     ]
   },
@@ -24,6 +28,17 @@ module.exports = {
     }),
     new webpack
       .optimize
-      .UglifyJsPlugin()
+      .UglifyJsPlugin({
+        beautify: false,
+        comments: false,
+        compress: {
+          warnings: false,
+          drop_console: true
+        },
+        mangle: {
+          screw_ie8: true,
+          keep_fnames: true
+        }
+      })
   ]
 };

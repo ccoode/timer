@@ -1,9 +1,9 @@
-{
+var config = {
     "title": "计算机学院新生杯辩论赛",
     "subtitle": "季军争夺赛",
-    "zfname": "软件1班",
+    "zfname": "软件2班",
     "zfbian": "出轨比出柜更难接受",
-    "ffname": "计科8班",
+    "ffname": "计科7班",
     "ffbian": "出柜比出轨更难接受",
     "steps": [
         {
