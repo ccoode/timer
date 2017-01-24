@@ -32,7 +32,7 @@ function Meta(props) {
     return (
         <article className={"teamMeta" + (props.forceHide ? " force-hide" : "")}>
             {teamName}
-            <section className="thought">{props.support}</section>
+            <section className="thought">{props.thought}</section>
         </article>
     )
 }
@@ -63,7 +63,6 @@ function Middle(props) {
 }
 
 function Control(props) {
-    const {start, pause, clear, reset} = props.onClicks;
 
     return (
         <section className="control">
@@ -72,7 +71,7 @@ function Control(props) {
                     ? " hide"
                     : "")}
                 onClick=
-                {() => { start() } }>
+                {() => { props.onClick('start') } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-play fa-stack-1x"></i>
             </span>
@@ -81,7 +80,7 @@ function Control(props) {
                     ? ""
                     : " hide")}
                 onClick=
-                {() => { pause() } }>
+                {() => { props.onClick('pause') } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-pause fa-stack-1x"></i>
             </span>
@@ -90,7 +89,7 @@ function Control(props) {
                     ? " hide"
                     : "")}
                 onClick=
-                {() => { clear() } }>
+                {() => { props.onClick('stop') } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-stop fa-stack-1x"></i>
             </span>
@@ -99,11 +98,38 @@ function Control(props) {
                     ? ""
                     : " hide")}
                 onClick=
-                {() => { reset() } }>
+                {() => { props.onClick('reset') } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-repeat fa-stack-1x"></i>
             </span>
         </section>
+    )
+}
+
+
+function Header(props) {
+    const list = config
+        .steps
+        .map((step, key) => {
+            return (<Step value={step.name} onClick={() => { this.changeStep(key) } } key={key} />)
+        });
+    return (<header className="site-header">
+        <span className="site-title">{config.title + " - " + config.subtitle}</span>
+        <div className="menu-container">
+            <a className="menu-btn">环节</a>
+            <div className="menu">
+                {list}
+            </div>
+        </div>
+    </header>)
+}
+
+function Footer() {
+    return (
+        <footer className="site-footer">
+            <p>{config.footer}</p>
+            <p><a href="https://github.com/ccoode/timer">源代码</a></p>
+        </footer>
     )
 }
 
@@ -194,7 +220,7 @@ class App extends React.Component {
             .reset()
     }
 
-    clear(w) {
+    stop(w) {
         this[w]
             .timer
             .stop()
@@ -218,6 +244,17 @@ class App extends React.Component {
         }
     }
 
+    getHandler(w) {
+        return (key => {
+            switch (key) {
+                case 'start': this.start(w); break;
+                case 'stop': this.stop(w); break;
+                case 'pause': this.pause(w); break;
+                case 'reset': this.reset(w); break;
+            }
+        })
+    }
+
     render() {
         const {zf, ff} = this.state
         zf.end = (zf.timeout === 0)
@@ -225,92 +262,37 @@ class App extends React.Component {
         zf.forceHide = (zf.timeout < 0)
         ff.forceHide = (ff.timeout < 0)
         const showTurn = (!ff.forceHide && !zf.forceHide && zf.running && !ff.running && !ff.end || !zf.running && ff.running && !zf.end)
-        const lists = config
-            .steps
-            .map((step, key) => {
-                return (<Step value={step.name} onClick={() => { this.changeStep(key) } } key={key} />)
-            });
+
         return (
             <div id="root">
-                <header className="site-header">
-                    <span className="site-title">
-                        {config.title + " - " + config.subtitle}
-                    </span>
-                    <div className="menu-container">
-                        <a className="menu-btn" href="#">
-                            环节
-                        </a>
-                        <div className="menu">
-                            {lists}
-                        </div>
-                    </div>
-
-                </header>
-
+                <Header />
                 <main>
                     <div className="timer">
                         <div className={"contain" + (zf.forceHide ? " force-hide" : "")}>
-                            <Meta teamName={config.zfname} isZ={true} support={config.zfbian} forceHide={ff.forceHide || zf.forceHide} />
+                            <Meta teamName={config.zf.name} isZ={true} thought={config.zf.thought} forceHide={ff.forceHide || zf.forceHide} />
                             <Clock timeout={this.state.zf.timeout} />
                             <Control
-                                onClicks={{
-                                    start: () => {
-                                        this.start('zf')
-                                    },
-                                    pause: () => {
-                                        this.pause('zf')
-                                    },
-                                    clear: () => {
-                                        this.clear('zf')
-                                    },
-                                    reset: () => {
-                                        this.reset('zf')
-                                    }
-                                }}
+                                onClick={this.getHandler('zf')}
                                 running={this.state.zf.running}
                                 end={zf.end}
                                 />
                         </div>
                         <Middle turn={() => this.turn()} show={showTurn} forceHide={ff.forceHide || zf.forceHide} />
                         <div className={"contain right" + (ff.forceHide ? " force-hide" : "")}>
-                            <Meta teamName={config.ffname} isZ={false} support={config.ffbian} forceHide={ff.forceHide || zf.forceHide} />
+                            <Meta teamName={config.ff.name} isZ={false} thought={config.ff.thought} forceHide={ff.forceHide || zf.forceHide} />
                             <Clock timeout={this.state.ff.timeout} />
                             <Control
-                                onClicks={{
-                                    start: () => {
-                                        this.start('ff')
-                                    },
-                                    pause: () => {
-                                        this.pause('ff')
-                                    },
-                                    clear: () => {
-                                        this.clear('ff')
-                                    },
-                                    reset: () => {
-                                        this.reset('ff')
-                                    }
-                                }}
+                                onClick={this.getHandler('ff')}
                                 running={this.state.ff.running}
                                 end={ff.end}
                                 />
                         </div>
                     </div>
                     <div>
-                        <a
-                            href="#"
-                            id="turnBtn"
-                            onClick={() => {
-                                this.next()
-                            } }
-                            className="btn">{this.state.stepName}</a>
+                        <a id="turnBtn" onClick={() => { this.next() } } className="btn"> {this.state.stepName}</a>
                     </div>
                 </main>
-                <footer className="site-footer">
-                    <p>{config.footer}</p>
-                    <p>
-                        <a href="https://github.com/ccoode/timer">源代码</a>
-                    </p>
-                </footer>
+                <Footer />
             </div>
         )
     }
