@@ -1,9 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-require("../config.js");
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Timer from '../lib/index.js'
+
+require("../config.js")
 
 function Step(props) {
-    return <a onClick= {() => props.onClick()} href="#">
+    return <a onClick={() => props.onClick()} href="#">
         {props.value}
     </a>
 }
@@ -28,7 +30,7 @@ function Meta(props) {
         )
 
     return (
-        <article className="teamMeta">
+        <article className={"teamMeta" + (props.forceHide ? " force-hide" : "")}>
             {teamName}
             <section className="thought">{props.support}</section>
         </article>
@@ -38,21 +40,21 @@ function Meta(props) {
 function Clock(props) {
     return (
         <section className="clock">
-            {convertMS(props.timeOut)}
+            {convertMS(props.timeout)}
         </section>
     )
 }
 
 function Middle(props) {
     return (
-        <div className="middle">
+        <div className={"middle" + (props.forceHide ? " force-hide" : "")}>
             <span
                 className={"fa-stack fa-2x" + (props.show
-                ? ""
-                : " hide")}
+                    ? ""
+                    : " hide")}
                 onClick={() => {
-                props.turn()
-            }}>
+                    props.turn()
+                } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-arrows-h fa-stack-1x"></i>
             </span>
@@ -61,43 +63,43 @@ function Middle(props) {
 }
 
 function Control(props) {
-    var {start, pause, clear, reset} = props.onClicks;
+    const {start, pause, clear, reset} = props.onClicks;
 
     return (
         <section className="control">
             <span
                 className={"fa-stack fa-2x" + (props.running || props.end
-                ? " hide"
-                : "")}
+                    ? " hide"
+                    : "")}
                 onClick=
-                {() => {start()}}>
+                {() => { start() } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-play fa-stack-1x"></i>
             </span>
             <span
                 className={"fa-stack fa-2x" + (props.running
-                ? ""
-                : " hide")}
+                    ? ""
+                    : " hide")}
                 onClick=
-                {() => {pause()}}>
+                {() => { pause() } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-pause fa-stack-1x"></i>
             </span>
             <span
                 className={"fa-stack fa-2x" + (props.end
-                ? " hide"
-                : "")}
+                    ? " hide"
+                    : "")}
                 onClick=
-                {() => {clear()}}>
+                {() => { clear() } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-stop fa-stack-1x"></i>
             </span>
             <span
                 className={"fa-stack fa-2x" + (props.end
-                ? ""
-                : " hide")}
+                    ? ""
+                    : " hide")}
                 onClick=
-                {() => {reset()}}>
+                {() => { reset() } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-repeat fa-stack-1x"></i>
             </span>
@@ -109,8 +111,6 @@ class App extends React.Component {
     constructor() {
         super()
         let {zf, ff, name} = config.steps[0];
-        let totalZF = zf * 1000,
-            totalFF = ff * 1000;
         this.startSound = new Audio("assets/audio/begin.wav")
         this.stopSound = new Audio("assets/audio/stop.wav")
         this.alertSound = new Audio("assets/audio/alert.wav")
@@ -118,151 +118,97 @@ class App extends React.Component {
             stepName: name,
             index: 0,
             zf: {
-                timeOut: totalZF,
-                left: totalZF,
+                timeout: (zf * 1000),
                 running: false
             },
             ff: {
-                timeOut: totalFF,
-                left: totalFF,
+                timeout: (ff * 1000),
                 running: false
             }
         }
-    }
-
-    updateTimer(w) {
-        var {running, timeOut, startTime, left} = this.state[w];
-        var timeGap = (timeOut % 1000) || 1000;
-        if (running && timeOut - 1000 > 0) 
-            var timeoutID = setTimeout(() => {
-                this.updateTimer(w)
-            }, 1000)
-
-        var timeOut = running
-            ? timeOut - timeGap
-            : timeOut;
-        if (timeOut > 0 && timeOut <= 5000 || timeOut > 29000 && timeOut <= 30000) 
-            this.alertSound.play()
-        if (timeOut <= 0) {
-            running = false;
-            this
-                .startSound
-                .play()
-        }
-        this.setState({
-            [w]: {
-                timeOut,
-                running,
-                startTime,
-                left,
-                timeoutID
+        this.zf = {}
+        this.ff = {}
+        const hook = (w) => (state) => {
+            switch (true) {
+                case 0 === state.timeout:
+                    this
+                        .stopSound
+                        .play();
+                    break;
+                case state.timeout <= 30000 && state.timeout > 29000:
+                case state.timeout > 0 && state.timeout <= 5000:
+                    this
+                        .alertSound
+                        .play();
+                    break;
+                case state.onStart === true:
+                    this
+                        .startSound
+                        .play();
+                    break;
             }
-        })
+
+            this.setState({
+                [w]: {
+                    timeout: state.timeout,
+                    running: state.running
+                }
+            })
+        }
+
+        this.zf.timer = new Timer({ timeout: zf * 1000, hook: hook('zf') })
+        this.ff.timer = new Timer({ timeout: ff * 1000, hook: hook('ff') })
     }
 
     changeStep(i) {
-        if (i == this.state.index) 
+        if (i == this.state.index)
             return;
-        if (this.state.zf.running) 
-            clearTimeout(this.state.zf.timeoutID)
-        if (this.state.ff.running) 
-            clearTimeout(this.state.ff.timeoutID)
 
         let {zf, ff, name} = config.steps[i];
-        let totalZF = zf * 1000,
-            totalFF = ff * 1000;
-        let state = {
-            stepName: name,
-            index: i,
-            zf: {
-                timeOut: totalZF,
-                left: totalZF,
-                running: false
-            },
-            ff: {
-                timeOut: totalFF,
-                left: totalFF,
-                running: false
-            }
-        }
-        this.setState(state)
+        this
+            .zf
+            .timer
+            .setup({ timeout: zf * 1000 })
+        this
+            .ff
+            .timer
+            .setup({ timeout: ff * 1000 })
+        this.setState({ index: i, stepName: name })
     }
 
     start(w) {
-
-        var {timeOut, left} = this.state[w]
-
-        if (timeOut > 0) {
-            const timeGap = timeOut % 1000 || 1000,
-                timeoutID = setTimeout(() => {
-                    this.updateTimer(w)
-                }, timeGap);
-            this.setState({
-                [w]: {
-                    timeOut: timeOut,
-                    left: left,
-                    startTime: performance.now(),
-                    running: true,
-                    timeoutID: timeoutID
-                }
-            });
-            this
-                .startSound
-                .play();
-        }
+        this[w]
+            .timer
+            .start()
     }
 
     pause(w) {
-        var {left, startTime, timeoutID} = this.state[w];
-        var time = performance.now(),
-            left = left - (time - startTime)
-        clearTimeout(timeoutID);
-        this.setState({
-            [w]: {
-                timeOut: left,
-                left: left,
-                running: false,
-                startTime: null
-            }
-        })
+        this[w]
+            .timer
+            .pause()
     }
 
     reset(w) {
-        var {index, [w]: {
-                timeoutID
-            }} = this.state
-        var total = config.steps[index][w] * 1000
-        clearTimeout(timeoutID)
-        this.setState({
-            [w]: {
-                left: total,
-                timeOut: total,
-                running: false
-            }
-        })
+        this[w]
+            .timer
+            .reset()
     }
 
     clear(w) {
-        var {timeoutID} = this.state[w]
-        clearTimeout(timeoutID)
-        this.setState({
-            [w]: {
-                left: 0,
-                timeOut: 0,
-                running: false
-            }
-        })
+        this[w]
+            .timer
+            .stop()
     }
 
     next() {
-        var {index} = this.state;
+        const {index} = this.state;
         this.changeStep((index + 1) % config.steps.length);
     }
 
     turn() {
         const {zf, ff} = this.state
-        zf.end = (zf.timeOut <= 0)
-        ff.end = (ff.timeOut <= 0)
+        zf.end = (zf.timeout <= 0)
+        ff.end = (ff.timeout <= 0)
         if (zf.running && !ff.running && !ff.end) {
             this.pause('zf')
             this.start('ff')
@@ -274,13 +220,15 @@ class App extends React.Component {
 
     render() {
         const {zf, ff} = this.state
-        zf.end = (zf.timeOut <= 0)
-        ff.end = (ff.timeOut <= 0)
-        const showTurn = (zf.running && !ff.running && !ff.end || !zf.running && ff.running && !zf.end)
+        zf.end = (zf.timeout === 0)
+        ff.end = (ff.timeout === 0)
+        zf.forceHide = (zf.timeout < 0)
+        ff.forceHide = (ff.timeout < 0)
+        const showTurn = (!ff.forceHide && !zf.forceHide && zf.running && !ff.running && !ff.end || !zf.running && ff.running && !zf.end)
         const lists = config
             .steps
             .map((step, key) => {
-                return (<Step value={step.name} onClick= { () => { this.changeStep(key) } } key={key}/>)
+                return (<Step value={step.name} onClick={() => { this.changeStep(key) } } key={key} />)
             });
         return (
             <div id="root">
@@ -301,48 +249,50 @@ class App extends React.Component {
 
                 <main>
                     <div className="timer">
-                        <div className="contain">
-                            <Meta teamName={config.zfname} isZ={true} support={config.zfbian}/>
-                            <Clock timeOut={this.state.zf.timeOut}/>
+                        <div className={"contain" + (zf.forceHide ? " force-hide" : "")}>
+                            <Meta teamName={config.zfname} isZ={true} support={config.zfbian} forceHide={ff.forceHide || zf.forceHide} />
+                            <Clock timeout={this.state.zf.timeout} />
                             <Control
                                 onClicks={{
-                                start: () => {
-                                    this.start('zf')
-                                },
-                                pause: () => {
-                                    this.pause('zf')
-                                },
-                                clear: () => {
-                                    this.clear('zf')
-                                },
-                                reset: () => {
-                                    this.reset('zf')
-                                }
-                            }}
+                                    start: () => {
+                                        this.start('zf')
+                                    },
+                                    pause: () => {
+                                        this.pause('zf')
+                                    },
+                                    clear: () => {
+                                        this.clear('zf')
+                                    },
+                                    reset: () => {
+                                        this.reset('zf')
+                                    }
+                                }}
                                 running={this.state.zf.running}
-                                end={this.state.zf.timeOut <= 0}/>
+                                end={zf.end}
+                                />
                         </div>
-                        <Middle turn={() => this.turn()} show={showTurn}/>
-                        <div className="contain right">
-                            <Meta teamName={config.ffname} isZ={false} support={config.ffbian}/>
-                            <Clock timeOut={this.state.ff.timeOut}/>
+                        <Middle turn={() => this.turn()} show={showTurn} forceHide={ff.forceHide || zf.forceHide} />
+                        <div className={"contain right" + (ff.forceHide ? " force-hide" : "")}>
+                            <Meta teamName={config.ffname} isZ={false} support={config.ffbian} forceHide={ff.forceHide || zf.forceHide} />
+                            <Clock timeout={this.state.ff.timeout} />
                             <Control
                                 onClicks={{
-                                start: () => {
-                                    this.start('ff')
-                                },
-                                pause: () => {
-                                    this.pause('ff')
-                                },
-                                clear: () => {
-                                    this.clear('ff')
-                                },
-                                reset: () => {
-                                    this.reset('ff')
-                                }
-                            }}
+                                    start: () => {
+                                        this.start('ff')
+                                    },
+                                    pause: () => {
+                                        this.pause('ff')
+                                    },
+                                    clear: () => {
+                                        this.clear('ff')
+                                    },
+                                    reset: () => {
+                                        this.reset('ff')
+                                    }
+                                }}
                                 running={this.state.ff.running}
-                                end={this.state.ff.timeOut <= 0}/>
+                                end={ff.end}
+                                />
                         </div>
                     </div>
                     <div>
@@ -350,8 +300,8 @@ class App extends React.Component {
                             href="#"
                             id="turnBtn"
                             onClick={() => {
-                            this.next()
-                        }}
+                                this.next()
+                            } }
                             className="btn">{this.state.stepName}</a>
                     </div>
                 </main>
@@ -367,10 +317,12 @@ class App extends React.Component {
 }
 
 ReactDOM.render(
-    <App/>, document.querySelector('#react'));
+    <App />, document.querySelector('#react'));
 
 function convertMS(ms) {
-    return pad(Math.floor(ms / 1000 / 60)) + ":" + pad(Math.ceil(ms / 1000 % 60))
+    if (ms >= 0) {
+        return pad(Math.floor(ms / 1000 / 60)) + ":" + pad(Math.ceil(ms / 1000 % 60))
+    }
 }
 
 function pad(number) {

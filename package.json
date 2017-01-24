@@ -1,17 +1,17 @@
 {
   "name": "timer",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "a timer for debate competition",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -p",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --config webpack.config.dev.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ccoode/timer.git"
   },
-  "author": "",
+  "author": "dgeibi",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ccoode/timer/issues"
@@ -26,7 +26,6 @@
     "json-loader": "^0.5.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "script-loader": "^0.7.0",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^2.2.0"
   }

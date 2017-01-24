@@ -1,25 +1,10 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const devConfig = require('./webpack.config.dev');
 
 module.exports = {
-  entry: './app/main.jsx',
-  output: {
-    path: path.resolve(__dirname, "assets"),
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js[x]?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader'
-      },
-      {
-        test: require.resolve('./config'),
-        loader: 'imports-loader'
-      }
-    ]
-  },
+  entry: devConfig.entry,
+  output: devConfig.output,
+  module: devConfig.module,
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
