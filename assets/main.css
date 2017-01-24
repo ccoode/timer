@@ -61,10 +61,6 @@ main {
     color: #f6f6f6;
 }
 
-.fa {
-    cursor: pointer;
-}
-
 .clock {
     text-align: center;
     display: block;
@@ -195,8 +191,12 @@ main {
 }
 
 .menu-btn {
-    cursor: pointer;
     padding: .5em 1em;
     line-height: 56px;
     box-sizing: border-box;
 }
+
+.menu-btn, .menu a, .fa {
+    cursor: pointer;
+}
+    

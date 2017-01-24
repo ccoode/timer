@@ -4,12 +4,6 @@ import Timer from '../lib/index.js'
 
 require("../config.js")
 
-function Step(props) {
-    return <a onClick={() => props.onClick()} href="#">
-        {props.value}
-    </a>
-}
-
 function Meta(props) {
     const teamName = props.isZ
         ? (
@@ -63,7 +57,6 @@ function Middle(props) {
 }
 
 function Control(props) {
-
     return (
         <section className="control">
             <span
@@ -106,22 +99,16 @@ function Control(props) {
     )
 }
 
-
 function Header(props) {
-    const list = config
-        .steps
-        .map((step, key) => {
-            return (<Step value={step.name} onClick={() => { this.changeStep(key) } } key={key} />)
-        });
-    return (<header className="site-header">
-        <span className="site-title">{config.title + " - " + config.subtitle}</span>
-        <div className="menu-container">
-            <a className="menu-btn">环节</a>
-            <div className="menu">
-                {list}
+    return (
+        <header className="site-header">
+            <span className="site-title">{config.title + " - " + config.subtitle}</span>
+            <div className="menu-container">
+                <a className="menu-btn">环节</a>
+                <div className="menu">{props.list}</div>
             </div>
-        </div>
-    </header>)
+        </header>
+    )
 }
 
 function Footer() {
@@ -154,23 +141,20 @@ class App extends React.Component {
         }
         this.zf = {}
         this.ff = {}
+        this.list = config.steps.map((step, key) => 
+            <a onClick={() => { this.changeStep(key) }} key={key}>{step.name}</a>
+        );
         const hook = (w) => (state) => {
             switch (true) {
                 case 0 === state.timeout:
-                    this
-                        .stopSound
-                        .play();
+                    this.stopSound.play();
                     break;
                 case state.timeout <= 30000 && state.timeout > 29000:
                 case state.timeout > 0 && state.timeout <= 5000:
-                    this
-                        .alertSound
-                        .play();
+                    this.alertSound.play();
                     break;
                 case state.onStart === true:
-                    this
-                        .startSound
-                        .play();
+                    this.startSound.play();
                     break;
             }
 
@@ -187,43 +171,27 @@ class App extends React.Component {
     }
 
     changeStep(i) {
-        if (i == this.state.index)
-            return;
-
+        if (i == this.state.index) return;
         let {zf, ff, name} = config.steps[i];
-        this
-            .zf
-            .timer
-            .setup({ timeout: zf * 1000 })
-        this
-            .ff
-            .timer
-            .setup({ timeout: ff * 1000 })
+        this.zf.timer.setup({ timeout: zf * 1000 })
+        this.ff.timer.setup({ timeout: ff * 1000 })
         this.setState({ index: i, stepName: name })
     }
 
     start(w) {
-        this[w]
-            .timer
-            .start()
+        this[w].timer.start()
     }
 
     pause(w) {
-        this[w]
-            .timer
-            .pause()
+        this[w].timer.pause()
     }
 
     reset(w) {
-        this[w]
-            .timer
-            .reset()
+        this[w].timer.reset()
     }
 
     stop(w) {
-        this[w]
-            .timer
-            .stop()
+        this[w].timer.stop()
     }
 
     next() {
@@ -261,11 +229,13 @@ class App extends React.Component {
         ff.end = (ff.timeout === 0)
         zf.forceHide = (zf.timeout < 0)
         ff.forceHide = (ff.timeout < 0)
-        const showTurn = (!ff.forceHide && !zf.forceHide && zf.running && !ff.running && !ff.end || !zf.running && ff.running && !zf.end)
+        const showTurn = (!ff.forceHide && !zf.forceHide &&
+            zf.running && !ff.running && !ff.end ||
+            !zf.running && ff.running && !zf.end)
 
         return (
             <div id="root">
-                <Header />
+                <Header list={this.list} />
                 <main>
                     <div className="timer">
                         <div className={"contain" + (zf.forceHide ? " force-hide" : "")}>
