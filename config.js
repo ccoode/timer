@@ -13,7 +13,7 @@ var config = {
     "steps": [
         {
             "name": "正方立论",
-            "zf": 180,
+            "zf": 33,
             "ff": 90
         },
         {

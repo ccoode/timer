@@ -258,7 +258,7 @@ class App extends React.Component {
                                 />
                         </div>
                     </div>
-                    <div>
+                    <div id="wrapper">
                         <a id="turnBtn" onClick={() => { this.next() } } className="btn"> {this.state.stepName}</a>
                     </div>
                 </main>

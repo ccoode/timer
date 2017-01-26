@@ -43,7 +43,7 @@ main {
 .site-title {
     line-height: 56px;
     height: 56px;
-    font-size: 24px;
+    font-size: 30px;
     margin-left: 2rem;
     white-space: nowrap;
     float: left;
@@ -51,6 +51,10 @@ main {
 
 .site-footer {
     text-align: center;
+}
+
+#react .fa-stack.fa-2x {
+    font-size: 3.5vw;
 }
 
 .fa-stack-2x {
@@ -64,7 +68,7 @@ main {
 .clock {
     text-align: center;
     display: block;
-    font-size: 11vw;
+    font-size: 15vw;
     margin: .3em 0;
 }
 
@@ -79,15 +83,16 @@ main {
 }
 
 .middle {
-    width: 120px;
+    width: 11vw;
 }
 
 #turnBtn {
-    box-sizing: border-box;
-    display: block;
-    width: 5.7em;
-    margin: 0 auto;
-    margin-top: .9em;
+    font-size: 2.2vw;
+}
+
+#wrapper {
+    margin: 2em 0 0 0;
+    text-align: center;
 }
 
 .meta {
@@ -117,7 +122,7 @@ main {
     font-size: .5em;
 }
 
-.unselectable,.control,.clock,#turnBtn {
+.unselectable, .control, .clock, #turnBtn, .menu-btn {
     user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -191,6 +196,7 @@ main {
 }
 
 .menu-btn {
+    font-size: 24px;
     padding: .5em 1em;
     line-height: 56px;
     box-sizing: border-box;
@@ -199,4 +205,3 @@ main {
 .menu-btn, .menu a, .fa {
     cursor: pointer;
 }
-    
