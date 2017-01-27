@@ -12,10 +12,10 @@
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
-body {
+html {
     color: #123748;
     background-color: #fdfdfd;
-    font-size: 16px;
+    font-size: 1.5vw;
     font-family: 'Noto Serif', 'Times New Roman', Georgia, 'Inziu Iosevka SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, Simhei, serif;
 }
 
@@ -93,7 +93,7 @@ main {
 }
 
 #wrapper {
-    margin: 2em 0 0 0;
+    margin: 2vw 0 0 0;
     text-align: center;
 }
 
@@ -103,7 +103,7 @@ main {
 }
 
 .teamMeta > .teamName {
-    margin: 15px 0;
+    margin: .3em 0 0 0;
 }
 
 .teamMeta {
