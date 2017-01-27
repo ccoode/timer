@@ -103,8 +103,11 @@ function Header(props) {
     return (
         <header className="site-header">
             <span className="site-title">{config.title + " - " + config.subtitle}</span>
+            <a id="fullscreen" href="#" className="nav-item" onClick={() => toggleFullscreen()}>
+                <i className="fa fa-arrows-alt" aria-hidden="true"></i>
+            </a>
             <div className="menu-container">
-                <a className="menu-btn">环节</a>
+                <a className="nav-item menu-btn">环节</a>
                 <div className="menu">{props.list}</div>
             </div>
         </header>
@@ -141,8 +144,8 @@ class App extends React.Component {
         }
         this.zf = {}
         this.ff = {}
-        this.list = config.steps.map((step, key) => 
-            <a onClick={() => { this.changeStep(key) }} key={key}>{step.name}</a>
+        this.list = config.steps.map((step, key) =>
+            <a onClick={() => { this.changeStep(key) } } key={key}>{step.name}</a>
         );
         const hook = (w) => (state) => {
             switch (true) {
@@ -282,4 +285,36 @@ function pad(number) {
         return '0' + number
     }
     return number
+}
+
+function launchFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+}
+
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+}
+
+function toggleFullscreen() {
+    var fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled;
+    var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+    if (fullscreenEnabled && !fullscreenElement) {
+        launchFullscreen(document.documentElement)
+    } else if (fullscreenElement) {
+        exitFullscreen()
+    }
 }
