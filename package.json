@@ -1,6 +1,6 @@
 {
   "name": "timer",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "a timer for debate competition",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

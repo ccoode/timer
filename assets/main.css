@@ -124,7 +124,7 @@ main {
     font-size: .5em;
 }
 
-.unselectable, .control, .clock, #turnBtn, .menu-btn {
+.unselectable, .control, .clock, #turnBtn, .menu-btn, .menu a {
     user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
