@@ -1,8 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+/** @jsx h */
+import { h, render, Component } from 'preact';
 import Timer from '../lib/index.js'
-
 require("../config.js")
+if (module.hot) {
+    require('preact/devtools');
+}
 
 function Meta(props) {
     const teamName = props.isZ
@@ -123,7 +125,7 @@ function Footer() {
     )
 }
 
-class App extends React.Component {
+class App extends Component {
     constructor() {
         super()
         let {zf, ff, name} = config.steps[0];
@@ -271,7 +273,7 @@ class App extends React.Component {
     }
 }
 
-ReactDOM.render(
+render(
     <App />, document.querySelector('#react'));
 
 function convertMS(ms) {
