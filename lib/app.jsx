@@ -1,7 +1,7 @@
 /** @jsx h */
 import { h, render, Component } from 'preact';
-import Timer from '../lib/index.js'
-require("../config.js")
+import Timer from './index.js'
+import '../config'
 if (module.hot) {
     require('preact/devtools');
 }
