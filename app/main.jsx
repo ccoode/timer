@@ -71,9 +71,9 @@ function Control(props) {
                 <i className="fa fa-play fa-stack-1x"></i>
             </span>
             <span
-                className={"fa-stack fa-2x" + (props.running
-                    ? ""
-                    : " hide")}
+                className={"fa-stack fa-2x" + (!props.running || props.end
+                    ? " hide"
+                    : "")}
                 onClick=
                 {() => { props.onClick('pause') } }>
                 <i className="fa fa-circle fa-stack-2x"></i>
@@ -205,13 +205,13 @@ class App extends Component {
     }
 
     turn() {
-        const {zf, ff} = this.state
-        zf.end = (zf.timeout <= 0)
-        ff.end = (ff.timeout <= 0)
-        if (zf.running && !ff.running && !ff.end) {
+        const {zf, ff} = this.state,
+            zfEnd = (zf.timeout <= 0),
+            ffEnd = (ff.timeout <= 0)
+        if (zf.running && !ff.running && !ffEnd) {
             this.pause('zf')
             this.start('ff')
-        } else if (!zf.running && ff.running && !zf.end) {
+        } else if (!zf.running && ff.running && !zfEnd) {
             this.pause('ff')
             this.start('zf')
         }
@@ -229,42 +229,43 @@ class App extends Component {
     }
 
     render() {
-        const {zf, ff} = this.state
-        zf.end = (zf.timeout === 0)
-        ff.end = (ff.timeout === 0)
-        zf.forceHide = (zf.timeout < 0)
-        ff.forceHide = (ff.timeout < 0)
-        const showTurn = (!ff.forceHide && !zf.forceHide &&
-            zf.running && !ff.running && !ff.end ||
-            !zf.running && ff.running && !zf.end)
+        const {zf, ff, stepName} = this.state,
+            zfEnd = (zf.timeout === 0),
+            ffEnd = (ff.timeout === 0),
+            zfForceHide = (zf.timeout < 0),
+            ffForceHide = (ff.timeout < 0),
+            forceHide = zfForceHide || ffForceHide,
+            showTurn = (!forceHide &&
+                zf.running && !ff.running && !ffEnd ||
+                !zf.running && ff.running && !zfEnd)
 
         return (
             <div id="root">
                 <Header list={this.list} />
                 <main>
                     <div className="timer">
-                        <div className={"contain" + (zf.forceHide ? " force-hide" : "")}>
-                            <Meta teamName={config.zf.name} isZ={true} thought={config.zf.thought} forceHide={ff.forceHide || zf.forceHide} />
-                            <Clock timeout={this.state.zf.timeout} />
+                        <div className={"contain" + (zfForceHide ? " force-hide" : "")}>
+                            <Meta teamName={config.zf.name} isZ={true} thought={config.zf.thought} forceHide={forceHide} />
+                            <Clock timeout={zf.timeout} />
                             <Control
                                 onClick={this.getHandler('zf')}
-                                running={this.state.zf.running}
-                                end={zf.end}
+                                running={zf.running}
+                                end={zfEnd}
                                 />
                         </div>
-                        <Middle turn={() => this.turn()} show={showTurn} forceHide={ff.forceHide || zf.forceHide} />
-                        <div className={"contain right" + (ff.forceHide ? " force-hide" : "")}>
-                            <Meta teamName={config.ff.name} isZ={false} thought={config.ff.thought} forceHide={ff.forceHide || zf.forceHide} />
-                            <Clock timeout={this.state.ff.timeout} />
+                        <Middle turn={() => this.turn()} show={showTurn} forceHide={forceHide} />
+                        <div className={"contain right" + (ffForceHide ? " force-hide" : "")}>
+                            <Meta teamName={config.ff.name} isZ={false} thought={config.ff.thought} forceHide={forceHide} />
+                            <Clock timeout={ff.timeout} />
                             <Control
                                 onClick={this.getHandler('ff')}
-                                running={this.state.ff.running}
-                                end={ff.end}
+                                running={ff.running}
+                                end={ffEnd}
                                 />
                         </div>
                     </div>
                     <div id="wrapper">
-                        <a id="turnBtn" onClick={() => { this.next() } } className="btn"> {this.state.stepName}</a>
+                        <a id="turnBtn" onClick={() => { this.next() } } className="btn">{stepName}</a>
                     </div>
                 </main>
                 <Footer />
