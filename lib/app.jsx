@@ -173,6 +173,12 @@ class App extends Component {
 
         this.zf.timer = new Timer({ timeout: zf * 1000, hook: hook('zf') })
         this.ff.timer = new Timer({ timeout: ff * 1000, hook: hook('ff') })
+        this.controlKeys = ['start', 'stop', 'pause', 'reset']
+        this.controlKeys.forEach(method => this.registerMethod(method))
+    }
+
+    registerMethod(methodName) {
+        this[methodName] = w => this[w].timer[methodName]()
     }
 
     changeStep(i) {
@@ -181,22 +187,6 @@ class App extends Component {
         this.zf.timer.setup({ timeout: zf * 1000 })
         this.ff.timer.setup({ timeout: ff * 1000 })
         this.setState({ index: i, stepName: name })
-    }
-
-    start(w) {
-        this[w].timer.start()
-    }
-
-    pause(w) {
-        this[w].timer.pause()
-    }
-
-    reset(w) {
-        this[w].timer.reset()
-    }
-
-    stop(w) {
-        this[w].timer.stop()
     }
 
     next() {
@@ -218,12 +208,9 @@ class App extends Component {
     }
 
     getHandler(w) {
-        return (key => {
-            switch (key) {
-                case 'start': this.start(w); break;
-                case 'stop': this.stop(w); break;
-                case 'pause': this.pause(w); break;
-                case 'reset': this.reset(w); break;
+        return (methodName => {
+            if (this.controlKeys.indexOf(methodName) !== -1) {
+                this[methodName](w)
             }
         })
     }
