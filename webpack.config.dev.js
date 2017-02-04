@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: './lib/app.jsx',
   output: {
-    path: path.resolve(__dirname, "assets"),
+    path: path.resolve(__dirname, "dist/assets"),
     filename: 'bundle.js',
     publicPath: "/assets/",
   },
@@ -15,9 +15,12 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: require.resolve('./config'),
+        test: require.resolve('./dist/config'),
         loader: 'imports-loader'
       }
     ]
+  },
+  devServer: {
+    contentBase: "./dist"
   }
 };

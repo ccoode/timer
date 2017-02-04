@@ -28,5 +28,6 @@ module.exports = {
   output: devConfig.output,
   module: devConfig.module,
   resolve: devConfig.resolve,
+  devServer: devConfig.devServer,
   plugins: devConfig.plugins ? plugins.concat(devConfig.plugins) : plugins
 };
