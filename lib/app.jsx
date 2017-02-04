@@ -50,7 +50,7 @@ function Middle(props) {
                     : " hide")}
                 onClick={() => {
                     props.turn()
-                } }>
+                }}>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-arrows-h fa-stack-1x"></i>
             </span>
@@ -66,7 +66,7 @@ function Control(props) {
                     ? " hide"
                     : "")}
                 onClick=
-                {() => { props.onClick('start') } }>
+                {() => { props.onClick('start') }}>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-play fa-stack-1x"></i>
             </span>
@@ -75,7 +75,7 @@ function Control(props) {
                     ? " hide"
                     : "")}
                 onClick=
-                {() => { props.onClick('pause') } }>
+                {() => { props.onClick('pause') }}>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-pause fa-stack-1x"></i>
             </span>
@@ -84,7 +84,7 @@ function Control(props) {
                     ? " hide"
                     : "")}
                 onClick=
-                {() => { props.onClick('stop') } }>
+                {() => { props.onClick('stop') }}>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-stop fa-stack-1x"></i>
             </span>
@@ -93,7 +93,7 @@ function Control(props) {
                     ? ""
                     : " hide")}
                 onClick=
-                {() => { props.onClick('reset') } }>
+                {() => { props.onClick('reset') }}>
                 <i className="fa fa-circle fa-stack-2x"></i>
                 <i className="fa fa-repeat fa-stack-1x"></i>
             </span>
@@ -128,10 +128,15 @@ function Footer() {
 class App extends Component {
     constructor() {
         super()
-        let {zf, ff, name} = config.steps[0];
         this.startSound = new Audio("assets/audio/begin.wav")
         this.stopSound = new Audio("assets/audio/stop.wav")
         this.alertSound = new Audio("assets/audio/alert.wav")
+        this.list = config.steps.map((step, key) =>
+            <a onClick={() => { this.changeStep(key) }} key={key}>{step.name}</a>
+        );
+        this.methods = ['start', 'stop', 'pause', 'reset']
+        this.methods.forEach(method => this.registerMethod(method))
+        const {zf, ff, name} = config.steps[0];
         this.state = {
             stepName: name,
             index: 0,
@@ -144,12 +149,12 @@ class App extends Component {
                 running: false
             }
         }
-        this.zf = {}
-        this.ff = {}
-        this.list = config.steps.map((step, key) =>
-            <a onClick={() => { this.changeStep(key) } } key={key}>{step.name}</a>
-        );
-        const hook = (w) => (state) => {
+        this.createTimers()
+    }
+
+    createTimers() {
+        const self = this;
+        const hook = w => state => {
             switch (true) {
                 case 0 === state.timeout:
                     this.stopSound.play();
@@ -170,11 +175,17 @@ class App extends Component {
                 }
             })
         }
-
-        this.zf.timer = new Timer({ timeout: zf * 1000, hook: hook('zf') })
-        this.ff.timer = new Timer({ timeout: ff * 1000, hook: hook('ff') })
-        this.controlKeys = ['start', 'stop', 'pause', 'reset']
-        this.controlKeys.forEach(method => this.registerMethod(method))
+        const createTimer = w => ({
+            get end() {
+                return self.state[w].timeout === 0;
+            },
+            get forceHide() {
+                return self.state[w].timeout < 0;
+            },
+            timer: new Timer({ timeout: config.steps[0][w] * 1000, hook: hook(w) })
+        })
+        this.zf = createTimer('zf')
+        this.ff = createTimer('ff')
     }
 
     registerMethod(methodName) {
@@ -195,13 +206,11 @@ class App extends Component {
     }
 
     turn() {
-        const {zf, ff} = this.state,
-            zfEnd = (zf.timeout <= 0),
-            ffEnd = (ff.timeout <= 0)
-        if (zf.running && !ff.running && !ffEnd) {
+        const {zf, ff} = this.state
+        if (zf.running && !ff.running && !this.ff.end) {
             this.pause('zf')
             this.start('ff')
-        } else if (!zf.running && ff.running && !zfEnd) {
+        } else if (!zf.running && ff.running && !this.zf.end) {
             this.pause('ff')
             this.start('zf')
         }
@@ -209,7 +218,7 @@ class App extends Component {
 
     getHandler(w) {
         return (methodName => {
-            if (this.controlKeys.indexOf(methodName) !== -1) {
+            if (this.methods.indexOf(methodName) !== -1) {
                 this[methodName](w)
             }
         })
@@ -217,42 +226,38 @@ class App extends Component {
 
     render() {
         const {zf, ff, stepName} = this.state,
-            zfEnd = (zf.timeout === 0),
-            ffEnd = (ff.timeout === 0),
-            zfForceHide = (zf.timeout < 0),
-            ffForceHide = (ff.timeout < 0),
-            forceHide = zfForceHide || ffForceHide,
+            forceHide = this.zf.forceHide || this.ff.forceHide,
             showTurn = (!forceHide &&
-                zf.running && !ff.running && !ffEnd ||
-                !zf.running && ff.running && !zfEnd)
+                zf.running && !ff.running && !this.ff.end ||
+                !zf.running && ff.running && !this.zf.end)
 
         return (
             <div id="root">
                 <Header list={this.list} />
                 <main>
                     <div className="timer">
-                        <div className={"contain" + (zfForceHide ? " force-hide" : "")}>
+                        <div className={"contain" + (this.zf.forceHide ? " force-hide" : "")}>
                             <Meta teamName={config.zf.name} isZ={true} thought={config.zf.thought} forceHide={forceHide} />
                             <Clock timeout={zf.timeout} />
                             <Control
                                 onClick={this.getHandler('zf')}
                                 running={zf.running}
-                                end={zfEnd}
-                                />
+                                end={this.zf.end}
+                            />
                         </div>
                         <Middle turn={() => this.turn()} show={showTurn} forceHide={forceHide} />
-                        <div className={"contain right" + (ffForceHide ? " force-hide" : "")}>
+                        <div className={"contain right" + (this.ff.forceHide ? " force-hide" : "")}>
                             <Meta teamName={config.ff.name} isZ={false} thought={config.ff.thought} forceHide={forceHide} />
                             <Clock timeout={ff.timeout} />
                             <Control
                                 onClick={this.getHandler('ff')}
                                 running={ff.running}
-                                end={ffEnd}
-                                />
+                                end={this.ff.end}
+                            />
                         </div>
                     </div>
                     <div id="wrapper">
-                        <a id="turnBtn" onClick={() => { this.next() } } className="btn">{stepName}</a>
+                        <a id="turnBtn" onClick={() => { this.next() }} className="btn">{stepName}</a>
                     </div>
                 </main>
                 <Footer />

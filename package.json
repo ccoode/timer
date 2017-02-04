@@ -1,10 +1,11 @@
 {
   "name": "timer",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "a timer for debate competition",
   "scripts": {
     "test": "node lib/test.js",
     "build": "webpack -p",
+    "deploy": "webpack -p && gulp deploy",
     "start": "webpack-dev-server --hot --config webpack.config.dev.js"
   },
   "repository": {
