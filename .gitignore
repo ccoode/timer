@@ -1,4 +1,7 @@
 node_modules
 npm-debug.log
 .publish
-bundle.js
+dist/assets/bundle.js
+dist/assets/main.css
+dist/assets/*.ttf
+dist/assets/*.woff2
