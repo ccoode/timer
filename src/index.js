@@ -10,11 +10,24 @@ class Timer {
     }
 
     setup(settings) {
-        if (this._timeoutId) clearTimeout(this._timeoutId)
-        this._settings = settings
-        this._running = false
-        this._timeout = this._left = this._settings.timeout
-        this._sync()
+        if (typeof settings !== 'object' || settings !== null) {
+            if (typeof settings.timeout !== 'number') {
+                settings.timeout = parseInt(settings.timeout, 10)
+            }
+            if (isNaN(settings.timeout)) {
+                throw new Error('setup(settings), settings.timeout need to be a number!')
+            }
+            if (typeof settings.timeout !== 'number') {
+                throw new Error('setup(settings), settings.timeout need to be a number!')
+            }
+            if (this._timeoutId) clearTimeout(this._timeoutId)
+            this._settings = settings
+            this._running = false
+            this._timeout = this._left = this._settings.timeout
+            this._sync()
+        } else {
+            throw new Error('setup(settings), settings need to be a object!')
+        }
     }
 
     start() {
