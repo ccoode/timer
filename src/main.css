@@ -1,11 +1,13 @@
 @import 'partial/normalize.css';
 @import 'partial/fonts.css';
-
 :root {
     --brand-color: #123748;
     --dark: #0b2422;
     --bg-color: #fdfdfd;
     --header-height: 5vw;
+    --unselectable {
+        user-select: none;
+    }
 }
 
 html {
@@ -59,6 +61,7 @@ main {
 }
 
 .clock {
+    @apply --unselectable;
     text-align: center;
     display: block;
     font-size: 15vw;
@@ -70,6 +73,7 @@ main {
 }
 
 .control, .middle {
+    @apply --unselectable;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +84,7 @@ main {
 }
 
 #turnBtn {
+    @apply --unselectable;
     font-size: 2.2vw;
 }
 
@@ -110,10 +115,6 @@ main {
 .right .teamMeta {
     text-align: right;
     margin: 0 8% 0 0;
-}
-
-.unselectable, .control, .clock, #turnBtn, .menu-btn, .menu a {
-    user-select: none;
 }
 
 .btn {
@@ -158,12 +159,12 @@ main {
     visibility: hidden;
     background-color: #fff;
     box-shadow: 0 8px 18px rgba(0, 0, 0, .05);
-    ;
     border-radius: 0 0 5px 5px;
     border: 1px solid rgba(0, 0, 0, .08);
 }
 
 .menu a, .menu-btn {
+    @apply --unselectable;
     color: inherit;
     text-decoration: none;
 }

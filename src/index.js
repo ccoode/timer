@@ -1,3 +1,5 @@
+const now = require('performance-now')
+
 class Timer {
     constructor(settings) {
         this._watchQueue = []
@@ -33,7 +35,7 @@ class Timer {
     start() {
         if (!this._running) {
             this._running = true
-            this._startTime = Date.now()
+            this._startTime = now()
             this._update()
         }
     }
@@ -42,7 +44,7 @@ class Timer {
         if (this._running) {
             if (this._timeoutId) clearTimeout(this._timeoutId)
             this._running = false
-            this._timeout = this._left = this._left - (Date.now() - this._startTime)
+            this._timeout = this._left = this._left - (now() - this._startTime)
             this._sync()
         }
     }
