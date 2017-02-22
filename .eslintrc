@@ -5,6 +5,7 @@
         "es6": true,
         "node": true
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -13,7 +14,7 @@
     },
     "rules": {
         "no-const-assign": 1,
-        "no-extra-semi": 0,
+        "no-extra-semi": 1,
         "semi": 0,
         "no-fallthrough": 0,
         "no-empty": 0,

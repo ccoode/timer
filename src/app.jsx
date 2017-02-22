@@ -1,43 +1,46 @@
 /** @jsx h */
-import { h, render, Component } from 'preact';
+import { h, render, Component } from 'preact'
 import Timer from './index.js'
 import './main.css'
 import '../dist/config'
 if (module.hot) {
-    require('preact/devtools');
+    require('preact/devtools')
 }
 
-function Meta(props) {
-    const teamName = props.isZ
+function Meta({isZ, teamName, forceHide, thought}) {
+    const team = isZ
         ? (
             <section className="teamName">
                 <span className="meta">正方</span>
                 <span>
-                    {props.teamName}
+                    {teamName}
                 </span>
             </section>
         )
         : (
             <section className="teamName right">
                 <span>
-                    {props.teamName}
+                    {teamName}
                 </span>
                 <span className="meta">反方</span>
             </section>
         )
 
     return (
-        <article className={"teamMeta" + (props.forceHide ? " force-hide" : "")}>
-            {teamName}
-            <section className="thought">{props.thought}</section>
+        <article className={"teamMeta" + (forceHide ? " force-hide" : "")}>
+            {team}
+            <section className="thought">{thought}</section>
         </article>
     )
 }
 
-function Clock(props) {
+/**
+ * timeout(ms) => MM:ss 
+ */
+function Clock({timeout}) {
     return (
         <section className="clock">
-            {convertMS(props.timeout)}
+            {convertMS(timeout)}
         </section>
     )
 }
@@ -102,42 +105,43 @@ function Control(props) {
     )
 }
 
-function Header(props) {
+function Header({list, title, subtitle}) {
     return (
         <header className="site-header">
-            <span className="site-title">{config.title + " - " + config.subtitle}</span>
+            <span className="site-title">{title + " - " + subtitle}</span>
             <a id="fullscreen" href="#" className="nav-item" onClick={() => toggleFullscreen()}>
                 <i className="fa fa-arrows-alt" aria-hidden="true"></i>
             </a>
             <div className="menu-container">
                 <a className="nav-item menu-btn">环节</a>
-                <div className="menu">{props.list}</div>
+                <div className="menu">{list}</div>
             </div>
         </header>
     )
 }
 
-function Footer() {
+function Footer({info}) {
     return (
         <footer className="site-footer">
-            <p>{config.footer}</p>
+            <p>{info}</p>
             <p><a href="https://github.com/ccoode/timer">源代码</a></p>
         </footer>
     )
 }
 
 class App extends Component {
-    constructor() {
-        super()
-        this.startSound = new Audio("assets/audio/begin.wav")
-        this.stopSound = new Audio("assets/audio/stop.wav")
-        this.alertSound = new Audio("assets/audio/alert.wav")
-        this.list = config.steps.map((step, key) =>
-            <a onClick={() => { this.changeStep(key) }} key={key}>{step.name}</a>
-        );
-        this.methods = ['start', 'stop', 'pause', 'reset']
-        this.methods.forEach(method => this.registerMethod(method))
-        const {zf, ff, name} = config.steps[0];
+    static sound = ["start", "stop", "alert"].reduce((obj, key) => {
+        obj[key] = new Audio(`assets/audio/${key}.wav`)
+        return obj
+    }, {})
+    static methods = ['start', 'stop', 'pause', 'reset']
+    config = this.props.config
+    list = this.config.steps.map((step, key) =>
+        <a onClick={() => { this.changeStep(key) }} key={key}>{step.name}</a>
+    )
+    constructor(props) {
+        super(props)
+        const {zf, ff, name} = this.config.steps[0]
         this.state = {
             stepName: name,
             index: 0,
@@ -154,19 +158,19 @@ class App extends Component {
     }
 
     createTimers() {
-        const self = this;
+        const self = this
         const hook = w => state => {
             switch (true) {
                 case 0 === state.timeout:
-                    this.stopSound.play();
-                    break;
+                    App.sound.stop.play()
+                    break
                 case state.timeout <= 30000 && state.timeout > 29000:
                 case state.timeout > 0 && state.timeout <= 5000:
-                    this.alertSound.play();
-                    break;
+                    App.sound.alter.play()
+                    break
                 case state.onStart === true:
-                    this.startSound.play();
-                    break;
+                    App.sound.start.play()
+                    break
             }
 
             this.setState({
@@ -178,32 +182,28 @@ class App extends Component {
         }
         const createTimer = w => ({
             get end() {
-                return self.state[w].timeout === 0;
+                return self.state[w].timeout === 0
             },
             get forceHide() {
-                return self.state[w].timeout < 0;
+                return self.state[w].timeout < 0
             },
-            timer: new Timer({ timeout: config.steps[0][w] * 1000, hook: hook(w) })
+            timer: new Timer({ timeout: this.config.steps[0][w] * 1000, hook: hook(w) })
         })
         this.zf = createTimer('zf')
         this.ff = createTimer('ff')
     }
 
-    registerMethod(methodName) {
-        this[methodName] = w => this[w].timer[methodName]()
-    }
-
-    changeStep(i) {
-        if (i == this.state.index) return;
-        let {zf, ff, name} = config.steps[i];
+    changeStep(index) {
+        if (index == this.state.index) return
+        let {zf, ff, name} = this.config.steps[index]
         this.zf.timer.setup({ timeout: zf * 1000 })
         this.ff.timer.setup({ timeout: ff * 1000 })
-        this.setState({ index: i, stepName: name })
+        this.setState({ index, stepName: name })
     }
 
     next() {
-        const {index} = this.state;
-        this.changeStep((index + 1) % config.steps.length);
+        const {index} = this.state
+        this.changeStep((index + 1) % this.config.steps.length)
     }
 
     turn() {
@@ -219,7 +219,7 @@ class App extends Component {
 
     getHandler(w) {
         return (methodName => {
-            if (this.methods.indexOf(methodName) !== -1) {
+            if (App.methods.indexOf(methodName) !== -1) {
                 this[methodName](w)
             }
         })
@@ -231,14 +231,14 @@ class App extends Component {
             showTurn = (!forceHide &&
                 zf.running && !ff.running && !this.ff.end ||
                 !zf.running && ff.running && !this.zf.end)
-
         return (
             <div id="root">
-                <Header list={this.list} />
+                <Header list={this.list} title={this.config.title} subtitle={this.config.subtitle} />
                 <main>
                     <div className="timer">
+                        {/*正方*/}
                         <div className={"contain" + (this.zf.forceHide ? " force-hide" : "")}>
-                            <Meta teamName={config.zf.name} isZ={true} thought={config.zf.thought} forceHide={forceHide} />
+                            <Meta isZ teamName={this.config.zf.name} thought={this.config.zf.thought} forceHide={forceHide} />
                             <Clock timeout={zf.timeout} />
                             <Control
                                 onClick={this.getHandler('zf')}
@@ -246,9 +246,13 @@ class App extends Component {
                                 end={this.zf.end}
                             />
                         </div>
+
+                        {/*轮流切换*/}
                         <Middle turn={() => this.turn()} show={showTurn} forceHide={forceHide} />
+
+                        {/*反方*/}
                         <div className={"contain right" + (this.ff.forceHide ? " force-hide" : "")}>
-                            <Meta teamName={config.ff.name} isZ={false} thought={config.ff.thought} forceHide={forceHide} />
+                            <Meta teamName={this.config.ff.name} isZ={false} thought={this.config.ff.thought} forceHide={forceHide} />
                             <Clock timeout={ff.timeout} />
                             <Control
                                 onClick={this.getHandler('ff')}
@@ -257,18 +261,28 @@ class App extends Component {
                             />
                         </div>
                     </div>
+
+                    {/*下一个环节按钮*/}
                     <div id="wrapper">
-                        <a id="turnBtn" onClick={() => { this.next() }} className="btn">{stepName}</a>
+                        <a id="next" onClick={() => { this.next() }} className="btn">{stepName}</a>
                     </div>
                 </main>
-                <Footer />
+                <Footer info={this.config.footer} />
             </div>
         )
     }
 }
 
-render(
-    <App />, document.querySelector('#react'));
+// Mixin App
+Object.assign(App.prototype, App.methods.reduce(function (obj, key) {
+    obj[key] = function (w) {
+        this[w].timer[key]()
+    }
+    return obj
+}, {}))
+
+// eslint-disable-next-line no-undef
+render(<App config={config} />, document.querySelector('#react'))
 
 function convertMS(ms) {
     if (ms >= 0) {
@@ -292,29 +306,29 @@ function pad(number) {
 
 function launchFullscreen(element) {
     if (element.requestFullscreen) {
-        element.requestFullscreen();
+        element.requestFullscreen()
     } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
+        element.mozRequestFullScreen()
     } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
+        element.webkitRequestFullscreen()
     } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
+        element.msRequestFullscreen()
     }
 }
 
 function exitFullscreen() {
     if (document.exitFullscreen) {
-        document.exitFullscreen();
+        document.exitFullscreen()
     } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
+        document.mozCancelFullScreen()
     } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
+        document.webkitExitFullscreen()
     }
 }
 
 function toggleFullscreen() {
-    var fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled;
-    var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+    var fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled
+    var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement
     if (fullscreenEnabled && !fullscreenElement) {
         launchFullscreen(document.documentElement)
     } else if (fullscreenElement) {
