@@ -130,10 +130,8 @@ function Footer({info}) {
 }
 
 class App extends Component {
-    static sound = ["start", "stop", "alert"].reduce((obj, key) => {
-        obj[key] = new Audio(`assets/audio/${key}.wav`)
-        return obj
-    }, {})
+    static sound = Object.assign({}, ...["start", "stop", "alert"]
+        .map(key => ({ [key]: new Audio(`assets/audio/${key}.wav`) })))
     static methods = ['start', 'stop', 'pause', 'reset']
     config = this.props.config
     list = this.config.steps.map((step, key) =>
@@ -166,7 +164,7 @@ class App extends Component {
                     break
                 case state.timeout <= 30000 && state.timeout > 29000:
                 case state.timeout > 0 && state.timeout <= 5000:
-                    App.sound.alter.play()
+                    App.sound.alert.play()
                     break
                 case state.onStart === true:
                     App.sound.start.play()
@@ -274,12 +272,11 @@ class App extends Component {
 }
 
 // Mixin App
-Object.assign(App.prototype, App.methods.reduce(function (obj, key) {
-    obj[key] = function (w) {
+Object.assign(App.prototype, ...App.methods.map(key => ({
+    [key]: function (w) {
         this[w].timer[key]()
     }
-    return obj
-}, {}))
+})))
 
 // eslint-disable-next-line no-undef
 render(<App config={config} />, document.querySelector('#react'))
