@@ -1,6 +1,6 @@
 {
   "name": "timer",
-  "version": "2.1.16",
+  "version": "2.1.17",
   "description": "a timer for debate competition",
   "scripts": {
     "test": "node src/test.js",
