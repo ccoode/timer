@@ -25,18 +25,27 @@ module.exports = (env = {}) => {
     )
   }
   return {
-    entry: './src/app.jsx',
+    entry: './src/app.js',
     output: {
       path: path.resolve(__dirname, "dist/assets"),
       filename: 'bundle.js',
       publicPath: "/assets/",
     },
+    resolve: {
+      alias: {
+        "react": "preact-compat",
+        "react-dom": "preact-compat"
+      }
+    },
     module: {
       rules: [
         {
           test: /\.js[x]?$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          include: [
+            path.resolve('src'),
+            path.resolve('node_modules/preact-compat/src')
+          ]
         },
         {
           test: require.resolve('./dist/config'),
@@ -56,7 +65,7 @@ module.exports = (env = {}) => {
       ]
     },
     devServer: {
-      contentBase: "./dist"
+      contentBase: path.resolve(__dirname, 'dist')
     },
     plugins
   }

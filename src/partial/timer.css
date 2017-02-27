@@ -1,0 +1,57 @@
+:root {
+        --brand-color: #123748;
+    --bg-color: #fdfdfd;
+}
+
+.timer {
+    display: flex;
+}
+
+.team {
+    flex: 1
+}
+
+.gap {
+    flex-basis: 11vw;
+}
+
+/* center icon */
+.control, .gap {
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clock {
+    user-select: none;
+    text-align: center;
+    display: block;
+    font-size: 15vw;
+    margin: .3em 0;
+    .meta.hide + & {
+        font-size: 18vw
+    }
+}
+
+.meta {
+    font-size: 5vw;
+    margin: 0 0 0 8%;
+    &.right {
+        text-align: right;
+        margin: 0 8% 0 0;
+    }
+    & .name {
+        margin: .3em 0 0 0;
+    }
+}
+
+.tag {
+    background-color: var(--brand-color);
+    color: var(--bg-color);
+    font-size: .5em;
+}
+
+.thought {
+    font-size: .8em;
+}

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 var config = {
     title: "计算机学院新生杯辩论赛",
     subtitle: "季军争夺赛",
@@ -54,3 +53,4 @@ var config = {
         }
     ]
 }
+Object.freeze(config)

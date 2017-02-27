@@ -1,0 +1,15 @@
+:root {
+    --dark: #0b2422;
+}
+
+.btn {
+    border-radius: .4em;
+    border: 1px solid var(--dark);
+    display: inline-block;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 1.25em;
+    line-height: 1;
+    padding: .6em .7em;
+    text-decoration: none;
+}

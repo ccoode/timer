@@ -31,7 +31,7 @@
         "func-names": 0,
         "react/jsx-key": 1,
         "react/prefer-stateless-function": 1,
-        "react/prop-types": 0,
+        "import/no-duplicates": 0,
         "valid-typeof": 1
     },
     "plugins": [
@@ -43,11 +43,13 @@
         "plugin:import/warnings"
     ],
     "settings": {
-        "react": {
-            "createClass": "createClass",
-            "pragma": "React",
-            "version": "15.0"
-        },
-        "import/resolver": "webpack"
+        "import/resolver": {
+            "webpack": {
+                "config": "webpack.config.js"
+            }
+        }
+    },
+    "globals": {
+        "config": true
     }
 }

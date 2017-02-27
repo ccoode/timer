@@ -1,0 +1,8 @@
+.next {
+    margin: 2vw 0 0 0;
+    text-align: center;
+    & .btn {
+        user-select: none;
+        font-size: 2.2vw;
+    }
+}
