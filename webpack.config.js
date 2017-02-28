@@ -53,10 +53,6 @@ module.exports = (env = {}) => {
           ]
         },
         {
-          test: require.resolve('./dist/config'),
-          loader: 'imports-loader'
-        },
-        {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract({
             fallback: "style-loader",
