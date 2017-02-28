@@ -25,7 +25,7 @@ module.exports = (env = {}) => {
     )
   }
   return {
-    entry: './src/app.js',
+    entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, "dist/assets"),
       filename: 'bundle.js',
@@ -34,7 +34,12 @@ module.exports = (env = {}) => {
     resolve: {
       alias: {
         "react": "preact-compat",
-        "react-dom": "preact-compat"
+        "react-dom": "preact-compat",
+        "Utils": path.resolve(__dirname, 'src/utils'),
+        "Fonts": path.resolve(__dirname, 'src/fonts'),
+        "Styles": path.resolve(__dirname, 'src/styles'),
+        "Components": path.resolve(__dirname, 'src/components'),
+        "Dist": path.resolve(__dirname, 'dist')
       }
     },
     module: {

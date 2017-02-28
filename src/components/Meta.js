@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
+
 function Meta({left, teamName, hide, thought}) {
     const name = left
         ? (

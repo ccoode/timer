@@ -1,16 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { render } from 'react-dom'
-import Timer from './index.js'
-import Gap from './Gap'
-import Footer from './Footer'
-import Header from './Header'
-import Team from './Team'
-import './main.css'
-
-if (module.hot) {
-    require('preact/devtools')
-    require('../dist/config.js')
-}
+import Timer from 'Utils/Timer'
+import Gap from 'Components/Gap'
+import Footer from 'Components/Footer'
+import Header from 'Components/Header'
+import Team from 'Components/Team'
 
 class App extends Component {
     static sound = Object.assign({}, ...["start", "stop", "alert"]
@@ -107,15 +100,18 @@ class App extends Component {
     }
 
     renderTeam({w, hideAll}) {
+        const {end, hide} = this[w]
+        const {timeout, running} = this.state[w]
+        const {name, thought} = this.config[w]
         return (
             <Team
-                name={this.config[w].name}
-                thought={this.config[w].thought}
-                hide={this[w].hide}
+                name={name}
+                thought={thought}
+                hide={hide}
+                end={end}
+                timeout={timeout}
+                running={running}
                 hideAll={hideAll}
-                timeout={this.state[w].timeout}
-                running={this.state[w].running}
-                end={this[w].end}
                 controlFn={this.getHandler(w)}
                 left={w === 'zf'}
             />
@@ -173,4 +169,4 @@ Object.assign(App.prototype, ...App.methods.map(key => ({
     }
 })))
 
-render(<App config={config} />, document.querySelector('#react'))
+export default App

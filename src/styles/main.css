@@ -1,10 +1,10 @@
-@import 'partial/normalize.css';
-@import 'partial/fonts.css';
-@import 'partial/menu.css';
-@import 'partial/timer.css';
-@import 'partial/next.css';
-@import 'partial/btn.css';
-@import 'partial/helper.css';
+@import 'normalize.css';
+@import 'fonts.css';
+@import 'menu.css';
+@import 'timer.css';
+@import 'next.css';
+@import 'btn.css';
+@import 'helper.css';
 
 :root {
     --brand-color: #123748;

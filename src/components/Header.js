@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import toggleFullscreen from './toggleFullscreen'
+import toggleFullscreen from 'Utils/toggleFullscreen'
 
 function Header({title, subtitle, children}) {
     return (

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import Icon from './Icon'
+import Icon from 'Components/Icon'
 import classNames from 'classnames'
 
 function Gap(props) {

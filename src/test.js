@@ -1,4 +1,5 @@
-const Timer = require('./index.js'),
+const webpackConfig = require('../webpack.config')()
+const Timer = require(`${webpackConfig.resolve.alias.Utils}/Timer.js`),
   fullTime = 10 * 1000,
   timer = new Timer({ timeout: fullTime }),
   assert = require('assert'),
