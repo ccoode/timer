@@ -1,9 +1,18 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
-function Meta({left, teamName, hide, thought}) {
-    const name = left
+function Meta({ right, teamName, hide, thought }) {
+    const name = right
         ? (
+            <section className="name">
+                <span>
+                    {teamName}
+                </span>
+                <span className="tag">反方</span>
+            </section>
+
+        )
+        : (
             <section className="name">
                 <span className="tag">正方</span>
                 <span>
@@ -11,29 +20,21 @@ function Meta({left, teamName, hide, thought}) {
                 </span>
             </section>
         )
-        : (
-            <section className="name">
-                <span>
-                    {teamName}
-                </span>
-                <span className="tag">反方</span>
-            </section>
-        )
     const metaClass = classNames({
         "meta": true,
-        "right": !left,
+        "right": right,
         "hide": hide
     })
     return (
-        <article className={metaClass}>
+        <section className={metaClass}>
             {name}
             <section className="thought">{thought}</section>
-        </article>
+        </section>
     )
 }
 
 Meta.propTypes = {
-    left: PropTypes.bool,
+    right: PropTypes.bool,
     teamName: PropTypes.string,
     hide: PropTypes.bool,
     thought: PropTypes.string

@@ -4,5 +4,10 @@
     & .btn {
         user-select: none;
         font-size: 2.2vw;
+        transition: all .3s;
+        opacity: .7;
+    }
+    & .btn:hover {
+        opacity: 1;
     }
 }

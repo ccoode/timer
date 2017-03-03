@@ -1,6 +1,6 @@
 .menu {
     font-size: 2.3vw;
-    margin-right: 2em;
+    margin-right: 3em;
     float: right;
     &:hover {
         background: linear-gradient(hsla(0, 0%, 100%, .2), #fff);

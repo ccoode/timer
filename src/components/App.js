@@ -15,7 +15,7 @@ class App extends Component {
     config = this.props.config
     constructor(props) {
         super(props)
-        const {zf, ff, name} = this.config.steps[0]
+        const { zf, ff, name } = this.config.steps[0]
         this.state = {
             stepName: name,
             index: 0,
@@ -69,19 +69,19 @@ class App extends Component {
 
     changeStep(index) {
         if (index == this.state.index) return
-        let {zf, ff, name} = this.config.steps[index]
+        let { zf, ff, name } = this.config.steps[index]
         this.zf.timer.setup({ timeout: zf * 1000 })
         this.ff.timer.setup({ timeout: ff * 1000 })
         this.setState({ index, stepName: name })
     }
 
     next() {
-        const {index} = this.state
+        const { index } = this.state
         this.changeStep((index + 1) % this.config.steps.length)
     }
 
     turn() {
-        const {zf, ff} = this.state
+        const { zf, ff } = this.state
         if (zf.running && !ff.running && !this.ff.end) {
             this.pause('zf')
             this.start('ff')
@@ -99,10 +99,10 @@ class App extends Component {
         })
     }
 
-    renderTeam({w, hideAll}) {
-        const {end, hide} = this[w]
-        const {timeout, running} = this.state[w]
-        const {name, thought} = this.config[w]
+    renderTeam({ w, hideAll }) {
+        const { end, hide } = this[w]
+        const { timeout, running } = this.state[w]
+        const { name, thought } = this.config[w]
         return (
             <Team
                 name={name}
@@ -113,13 +113,13 @@ class App extends Component {
                 running={running}
                 hideAll={hideAll}
                 controlFn={this.getHandler(w)}
-                left={w === 'zf'}
+                right={w === 'ff'}
             />
         )
     }
 
     render() {
-        const {zf, ff, stepName} = this.state,
+        const { zf, ff, stepName } = this.state,
             hide = this.zf.hide || this.ff.hide,
             hideTurnBtn = !(!hide &&
                 zf.running && !ff.running && !this.ff.end ||

@@ -12,10 +12,20 @@
     --header-height: 5vw;
 }
 
+p {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #408edb;
+}
+
 html {
     color: var(--brand-color);
     background-color: var(--bg-color);
     font-size: 1.5vw;
+    /*overflow-y: scroll;*/
     font-family: 'Noto Serif', 'Times New Roman', Georgia, 'Inziu Iosevka SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, Simhei, serif;
 }
 
@@ -51,6 +61,8 @@ main {
 
 .site-footer {
     text-align: center;
+    margin-top: 3rem;
+    line-height: 1.5;
 }
 
 /** fa */
@@ -72,4 +84,11 @@ main {
     position: absolute;
     right: .5em;
     color: inherit;
+    display: block;
+    width: 2em;
+    text-align: center;
+    transition: all .2s;
+    &:hover {
+        transform: rotate(90deg);
+    }
 }

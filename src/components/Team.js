@@ -8,12 +8,11 @@ function Team(props) {
     const divClass = classNames({
         "team": true,
         "hide": props.hide,
-        "right": !props.left
     })
     return (
         <div className={divClass}>
             <Meta
-                left={props.left}
+                right={props.right}
                 teamName={props.name}
                 thought={props.thought}
                 hide={props.hideAll}
@@ -36,7 +35,7 @@ Team.propTypes = {
     hideAll: PropTypes.bool,
     hide: PropTypes.bool,
     thought: PropTypes.string,
-    left: PropTypes.bool,
+    right: PropTypes.bool,
     name: PropTypes.string
 }
 export default Team
