@@ -1,5 +1,5 @@
 :root {
-        --brand-color: #123748;
+    --brand-color: #123748;
     --bg-color: #fdfdfd;
 }
 
@@ -15,7 +15,9 @@
     flex-basis: 11vw;
 }
 
+
 /* center icon */
+
 .control, .gap {
     user-select: none;
     display: flex;
@@ -29,9 +31,6 @@
     display: block;
     font-size: 15vw;
     margin: .3em 0;
-    .meta.hide + & {
-        font-size: 18vw
-    }
 }
 
 .meta {
@@ -43,6 +42,9 @@
     }
     & .name {
         margin: .3em 0 0 0;
+    }
+    &.hide + .clock {
+        font-size: 18vw
     }
 }
 

@@ -34,7 +34,7 @@ function Control(props) {
 Control.propTypes = {
     end: PropTypes.bool,
     onClick: PropTypes.func,
-    running: PropTypes.running
+    running: PropTypes.bool
 }
 
 export default Control

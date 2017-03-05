@@ -4,6 +4,7 @@ module.exports = {
         require("postcss-cssnext")({
             browsers: ['last 2 versions', 'ie >= 9'],
             compress: true,
-        })
+        }),
+        require('postcss-csso')
     ]
 }

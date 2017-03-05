@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react'
 /**
  * timeout(ms) => MM:ss 
  */
-function Clock({timeout}) {
+function Clock({ timeout }) {
     return (
         <section className="clock">
             {convertMS(timeout)}

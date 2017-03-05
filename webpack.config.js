@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const BabiliPlugin = require("babili-webpack-plugin")
 
 module.exports = (env = {}) => {
   const isProduction = env.production === true
@@ -8,20 +9,17 @@ module.exports = (env = {}) => {
 
   if (isProduction) {
     plugins.push(
-      new webpack
-        .optimize
-        .UglifyJsPlugin({
-          beautify: false,
-          comments: false,
-          compress: {
-            warnings: false,
-            drop_console: true
-          },
-          mangle: {
-            screw_ie8: true,
-            keep_fnames: true
-          }
-        })
+      new BabiliPlugin({
+        removeConsole: true,
+        removeDebugger: true,
+      }, {
+          comments: false
+        }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production'),
+        }
+      })
     )
   }
   return {
@@ -48,8 +46,7 @@ module.exports = (env = {}) => {
           test: /\.js[x]?$/,
           loader: 'babel-loader',
           include: [
-            path.resolve('src'),
-            path.resolve('node_modules/preact-compat/src')
+            path.resolve('src')
           ]
         },
         {
