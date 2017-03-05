@@ -12,7 +12,7 @@ class Timer {
     }
 
     setup(settings) {
-        if (typeof settings !== 'object' || settings !== null) {
+        if (Object.prototype.toString.call(settings) === "[object Object]") {
             if (typeof settings.timeout !== 'number') {
                 settings.timeout = parseInt(settings.timeout, 10)
             }

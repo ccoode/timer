@@ -5,7 +5,7 @@ import 'Styles/main.css'
 
 if (module.hot) {
     require('preact/devtools')
-    require('Dist/config.js')
+    require('./public/config.js')
 }
 
 render(<App config={config} />, document.querySelector('#react'))

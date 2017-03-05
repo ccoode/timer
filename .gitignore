@@ -1,8 +1,5 @@
 node_modules
 npm-debug.log
 .publish
-*.map
-dist/assets/bundle.js
-dist/assets/main.css
-dist/assets/*.ttf
-dist/assets/*.woff2
+public
+!src/public

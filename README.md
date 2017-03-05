@@ -1,7 +1,7 @@
 Timer
 ---
 
-[支持的浏览器](http://browserl.ist/?q=ff%3E+45%2C+chrome+%3E+45%2C+ie+%3E+9%2C+last+2+edge+versions%2C+last+2+safari+versions)
+[支持的浏览器](http://browserl.ist/?q=last+3+firefox+versions%2C+chrome+%3E+48%2C+last+2+edge+versions%2C+last+2+safari+versions)
 
 ## 使用
 

@@ -2,10 +2,20 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BabiliPlugin = require("babili-webpack-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const publicPath = 'public'
 
 module.exports = (env = {}) => {
   const isProduction = env.production === true
-  const plugins = [new ExtractTextPlugin("main.css")]
+  const plugins =
+    [
+      new ExtractTextPlugin("css/[name].css"),
+      new CopyWebpackPlugin([
+        { from: 'src/' + publicPath, to: '..' },
+        { from: 'node_modules/font-awesome/css/font-awesome.min.css', to: 'css' },
+        { from: 'node_modules/font-awesome/fonts', to: 'fonts' },
+      ])
+    ]
 
   if (isProduction) {
     plugins.push(
@@ -25,9 +35,9 @@ module.exports = (env = {}) => {
   return {
     entry: './src/index.js',
     output: {
-      path: path.resolve(__dirname, "dist/assets"),
+      path: path.resolve(__dirname, publicPath + "/assets"),
       filename: 'bundle.js',
-      publicPath: "/assets/",
+      publicPath: "assets/",
     },
     resolve: {
       alias: {
@@ -37,7 +47,6 @@ module.exports = (env = {}) => {
         "Fonts": path.resolve(__dirname, 'src/fonts'),
         "Styles": path.resolve(__dirname, 'src/styles'),
         "Components": path.resolve(__dirname, 'src/components'),
-        "Dist": path.resolve(__dirname, 'dist')
       }
     },
     module: {
@@ -57,13 +66,16 @@ module.exports = (env = {}) => {
               { loader: 'css-loader' },
               { loader: 'postcss-loader' }
             ]
-          })
+          }),
         },
-        { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'file-loader' }
+        {
+          test: /\.(woff|woff2|eot|ttf|svg)(\?[\s\S]+)?$/,
+          loader: 'file-loader?name=fonts/[name].[ext]'
+        }
       ]
     },
     devServer: {
-      contentBase: path.resolve(__dirname, 'dist')
+      contentBase: path.resolve(__dirname, publicPath)
     },
     plugins
   }

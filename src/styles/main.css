@@ -25,11 +25,12 @@ html {
     color: var(--brand-color);
     background-color: var(--bg-color);
     font-size: 1.5vw;
-    /*overflow-y: scroll;*/
     font-family: 'Noto Serif', 'Times New Roman', Georgia, 'Inziu Iosevka SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, Simhei, serif;
 }
 
+
 /* realize true footer */
+
 #root {
     display: flex;
     flex-flow: column;
@@ -40,7 +41,9 @@ main {
     flex: 1;
 }
 
+
 /** site-header */
+
 .site-header {
     background-color: #eee;
     border-bottom: 1px solid #c0c0c0;
@@ -53,7 +56,9 @@ main {
     float: left;
 }
 
+
 /* equate height */
+
 .site-title, .menu .cover, .site-header {
     line-height: var(--header-height);
     height: var(--header-height);
@@ -65,7 +70,9 @@ main {
     line-height: 1.5;
 }
 
+
 /** fa */
+
 .fa-stack-1x {
     color: var(--bg-color);
 }
@@ -78,7 +85,9 @@ main {
     font-size: 3.5vw;
 }
 
+
 /** fullscreen btn */
+
 #fullscreen {
     font-size: 2.6vw;
     position: absolute;
@@ -87,7 +96,7 @@ main {
     display: block;
     width: 2em;
     text-align: center;
-    transition: all .2s;
+    transition: transform .2s;
     &:hover {
         transform: rotate(90deg);
     }
