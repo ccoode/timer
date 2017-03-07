@@ -1,6 +1,6 @@
 {
   "name": "timer",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "a timer for debate competition",
   "scripts": {
     "test": "node src/test.js",
@@ -31,7 +31,8 @@
               "last 3 firefox versions",
               "chrome > 48",
               "last 2 edge versions",
-              "last 2 safari versions"
+              "last 2 safari versions",
+              "ie>9"
             ]
           }
         }
@@ -52,9 +53,12 @@
     "classnames": "^2.2.5",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.2",
-    "eslint": "^3.16.1",
+    "eslint": "3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
     "eslint-import-resolver-webpack": "^0.8.1",
+    "eslint-loader": "^1.6.3",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.10.1",
@@ -72,7 +76,6 @@
     "preact": "^7.2.0",
     "preact-compat": "^3.13.1",
     "style-loader": "^0.13.2",
-    "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   }

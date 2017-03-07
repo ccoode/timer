@@ -1,9 +1,7 @@
-var gulp = require('gulp')
-var ghPages = require('gulp-gh-pages')
+const gulp = require('gulp')
+const ghPages = require('gulp-gh-pages')
 
-gulp.task('deploy', function () {
-    return gulp.src('./public/**/*')
-        .pipe(ghPages({
-            force: true
-        }))
-})
+gulp.task('deploy', () => gulp.src('./public/**/*')
+  .pipe(ghPages({
+    force: true,
+  })))

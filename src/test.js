@@ -1,20 +1,20 @@
-const webpackConfig = require('../webpack.config')()
-const Timer = require(`${webpackConfig.resolve.alias.Utils}/Timer.js`),
-  fullTime = 10 * 1000,
-  timer = new Timer({ timeout: fullTime }),
-  assert = require('assert'),
-  out = {}
+const Timer = require('./utils/Timer.js')
+const assert = require('assert')
 
-timer.watch(state => {
+const fullTime = 10 * 1000
+const timer = new Timer({ timeout: fullTime })
+const out = {}
+
+timer.watch((state) => {
   out.running = state.running
   out.timeout = state.timeout
 })
 
-timer.watch(state => {
+timer.watch((state) => {
   if (state.timeout === 0) assert.equal(state.running, false)
 })
 
-timer.watch(state => {
+timer.watch((state) => {
   if (state.onStart) assert.equal(state.running, true)
 })
 
@@ -38,7 +38,6 @@ setTimeout(() => {
 setTimeout(() => {
   timer.start()
   assert.equal(out.pre, out.timeout)
-  assert.equal(out.pre, timer._left)
   assert.equal(out.running, true)
 }, 2500)
 /* start() END */
