@@ -3,6 +3,8 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const publicPath = 'public'
 const resolve = {
@@ -17,12 +19,17 @@ const resolve = {
   extensions: ['.js', '.json', '.jsx'],
 }
 const plugins = [
+  new CleanWebpackPlugin([publicPath], {
+    verbose: false,
+    dry: false,
+  }),
   new ExtractTextPlugin('css/[name].css'),
   new CopyWebpackPlugin([
     { from: `src/${publicPath}`, to: '..' },
     { from: 'node_modules/font-awesome/css/font-awesome.min.css', to: 'css' },
     { from: 'node_modules/font-awesome/fonts', to: 'fonts' },
   ]),
+  new WriteFilePlugin(),
 ]
 const productionPlugins = [
   new BabiliPlugin(
