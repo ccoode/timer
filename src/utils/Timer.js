@@ -3,6 +3,7 @@ const now = require('performance-now')
 class Timer {
   constructor(settings) {
     this._watchQueue = []
+    this._update = this._update.bind(this)
     if (settings) {
       this.setup(settings)
       this.watch(settings.hook)
@@ -20,57 +21,25 @@ class Timer {
     if (isNaN(timeout) || typeof timeout !== 'number') {
       throw new Error('setup(settings), settings.timeout need to be a number!')
     }
-    if (this._timeoutId) clearTimeout(this._timeoutId)
     this._settings = { timeout }
-    this._running = false
-    this.total = this._settings.timeout
-    this._tick()
+    this.reset()
   }
 
-  set total(time) {
+  set _total(time) {
     this._timeout = time
     this._left = time
   }
 
-  get total() {
+  get _total() {
     return this._left
   }
 
-  start() {
-    if (!this._running) {
-      this._running = true
-      this._startTime = now()
-      this._update()
-    }
-  }
-
-  pause() {
-    if (this._running) {
-      if (this._timeoutId) clearTimeout(this._timeoutId)
-      this._running = false
-      this.total = this.total - (now() - this._startTime)
-      this._tick()
-    }
-  }
-
-  stop() {
+  _setState(total = 0) {
     if (this._timeoutId) clearTimeout(this._timeoutId)
+    this._timeoutId = null
     this._running = false
-    this.total = 0
+    this._total = total
     this._tick()
-  }
-
-  reset() {
-    if (this._timeoutId) clearTimeout(this._timeoutId)
-    this._running = false
-    this.total = this._settings.timeout
-    this._tick()
-  }
-
-  watch(fn) {
-    if (typeof fn === 'function') {
-      this._watchQueue.push(fn)
-    }
   }
 
   _tick() {
@@ -89,9 +58,36 @@ class Timer {
       const timeGap = this._timeout % 1000 || 1000
       this._timeout -= timeGap
       this._running = (this._timeout <= 0) ? false : this._running
-      this._timeoutId = setTimeout(() => {
-        this._update()
-      }, timeGap)
+      this._timeoutId = setTimeout(this._update, timeGap)
+    }
+  }
+
+  start() {
+    if (!this._running) {
+      this._running = true
+      this._startTime = now()
+      this._update()
+    }
+  }
+
+  pause() {
+    if (this._running) {
+      const newTotal = this._total - (now() - this._startTime)
+      this._setState(newTotal)
+    }
+  }
+
+  stop() {
+    this._setState(0)
+  }
+
+  reset() {
+    this._setState(this._settings.timeout)
+  }
+
+  watch(fn) {
+    if (typeof fn === 'function') {
+      this._watchQueue.push(fn)
     }
   }
 }
