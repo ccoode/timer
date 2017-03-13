@@ -1,6 +1,6 @@
 node_modules
 npm-debug.log
-.publish
-public
-!src/public
+/.publish
+/public
 __snapshots__
+/coverage
