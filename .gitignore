@@ -3,3 +3,4 @@ npm-debug.log
 .publish
 public
 !src/public
+__snapshots__

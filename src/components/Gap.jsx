@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react'
-import Icon from 'Components/Icon'
 import classNames from 'classnames'
+import Icon from './Icon'
 
 function Gap(props) {
   const divClass = classNames({
     gap: true,
     hide: props.hide,
-  });
+  })
   return (
     <div className={divClass}>
       <Icon

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import Timer from 'Utils/Timer'
-import Gap from 'Components/Gap'
-import Footer from 'Components/Footer'
-import Header from 'Components/Header'
-import Team from 'Components/Team'
+import Timer from '../utils/Timer'
+import Footer from './Footer'
+import Header from './Header'
+import Team from './Team'
+import Gap from './Gap'
 
 class App extends Component {
   static sound = Object.assign({}, ...['start', 'stop', 'alert']
@@ -15,25 +15,29 @@ class App extends Component {
     footer: PropTypes.string.isRequired,
     zf: PropTypes.shape({
       name: PropTypes.string.isRequired,
-      thought: PropTypes.string.isRequired
+      thought: PropTypes.string.isRequired,
     }).isRequired,
     ff: PropTypes.shape({
       name: PropTypes.string.isRequired,
-      thought: PropTypes.string.isRequired
+      thought: PropTypes.string.isRequired,
     }).isRequired,
     steps: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       zf: PropTypes.number.isRequired,
       ff: PropTypes.number.isRequired,
-    })).isRequired
+    })).isRequired,
+    activeIndex: PropTypes.number,
+  }
+  static defaultProps = {
+    activeIndex: 0,
   }
 
   constructor(props) {
     super(props)
-    const { zf, ff, name } = this.props.steps[0]
+    const { zf, ff, name } = this.props.steps[props.activeIndex]
     this.state = {
       stepName: name,
-      index: 0,
+      index: props.activeIndex,
       zf: {
         timeout: (zf * 1000),
         running: false,
@@ -79,7 +83,10 @@ class App extends Component {
   }
 
   createTimers() {
-    const hook = w => (state) => {
+    const { activeIndex, steps } = this.props
+    const self = this
+
+    const getHook = w => (state) => {
       switch (true) {
         case state.timeout === 0:
           App.sound.stop.play()
@@ -103,19 +110,25 @@ class App extends Component {
       })
     }
 
-    const self = this
-    const createTimer = w => ({
+    const createTimer = ({ w, timeout, hook, state }) => ({
       get end() {
-        return self.state[w].timeout === 0
+        return state[w].timeout === 0
       },
       get hide() {
-        return self.state[w].timeout < 0
+        return state[w].timeout < 0
       },
-      timer: new Timer({ timeout: self.props.steps[0][w] * 1000, hook: hook(w) }),
+      timer: new Timer({ timeout, hook }),
     })
 
-    this.zf = createTimer('zf')
-    this.ff = createTimer('ff')
+    const wrapper = w => ({
+      w,
+      timeout: steps[activeIndex][w] * 1000,
+      hook: getHook(w),
+      state: self.state,
+    })
+
+    this.zf = createTimer(wrapper('zf'))
+    this.ff = createTimer(wrapper('ff'))
   }
 
   renderTeam({ w, hideAll }) {

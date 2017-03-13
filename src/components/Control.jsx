@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import Icon from 'Components/Icon'
+import Icon from './Icon'
 
 function Control(props) {
   return (

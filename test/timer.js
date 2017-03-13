@@ -1,4 +1,5 @@
-const Timer = require('./utils/Timer.js')
+const Timer = require('../src/utils/Timer.js')
+
 const assert = require('assert')
 
 const fullTime = 10 * 1000

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
-import Meta from 'Components/Meta'
-import Control from 'Components/Control'
-import Clock from 'Components/Clock'
+import Meta from './Meta'
+import Control from './Control'
+import Clock from './Clock'
 
 function Team(props) {
   const divClass = classNames({

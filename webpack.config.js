@@ -11,10 +11,6 @@ const resolve = {
   alias: {
     react: 'preact-compat',
     'react-dom': 'preact-compat',
-    Utils: path.resolve(__dirname, 'src/utils'),
-    Fonts: path.resolve(__dirname, 'src/fonts'),
-    Styles: path.resolve(__dirname, 'src/styles'),
-    Components: path.resolve(__dirname, 'src/components'),
   },
   extensions: ['.js', '.json', '.jsx'],
 }
@@ -56,9 +52,9 @@ const rules = [
         loader: 'eslint-loader',
         options: {
           failOnWarning: false,
-          failOnError: false
-        }
-      }
+          failOnError: false,
+        },
+      },
     ],
     include: [
       path.resolve('src'),
