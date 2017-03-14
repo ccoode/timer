@@ -34,7 +34,7 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    const { zf, ff, name } = this.props.steps[props.activeIndex]
+    const { zf, ff, name } = props.steps[props.activeIndex]
     this.state = {
       stepName: name,
       index: props.activeIndex,

@@ -25,7 +25,13 @@ const plugins = [
     { from: 'node_modules/font-awesome/css/font-awesome.min.css', to: 'css' },
     { from: 'node_modules/font-awesome/fonts', to: 'fonts' },
   ]),
-  new WriteFilePlugin(),
+  new WriteFilePlugin({
+    exitOnErrors: true,
+    force: false,
+    log: false,
+    test: null,
+    useHashIndex: true,
+  }),
 ]
 const productionPlugins = [
   new BabiliPlugin(

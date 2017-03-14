@@ -1,6 +1,6 @@
 {
   "name": "timer",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "a timer for debate competition",
   "scripts": {
     "test:timer": "node test/timer.js",
@@ -71,8 +71,6 @@
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",
     "gulp-gh-pages": "^0.5.4",
-    "i": "^0.3.5",
-    "json-loader": "^0.5.4",
     "normalize.css": "^5.0.0",
     "performance-now": "^2.0.0",
     "postcss-cssnext": "^2.9.0",
