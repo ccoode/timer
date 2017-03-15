@@ -1,4 +1,3 @@
-/* eslint-env node, jest */
 /* eslint-disable no-console */
 
 import { shallow, render, mount } from 'enzyme'

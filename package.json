@@ -3,8 +3,8 @@
   "version": "2.2.8",
   "description": "a timer for debate competition",
   "scripts": {
-    "test:timer": "node test/timer.js",
-    "test": "jest",
+    "test:timer": "node test/timer.real.js",
+    "test": "jest && npm run test:timer",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "build": "webpack --env.production",
@@ -17,7 +17,11 @@
     ],
     "snapshotSerializers": [
       "<rootDir>/node_modules/enzyme-to-json/serializer"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/test/__mocks__/styleMock.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -40,13 +44,6 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-test-renderer": "^15.4.2"
-  },
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-0",
-      "react"
-    ]
   },
   "dependencies": {
     "babel-core": "^6.21.0",

@@ -1,0 +1,14 @@
+{
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "react/jsx-filename-extension": 0
+  },
+  "globals": {
+    "shallow": false,
+    "render": false,
+    "mount": false
+  }
+}
