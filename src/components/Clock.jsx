@@ -1,11 +1,5 @@
 import React, { PropTypes } from 'react'
-
-function pad(number) {
-  if (number < 10) {
-    return `0${number}`
-  }
-  return number
-}
+import 'core-js/modules/es7.string.pad-start'
 
 function convertMS(ms) {
   if (ms < 0) return 0
@@ -16,7 +10,11 @@ function convertMS(ms) {
     min += 1
     sec = 0
   }
-  return `${pad(min)}:${pad(sec)}`
+
+  min = min.toString().padStart(2, '0')
+  sec = sec.toString().padStart(2, '0')
+
+  return `${min}:${sec}`
 }
 
 /**

@@ -55,8 +55,9 @@ html {
 
 .site-footer {
   text-align: center;
-  margin-top: 4rem;
+  margin-top: 2rem;
   line-height: 1.5;
+  padding: 1rem 0;
 }
 
 

@@ -163,7 +163,7 @@ class App extends Component {
             this.props.steps.map(
               (step, index) => (
                 <a
-                  href={`#${step.name}`}
+                  href={`#/${step.name}`}
                   onClick={() => { this.changeStep(index) }}
                   key={`${step.name}`}
                   className="item"
@@ -194,7 +194,7 @@ class App extends Component {
 
           {/* 下一个环节按钮 */}
           <div className="next">
-            <a href={`#${stepName}`} onClick={() => { this.next() }} className="btn">{stepName}</a>
+            <a href={`#/${stepName}`} onClick={() => { this.next() }} className="btn">{stepName}</a>
           </div>
         </main>
         <Footer info={this.props.footer} />

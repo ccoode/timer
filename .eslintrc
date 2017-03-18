@@ -1,5 +1,4 @@
 {
-  "root": true,
   "parser": "babel-eslint",
   "env": {
     "browser": true
@@ -9,14 +8,28 @@
       "error",
       "never"
     ],
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
-    "comma-dangle": ["error", {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "never"
-    }]
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true
+      }
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false
+      }
+    ]
   },
   "plugins": [
     "react"

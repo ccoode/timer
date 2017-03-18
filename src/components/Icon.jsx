@@ -12,9 +12,9 @@ function Icon(props) {
     'fa-stack-1x': true,
     [props.className]: true,
   })
+  /* eslint-disable jsx-a11y/no-static-element-interactions */
   return (
     <a
-      href={`#${props.className.replace('fa-', '')}`}
       className={className}
       onClick={() => { props.onClick() }}
     >

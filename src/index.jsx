@@ -16,7 +16,7 @@ if (module.hot) {
 Object.assign(settings, config)
 
 /* set activeIndex according hash */
-const hash = location.hash.replace('#', '')
+const hash = location.hash.replace('#/', '')
 let activeIndex = 0
 settings.steps.forEach((step, index) => {
   if (hash === step.name) activeIndex = index
