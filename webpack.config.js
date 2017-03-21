@@ -3,8 +3,7 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const WriteFilePlugin = require('write-file-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const publicPath = 'public'
 const resolve = {
@@ -15,22 +14,16 @@ const resolve = {
   extensions: ['.js', '.json', '.jsx'],
 }
 const plugins = [
-  new CleanWebpackPlugin([publicPath], {
-    verbose: false,
-    dry: false,
-  }),
   new ExtractTextPlugin('css/[name].css'),
   new CopyWebpackPlugin([
-    { from: `src/${publicPath}`, to: '..' },
     { from: 'node_modules/font-awesome/css/font-awesome.min.css', to: 'css' },
     { from: 'node_modules/font-awesome/fonts', to: 'fonts' },
   ]),
-  new WriteFilePlugin({
-    exitOnErrors: true,
-    force: false,
-    log: false,
-    test: null,
-    useHashIndex: true,
+  new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    reportFilename: 'report.html',
+    logLevel: 'info',
+    openAnalyzer: false,
   }),
 ]
 const productionPlugins = [
@@ -48,6 +41,7 @@ const productionPlugins = [
     },
   }),
 ]
+const devPlugins = []
 
 const rules = [
   {
@@ -94,7 +88,7 @@ module.exports = (env = {}) => {
     },
     resolve,
     module: { rules },
-    plugins: isProduction ? plugins.concat(productionPlugins) : plugins,
+    plugins: isProduction ? plugins.concat(productionPlugins) : plugins.concat(devPlugins),
     devServer: {
       contentBase: path.resolve(__dirname, publicPath),
     },

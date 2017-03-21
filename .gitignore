@@ -1,6 +1,11 @@
 node_modules
 npm-debug.log
 /.publish
-/public
 __snapshots__
 /coverage
+public/*
+!public/assets/
+public/assets/*
+!public/assets/audio/
+!public/index.html
+!public/config.js

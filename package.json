@@ -43,7 +43,8 @@
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-test-renderer": "^15.4.2"
+    "react-test-renderer": "^15.4.2",
+    "webpack-bundle-analyzer": "^2.3.1"
   },
   "dependencies": {
     "babel-core": "^6.21.0",

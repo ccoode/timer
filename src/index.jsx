@@ -4,7 +4,7 @@ import { render } from 'react-dom'
 /* eslint-enable import/no-duplicates */
 import App from './components/App'
 import './styles/main.css'
-import settings from './public/config'
+import settings from '../public/config'
 
 /* eslint-disable global-require */
 if (module.hot) {

@@ -8,7 +8,7 @@
 :root {
   --brand-color: #123748;
   --bg-color: #fff;
-  --header-height: 5vw;
+  --header-height: 5rem;
 }
 
 p {
@@ -23,7 +23,7 @@ a {
 html {
   color: var(--brand-color);
   background-color: var(--bg-color);
-  font-size: 1.5vw;
+  font-size: 1vw;
   font-family: 'Noto Serif', 'Times New Roman', Georgia, 'Inziu Iosevka SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, Simhei, serif;
 }
 
@@ -36,7 +36,7 @@ html {
 }
 
 .site-title {
-  font-size: 3vw;
+  font-size: 3rem;
   margin-left: 1.2em;
   white-space: nowrap;
   float: left;
@@ -54,6 +54,7 @@ html {
 /** site-footer */
 
 .site-footer {
+  font-size: 1.6rem;
   text-align: center;
   margin-top: 2rem;
   line-height: 1.5;
@@ -76,14 +77,14 @@ html {
 }
 
 #root .fa-stack.fa-2x {
-  font-size: 3.5vw;
+  font-size: 3.5rem;
 }
 
 
 /** fullscreen btn */
 
 #fullscreen {
-  font-size: 2.6vw;
+  font-size: 2.6rem;
   position: absolute;
   right: .5em;
   color: inherit;
