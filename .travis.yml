@@ -5,8 +5,12 @@ node_js:
 cache:
   yarn: true
 
+before_script:
+- npm run test
+- npm run test:timer
+
 script:
-    - npm run build
+- npm run build
 
 deploy:
   local_dir: public

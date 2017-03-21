@@ -2,13 +2,13 @@
   "name": "timer",
   "version": "2.2.9",
   "description": "a timer for debate competition",
+  "private": true,
   "scripts": {
     "test:timer": "node test/timer.real.js",
-    "test": "jest && npm run test:timer",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "build": "webpack --env.production",
-    "deploy": "npm run build && gulp deploy",
     "dev": "webpack-dev-server --debug --devtool cheap-module-source-map --output-pathinfo --hot"
   },
   "jest": {
@@ -38,8 +38,6 @@
     "babel-jest": "^19.0.0",
     "enzyme": "^2.7.1",
     "enzyme-to-json": "^1.5.0",
-    "gulp": "^3.9.1",
-    "gulp-gh-pages": "^0.5.4",
     "jest": "^19.0.2",
     "jest-webpack-alias": "^3.3.3",
     "react": "^15.4.2",
@@ -79,7 +77,6 @@
     "preact-compat": "^3.13.1",
     "style-loader": "^0.13.2",
     "webpack": "^2.2.1",
-    "webpack-bundle-analyzer": "^2.3.1",
     "webpack-dev-server": "^2.4.1"
   }
 }

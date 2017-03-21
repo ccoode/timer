@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const publicPath = 'public'
 const resolve = {
@@ -19,12 +18,6 @@ const plugins = [
     { from: 'node_modules/font-awesome/css/font-awesome.min.css', to: 'css' },
     { from: 'node_modules/font-awesome/fonts', to: 'fonts' },
   ]),
-  new BundleAnalyzerPlugin({
-    analyzerMode: 'static',
-    reportFilename: 'report.html',
-    logLevel: 'info',
-    openAnalyzer: false,
-  }),
 ]
 const productionPlugins = [
   new BabiliPlugin(
