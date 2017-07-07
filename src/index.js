@@ -1,7 +1,4 @@
-/* eslint-disable import/no-duplicates */
-import React from 'react'
-import { render } from 'react-dom'
-/* eslint-enable import/no-duplicates */
+import { h, render } from 'preact'
 import App from './components/App'
 import './styles/main.css'
 import settings from '../public/config'
@@ -22,4 +19,7 @@ settings.steps.forEach((step, index) => {
   if (hash === step.name) activeIndex = index
 })
 
-render(<App {...settings} activeIndex={activeIndex} />, document.querySelector('#react'))
+render(
+  <App {...settings} activeIndex={activeIndex} />,
+  document.querySelector('#react')
+)

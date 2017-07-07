@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import { h, Component } from 'preact'
+
 import Timer from '../utils/Timer'
 import Footer from './Footer'
 import Header from './Header'
@@ -6,59 +7,33 @@ import Team from './Team'
 import Gap from './Gap'
 
 class App extends Component {
-  static sound = Object.assign({}, ...['start', 'stop', 'alert']
-    .map(key => ({ [key]: new Audio(`assets/audio/${key}.wav`) })))
-  static methods = ['start', 'stop', 'pause', 'reset']
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    footer: PropTypes.string.isRequired,
-    zf: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      thought: PropTypes.string.isRequired,
-    }).isRequired,
-    ff: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      thought: PropTypes.string.isRequired,
-    }).isRequired,
-    steps: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      zf: PropTypes.number.isRequired,
-      ff: PropTypes.number.isRequired,
-    })).isRequired,
-    activeIndex: PropTypes.number,
-  }
-  static defaultProps = {
-    activeIndex: 0,
-  }
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     const { zf, ff, name } = props.steps[props.activeIndex]
     this.state = {
       stepName: name,
       index: props.activeIndex,
       zf: {
-        timeout: (zf * 1000),
-        running: false,
+        timeout: zf * 1000,
+        running: false
       },
       ff: {
-        timeout: (ff * 1000),
-        running: false,
-      },
+        timeout: ff * 1000,
+        running: false
+      }
     }
     this.createTimers()
   }
 
-  getHandler(w) {
-    return ((methodName) => {
+  getHandler (w) {
+    return methodName => {
       if (App.methods.indexOf(methodName) !== -1) {
         this[methodName](w)
       }
-    })
+    }
   }
 
-  changeStep(index) {
+  changeStep (index) {
     if (index === this.state.index) return
     const { zf, ff, name } = this.props.steps[index]
     this.zf.timer.setup({ timeout: zf * 1000 })
@@ -66,12 +41,12 @@ class App extends Component {
     this.setState({ index, stepName: name })
   }
 
-  next() {
+  next () {
     const { index } = this.state
     this.changeStep((index + 1) % this.props.steps.length)
   }
 
-  turn() {
+  turn () {
     const { zf, ff } = this.state
     if (zf.running && !ff.running && !this.ff.end) {
       this.pause('zf')
@@ -82,11 +57,11 @@ class App extends Component {
     }
   }
 
-  createTimers() {
+  createTimers () {
     const { activeIndex, steps } = this.props
     const self = this
 
-    const getHook = w => (state) => {
+    const getHook = w => state => {
       switch (true) {
         case state.timeout === 0:
           App.sound.stop.play()
@@ -105,33 +80,33 @@ class App extends Component {
       this.setState({
         [w]: {
           timeout: state.timeout,
-          running: state.running,
-        },
+          running: state.running
+        }
       })
     }
 
     const createTimer = ({ w, timeout, hook, state }) => ({
-      get end() {
+      get end () {
         return state[w].timeout === 0
       },
-      get hide() {
+      get hide () {
         return state[w].timeout < 0
       },
-      timer: new Timer({ timeout, hook }),
+      timer: new Timer({ timeout, hook })
     })
 
     const wrapper = w => ({
       w,
       timeout: steps[activeIndex][w] * 1000,
       hook: getHook(w),
-      state: self.state,
+      state: self.state
     })
 
     this.zf = createTimer(wrapper('zf'))
     this.ff = createTimer(wrapper('ff'))
   }
 
-  renderTeam({ w, hideAll }) {
+  renderTeam ({ w, hideAll }) {
     const { end, hide } = this[w]
     const { timeout, running } = this.state[w]
     const { name, thought } = this.props[w] // eslint-disable-line react/prop-types
@@ -150,51 +125,61 @@ class App extends Component {
     )
   }
 
-  render() {
+  render () {
     const { zf, ff, stepName } = this.state
     const hide = this.zf.hide || this.ff.hide
-    const zfRffP = (zf.running && !ff.running && !this.ff.end)
-    const ffRzfP = (!zf.running && ff.running && !this.zf.end)
+    const zfRffP = zf.running && !ff.running && !this.ff.end
+    const ffRzfP = !zf.running && ff.running && !this.zf.end
     const hideTurnBtn = hide || !(zfRffP || ffRzfP)
     return (
-      <div id="root">
+      <div id='root'>
         <Header title={this.props.title} subtitle={this.props.subtitle}>
-          {
-            this.props.steps.map(
-              (step, index) => (
-                <a
-                  href={`#/${step.name}`}
-                  onClick={() => { this.changeStep(index) }}
-                  key={`${step.name}`}
-                  className="item"
-                >
-                  {step.name}
-                </a>
-              )
-            )
-          }
+          {this.props.steps.map((step, index) =>
+            <a
+              href={`#/${step.name}`}
+              onClick={() => {
+                this.changeStep(index)
+              }}
+              key={`${step.name}`}
+              className='item'
+            >
+              {step.name}
+            </a>
+          )}
         </Header>
         <main>
-          <div className="timer">
+          <div className='timer'>
             {/* 正方 */}
             {this.renderTeam({
               w: 'zf',
-              hideAll: hide,
+              hideAll: hide
             })}
 
             {/* 间隔 */}
-            <Gap onClick={() => this.turn()} hideTurnBtn={hideTurnBtn} hide={hide} />
+            <Gap
+              onClick={() => this.turn()}
+              hideTurnBtn={hideTurnBtn}
+              hide={hide}
+            />
 
             {/* 反方 */}
             {this.renderTeam({
               w: 'ff',
-              hideAll: hide,
+              hideAll: hide
             })}
           </div>
 
           {/* 下一个环节按钮 */}
-          <div className="next">
-            <a href={`#/${stepName}`} onClick={() => { this.next() }} className="btn">{stepName}</a>
+          <div className='next'>
+            <a
+              href={`#/${stepName}`}
+              onClick={() => {
+                this.next()
+              }}
+              className='btn'
+            >
+              {stepName}
+            </a>
           </div>
         </main>
         <Footer info={this.props.footer} />
@@ -203,11 +188,25 @@ class App extends Component {
   }
 }
 
+App.sound = Object.assign(
+  {},
+  ...['start', 'stop', 'alert'].map(key => ({
+    [key]: new Audio(`assets/audio/${key}.wav`)
+  }))
+)
+App.methods = ['start', 'stop', 'pause', 'reset']
+App.defaultProps = {
+  activeIndex: 0
+}
+
 // Mixin App
-Object.assign(App.prototype, ...App.methods.map(key => ({
-  [key](w) {
-    this[w].timer[key]()
-  },
-})))
+Object.assign(
+  App.prototype,
+  ...App.methods.map(key => ({
+    [key] (w) {
+      this[w].timer[key]()
+    }
+  }))
+)
 
 export default App

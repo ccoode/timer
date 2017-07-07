@@ -7,8 +7,8 @@ module.exports = {
     postcssImport(),
     postcssCssnext({
       browsers: ['last 2 versions', 'ie >= 9'],
-      compress: true,
+      compress: true
     }),
-    postcssCsso,
-  ],
+    postcssCsso
+  ]
 }

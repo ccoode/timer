@@ -1,13 +1,13 @@
-import React, { PropTypes } from 'react'
+import { h } from 'preact'
 import classNames from 'classnames'
 import Meta from './Meta'
 import Control from './Control'
 import Clock from './Clock'
 
-function Team(props) {
+function Team (props) {
   const divClass = classNames({
     team: true,
-    hide: props.hide,
+    hide: props.hide
   })
   return (
     <div className={divClass}>
@@ -27,15 +27,4 @@ function Team(props) {
   )
 }
 
-Team.propTypes = {
-  controlFn: PropTypes.func.isRequired,
-  end: PropTypes.bool.isRequired,
-  running: PropTypes.bool.isRequired,
-  timeout: PropTypes.number.isRequired,
-  hideAll: PropTypes.bool.isRequired,
-  hide: PropTypes.bool.isRequired,
-  thought: PropTypes.string.isRequired,
-  right: PropTypes.bool.isRequired,
-  name: PropTypes.string.isRequired,
-}
 export default Team

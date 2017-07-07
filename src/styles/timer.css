@@ -1,59 +1,59 @@
 :root {
-    --brand-color: #123748;
-    --bg-color: #fdfdfd;
+  --brand-color: #123748;
+  --bg-color: #fdfdfd;
 }
 
 .timer {
-    display: flex;
+  display: flex;
 }
 
 .team {
-    flex: 1
+  flex: 1
 }
 
 .gap {
-    flex-basis: 11rem;
+  flex-basis: 11rem;
 }
 
 
 /* center icon */
 
 .control, .gap {
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .clock {
-    user-select: none;
-    text-align: center;
-    display: block;
-    font-size: 15rem;
-    margin: .3em 0;
+  user-select: none;
+  text-align: center;
+  display: block;
+  font-size: 15rem;
+  margin: .3em 0;
 }
 
 .meta {
-    font-size: 5rem;
-    margin: 0 0 0 8%;
-    &.right {
-        text-align: right;
-        margin: 0 8% 0 0;
-    }
-    & .name {
-        margin: .3em 0 0 0;
-    }
-    &.hide + .clock {
-        font-size: 18rem
-    }
+  font-size: 5rem;
+  margin: 0 0 0 8%;
+  &.right {
+    text-align: right;
+    margin: 0 8% 0 0;
+  }
+  & .name {
+    margin: .3em 0 0 0;
+  }
+  &.hide + .clock {
+    font-size: 18rem
+  }
 }
 
 .tag {
-    background-color: var(--brand-color);
-    color: var(--bg-color);
-    font-size: .5em;
+  background-color: var(--brand-color);
+  color: var(--bg-color);
+  font-size: .5em;
 }
 
 .thought {
-    font-size: .8em;
+  font-size: .8em;
 }

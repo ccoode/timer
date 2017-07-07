@@ -1,43 +1,21 @@
 {
-  "parser": "babel-eslint",
   "env": {
-    "browser": true
+    "browser": true,
+    "jest": true
   },
-  "rules": {
-    "semi": [
-      "error",
-      "never"
-    ],
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allowAfterThis": true
-      }
-    ],
-    "comma-dangle": [
-      "error",
-      {
-        "arrays": "always-multiline",
-        "objects": "always-multiline",
-        "imports": "always-multiline",
-        "exports": "always-multiline",
-        "functions": "never"
-      }
-    ],
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false
-      }
-    ]
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
-  "plugins": [
-    "react"
-  ],
   "extends": [
-    "airbnb"
+    "standard",
+    "standard-preact",
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
-  "settings": {
-    "import/resolver": "webpack"
-  }
+  "plugins": [
+    "import",
+    "react"
+  ]
 }

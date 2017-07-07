@@ -1,4 +1,4 @@
-import Timer from '../src/utils/Timer'
+import Timer from '../Timer'
 
 jest.useFakeTimers()
 
@@ -21,7 +21,7 @@ describe('timer tick regularly', () => {
       [{ timeout: 2220, running: true, onStart: true }],
       [{ timeout: 2000, running: true, onStart: false }],
       [{ timeout: 1000, running: true, onStart: false }],
-      [{ timeout: 0, running: false, onStart: false }],
+      [{ timeout: 0, running: false, onStart: false }]
     ])
     expect(setTimeout.mock.calls.length).toBe(3)
     expect(setTimeout.mock.calls[0][1]).toBe(220)
@@ -32,7 +32,11 @@ describe('timer tick regularly', () => {
 
 describe('timer method', () => {
   afterEach(() => {
-    expect(callback.mock.calls[0][0]).toEqual({ timeout: 2220, running: true, onStart: true })
+    expect(callback.mock.calls[0][0]).toEqual({
+      timeout: 2220,
+      running: true,
+      onStart: true
+    })
     expect(clearTimeout).toBeCalled()
     expect(callback.mock.calls[1][0].running).toBeFalsy()
     expect(callback.mock.calls[1][0].onStart).toBeFalsy()

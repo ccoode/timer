@@ -1,7 +1,7 @@
 Timer
 ---
 
-[支持的浏览器](http://browserl.ist/?q=ie%3E9%2C+last+3+firefox+versions%2C+chrome+%3E+48%2C+last+2+edge+versions%2C+last+2+safari+versions)
+[![Build Status](https://travis-ci.org/ccoode/timer.svg?branch=master)](https://travis-ci.org/ccoode/timer)
 
 ## 使用
 
@@ -27,8 +27,6 @@ npm install
 编译：`npm run build`
 
 调试/启动本地服务器：`npm run dev`
-
-编译并部署到 GitHub Pages：`npm run deploy`
 
 测试 timer：`npm test`
 
