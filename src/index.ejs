@@ -9,7 +9,7 @@
   <body>
     <div id="root"></div>
     <% if (htmlWebpackPlugin.options.scripts) htmlWebpackPlugin.options.scripts.forEach(function(x){ %>
-      <script src="config.js"></script>
+      <script src="<%= x %>"></script>
     <% }) %>
   </body>
 </html>
