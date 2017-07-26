@@ -5,6 +5,9 @@ import Footer from './Footer'
 import Header from './Header'
 import Team from './Team'
 import Gap from './Gap'
+import alert from '../audio/alert.wav'
+import start from '../audio/start.wav'
+import stop from '../audio/stop.wav'
 
 class App extends Component {
   constructor (props) {
@@ -23,6 +26,17 @@ class App extends Component {
       }
     }
     this.createTimers()
+  }
+
+  static sound = {
+    alert: new Audio(alert),
+    start: new Audio(start),
+    stop: new Audio(stop)
+  }
+
+  static methods = ['start', 'stop', 'pause', 'reset']
+  static defaultProps = {
+    activeIndex: 0
   }
 
   getHandler (w) {
@@ -186,17 +200,6 @@ class App extends Component {
       </div>
     )
   }
-}
-
-App.sound = Object.assign(
-  {},
-  ...['start', 'stop', 'alert'].map(key => ({
-    [key]: new Audio(`assets/audio/${key}.wav`)
-  }))
-)
-App.methods = ['start', 'stop', 'pause', 'reset']
-App.defaultProps = {
-  activeIndex: 0
 }
 
 // Mixin App

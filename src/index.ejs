@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <% if (htmlWebpackPlugin.options.scripts) htmlWebpackPlugin.options.scripts.forEach(function(x){ %>
+      <script src="config.js"></script>
+    <% }) %>
+  </body>
+</html>

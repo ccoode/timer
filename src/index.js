@@ -1,7 +1,8 @@
 import { h, render } from 'preact'
 import App from './components/App'
 import './styles/main.css'
-import settings from '../public/config'
+import 'font-awesome/css/font-awesome.min.css'
+import settings from './config'
 
 /* eslint-disable global-require */
 if (module.hot) {
@@ -21,5 +22,5 @@ settings.steps.forEach((step, index) => {
 
 render(
   <App {...settings} activeIndex={activeIndex} />,
-  document.querySelector('#react')
+  document.querySelector('#root')
 )
