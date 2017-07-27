@@ -43,13 +43,12 @@ class Timer {
   }
 
   _tick () {
-    this._watchQueue.forEach(fn =>
-      fn({
-        timeout: this._timeout,
-        running: this._running,
-        onStart: this._running && this._timeout === this._settings.timeout
-      })
-    )
+    const state = {
+      timeout: this._timeout,
+      running: this._running,
+      onStart: this._running && this._timeout === this._settings.timeout
+    }
+    this._watchQueue.forEach(fn => fn(state))
   }
 
   _update () {

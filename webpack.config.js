@@ -10,10 +10,8 @@ const resolve = {
   extensions: ['.js', '.json', '.jsx']
 }
 
-const extractMainCSS = new ExtractTextPlugin('css/main.css')
 const extractFWCSS = new ExtractTextPlugin('css/font-awesome.min.css')
 const plugins = [
-  extractMainCSS,
   extractFWCSS,
   new HtmlWebpackPlugin({
     title: 'Timer',
@@ -42,13 +40,6 @@ const rules = [
     include: [
       path.resolve('src'),
       path.resolve('node_modules/preact-compat/src')
-    ]
-  },
-  {
-    test: /\.css$/,
-    use: extractMainCSS.extract(['css-loader', 'postcss-loader']),
-    exclude: [
-      path.resolve('node_modules/font-awesome')
     ]
   },
   {
@@ -82,26 +73,8 @@ const rules = [
 module.exports = (env = {}) => {
   const isProduction = env.production === true
 
-  if (isProduction) {
-    [
-      new BabiliPlugin(
-        {
-          removeConsole: true,
-          removeDebugger: true
-        },
-        {
-          comments: false
-        }),
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify('production')
-        }
-      }),
-      new CopyWebpackPlugin([
-        { from: 'src/config.js', to: '..' }
-      ])
-    ].forEach(x => plugins.push(x))
-  }
+  loadProdPlugin(isProduction)
+  loadCSSRule(isProduction)
 
   return {
     entry: './src/index.js',
@@ -117,4 +90,52 @@ module.exports = (env = {}) => {
       contentBase: path.resolve(__dirname, publicPath)
     }
   }
+}
+
+function loadCSSRule (isProduction) {
+  if (isProduction) {
+    const extractMainCSS = new ExtractTextPlugin('css/main.css')
+    plugins.push(extractMainCSS)
+    rules.push({
+      test: /\.css$/,
+      use: extractMainCSS.extract(['css-loader', 'postcss-loader']),
+      exclude: [
+        path.resolve('node_modules/font-awesome')
+      ]
+    })
+    return
+  }
+  rules.push({
+    test: /\.css$/,
+    use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' },
+      { loader: 'postcss-loader' }
+    ],
+    exclude: [
+      path.resolve('node_modules/font-awesome')
+    ]
+  })
+}
+
+function loadProdPlugin (isProduction) {
+  if (!isProduction) return
+  [
+    new BabiliPlugin(
+      {
+        removeConsole: true,
+        removeDebugger: true
+      },
+      {
+        comments: false
+      }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new CopyWebpackPlugin([
+      { from: 'src/config.js', to: '..' }
+    ])
+  ].forEach(x => plugins.push(x))
 }

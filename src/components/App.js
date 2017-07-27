@@ -73,7 +73,6 @@ class App extends Component {
 
   createTimers () {
     const { activeIndex, steps } = this.props
-    const self = this
 
     const getHook = w => state => {
       switch (true) {
@@ -113,7 +112,7 @@ class App extends Component {
       w,
       timeout: steps[activeIndex][w] * 1000,
       hook: getHook(w),
-      state: self.state
+      state: this.state
     })
 
     this.zf = createTimer(wrapper('zf'))
@@ -146,7 +145,7 @@ class App extends Component {
     const ffRzfP = !zf.running && ff.running && !this.zf.end
     const hideTurnBtn = hide || !(zfRffP || ffRzfP)
     return (
-      <div id='root'>
+      <div>
         <Header title={this.props.title} subtitle={this.props.subtitle}>
           {this.props.steps.map((step, index) =>
             <a
