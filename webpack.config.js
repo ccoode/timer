@@ -1,52 +1,48 @@
 const path = require('path')
-const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const BabiliPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const Config = require('wtf-webpack-config')
+const define = require('wtf-webpack-config/plugins/define')
+const babili = require('wtf-webpack-config/plugins/babili')
+const PostCSSFile = require('wtf-webpack-config/rules/css/postcss-file')
+const PostCSSStyle = require('wtf-webpack-config/rules/css/postcss-style')
 
-const publicPath = 'public'
-const resolve = {
-  extensions: ['.js', '.json', '.jsx']
+const fontAwesome = (config) => {
+  const extractFWCSS = new ExtractTextPlugin('css/font-awesome.min.css')
+  config
+    .plugin(extractFWCSS)
+    .rule({
+      test: /font-awesome\.min\.css$/,
+      use: extractFWCSS.extract('css-loader'),
+      include: [
+        path.resolve('node_modules/font-awesome/')
+      ]
+    })
+    .rule({
+      test: /\.(woff|woff2|eot|ttf|svg)(\?[\s\S]+)?$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'fonts/',
+          publicPath: '../fonts/'
+        }
+      }],
+      include: [
+        path.resolve('node_modules/font-awesome/')
+      ]
+    })
 }
 
-const extractFWCSS = new ExtractTextPlugin('css/font-awesome.min.css')
-const plugins = [
-  extractFWCSS,
-  new HtmlWebpackPlugin({
-    title: 'Timer',
-    template: 'src/index.ejs',
-    filename: '../index.html',
-    scripts: ['config.js'],
-    minify: {
-      collapseWhitespace: true
-    }
-  })
-]
-
-const rules = [
-  {
-    test: /\.js[x]?$/,
-    use: [
-      { loader: 'babel-loader' },
-      {
-        loader: 'eslint-loader',
-        options: {
-          failOnWarning: false,
-          failOnError: false
-        }
-      }
-    ],
+const mainCSS = isProduction => (config) => {
+  const cssOpt = {
     include: [
-      path.resolve('src'),
-      path.resolve('node_modules/preact-compat/src')
+      path.resolve('src')
     ]
-  },
-  {
-    test: /font-awesome\.min\.css$/,
-    use: extractFWCSS.extract('css-loader')
-  },
-  {
+  }
+
+  config.rule({
     test: /\.(woff|woff2|eot|ttf|svg)(\?[\s\S]+)?$/,
     use: [{
       loader: 'file-loader',
@@ -55,87 +51,85 @@ const rules = [
         outputPath: 'fonts/',
         publicPath: '../fonts/'
       }
-    }]
-  },
-  {
-    test: /\.wav$/,
-    use: [{
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]',
-        outputPath: 'audio/',
-        publicPath: 'assets/audio/'
-      }
-    }]
+    }],
+    include: cssOpt.include
+  })
+
+  if (isProduction) {
+    config
+      .use(PostCSSFile('css/main.css', cssOpt))
+      .use(define())
+      .use(babili())
+      .plugin(CopyWebpackPlugin, [
+        { from: 'src/config.js', to: '..' }
+      ])
+  } else {
+    config.use(PostCSSStyle(cssOpt))
   }
-]
+}
+
+const publicPath = 'public'
+
+const config = new Config({
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, `${publicPath}/assets`),
+    filename: 'bundle.js',
+    publicPath: 'assets/'
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.jsx']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js[x]?$/,
+        use: [
+          { loader: 'babel-loader' },
+          {
+            loader: 'eslint-loader',
+            options: {
+              failOnWarning: false,
+              failOnError: false
+            }
+          }
+        ],
+        include: [
+          path.resolve('src'),
+          path.resolve('node_modules/preact-compat/src')
+        ]
+      },
+      {
+        test: /\.wav$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'audio/',
+            publicPath: 'assets/audio/'
+          }
+        }]
+      }
+    ]
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, publicPath)
+  }
+})
 
 module.exports = (env = {}) => {
   const isProduction = env.production === true
-
-  loadProdPlugin(isProduction)
-  loadCSSRule(isProduction)
-
-  return {
-    entry: './src/index.js',
-    output: {
-      path: path.resolve(__dirname, `${publicPath}/assets`),
-      filename: 'bundle.js',
-      publicPath: 'assets/'
-    },
-    resolve,
-    plugins,
-    module: { rules },
-    devServer: {
-      contentBase: path.resolve(__dirname, publicPath)
-    }
-  }
-}
-
-function loadCSSRule (isProduction) {
-  if (isProduction) {
-    const extractMainCSS = new ExtractTextPlugin('css/main.css')
-    plugins.push(extractMainCSS)
-    rules.push({
-      test: /\.css$/,
-      use: extractMainCSS.extract(['css-loader', 'postcss-loader']),
-      exclude: [
-        path.resolve('node_modules/font-awesome')
-      ]
-    })
-    return
-  }
-  rules.push({
-    test: /\.css$/,
-    use: [
-      { loader: 'style-loader' },
-      { loader: 'css-loader' },
-      { loader: 'postcss-loader' }
-    ],
-    exclude: [
-      path.resolve('node_modules/font-awesome')
-    ]
-  })
-}
-
-function loadProdPlugin (isProduction) {
-  if (!isProduction) return
-  [
-    new BabiliPlugin(
-      {
-        removeConsole: true,
-        removeDebugger: true
-      },
-      {
-        comments: false
-      }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
+  config
+    .use(fontAwesome)
+    .use(mainCSS(isProduction))
+    .plugin(HtmlWebpackPlugin, {
+      title: 'Timer',
+      template: 'src/index.ejs',
+      filename: '../index.html',
+      scripts: ['config.js'],
+      minify: {
+        collapseWhitespace: true
       }
-    }),
-    new CopyWebpackPlugin([
-      { from: 'src/config.js', to: '..' }
-    ])
-  ].forEach(x => plugins.push(x))
+    })
+  return config.toConfig()
 }
