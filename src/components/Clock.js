@@ -1,7 +1,5 @@
 import { h } from 'preact'
 
-import 'core-js/modules/es7.string.pad-start'
-
 function convertMS(ms) {
   if (ms < 0) return 0
   const s = ms / 1000
