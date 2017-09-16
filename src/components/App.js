@@ -10,7 +10,7 @@ import start from '../audio/start.wav'
 import stop from '../audio/stop.wav'
 
 class App extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     const { zf, ff, name } = props.steps[props.activeIndex]
     this.state = {
@@ -18,12 +18,12 @@ class App extends Component {
       index: props.activeIndex,
       zf: {
         timeout: zf * 1000,
-        running: false
+        running: false,
       },
       ff: {
         timeout: ff * 1000,
-        running: false
-      }
+        running: false,
+      },
     }
     this.createTimers()
   }
@@ -31,23 +31,23 @@ class App extends Component {
   static sound = {
     alert: new Audio(alert),
     start: new Audio(start),
-    stop: new Audio(stop)
+    stop: new Audio(stop),
   }
 
   static methods = ['start', 'stop', 'pause', 'reset']
   static defaultProps = {
-    activeIndex: 0
+    activeIndex: 0,
   }
 
-  getHandler (w) {
-    return methodName => {
+  getHandler(w) {
+    return (methodName) => {
       if (App.methods.indexOf(methodName) !== -1) {
         this[methodName](w)
       }
     }
   }
 
-  changeStep (index) {
+  changeStep(index) {
     if (index === this.state.index) return
     const { zf, ff, name } = this.props.steps[index]
     this.zf.timer.setup({ timeout: zf * 1000 })
@@ -55,12 +55,12 @@ class App extends Component {
     this.setState({ index, stepName: name })
   }
 
-  next () {
+  next() {
     const { index } = this.state
     this.changeStep((index + 1) % this.props.steps.length)
   }
 
-  turn () {
+  turn() {
     const { zf, ff } = this.state
     if (zf.running && !ff.running && !this.ff.end) {
       this.pause('zf')
@@ -71,10 +71,10 @@ class App extends Component {
     }
   }
 
-  createTimers () {
+  createTimers() {
     const { activeIndex, steps } = this.props
 
-    const getHook = w => state => {
+    const getHook = w => (state) => {
       switch (true) {
         case state.timeout === 0:
           App.sound.stop.play()
@@ -93,33 +93,33 @@ class App extends Component {
       this.setState({
         [w]: {
           timeout: state.timeout,
-          running: state.running
-        }
+          running: state.running,
+        },
       })
     }
 
     const createTimer = ({ w, timeout, hook, state }) => ({
-      get end () {
+      get end() {
         return state[w].timeout === 0
       },
-      get hide () {
+      get hide() {
         return state[w].timeout < 0
       },
-      timer: new Timer({ timeout, hook })
+      timer: new Timer({ timeout, hook }),
     })
 
     const wrapper = w => ({
       w,
       timeout: steps[activeIndex][w] * 1000,
       hook: getHook(w),
-      state: this.state
+      state: this.state,
     })
 
     this.zf = createTimer(wrapper('zf'))
     this.ff = createTimer(wrapper('ff'))
   }
 
-  renderTeam ({ w, hideAll }) {
+  renderTeam({ w, hideAll }) {
     const { end, hide } = this[w]
     const { timeout, running } = this.state[w]
     const { name, thought } = this.props[w] // eslint-disable-line react/prop-types
@@ -138,7 +138,7 @@ class App extends Component {
     )
   }
 
-  render () {
+  render() {
     const { zf, ff, stepName } = this.state
     const hide = this.zf.hide || this.ff.hide
     const zfRffP = zf.running && !ff.running && !this.ff.end
@@ -147,49 +147,45 @@ class App extends Component {
     return (
       <div>
         <Header title={this.props.title} subtitle={this.props.subtitle}>
-          {this.props.steps.map((step, index) =>
+          {this.props.steps.map((step, index) => (
             <a
               href={`#/${step.name}`}
               onClick={() => {
                 this.changeStep(index)
               }}
               key={`${step.name}`}
-              className='item'
+              className="item"
             >
               {step.name}
             </a>
-          )}
+          ))}
         </Header>
         <main>
-          <div className='timer'>
+          <div className="timer">
             {/* 正方 */}
             {this.renderTeam({
               w: 'zf',
-              hideAll: hide
+              hideAll: hide,
             })}
 
             {/* 间隔 */}
-            <Gap
-              onClick={() => this.turn()}
-              hideTurnBtn={hideTurnBtn}
-              hide={hide}
-            />
+            <Gap onClick={() => this.turn()} hideTurnBtn={hideTurnBtn} hide={hide} />
 
             {/* 反方 */}
             {this.renderTeam({
               w: 'ff',
-              hideAll: hide
+              hideAll: hide,
             })}
           </div>
 
           {/* 下一个环节按钮 */}
-          <div className='next'>
+          <div className="next">
             <a
               href={`#/${stepName}`}
               onClick={() => {
                 this.next()
               }}
-              className='btn'
+              className="btn"
             >
               {stepName}
             </a>
@@ -205,9 +201,9 @@ class App extends Component {
 Object.assign(
   App.prototype,
   ...App.methods.map(key => ({
-    [key] (w) {
+    [key](w) {
       this[w].timer[key]()
-    }
+    },
   }))
 )
 

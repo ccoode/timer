@@ -1,12 +1,12 @@
 import { h } from 'preact'
 import Icon from './Icon'
 
-function Control (props) {
+function Control(props) {
   return (
-    <section className='control'>
+    <section className="control">
       <Icon
         hide={props.running || props.end}
-        className='fa-play'
+        className="fa-play"
         onClick={() => {
           props.onClick('start')
         }}
@@ -14,7 +14,7 @@ function Control (props) {
 
       <Icon
         hide={!props.running || props.end}
-        className='fa-pause'
+        className="fa-pause"
         onClick={() => {
           props.onClick('pause')
         }}
@@ -22,7 +22,7 @@ function Control (props) {
 
       <Icon
         hide={props.end}
-        className='fa-stop'
+        className="fa-stop"
         onClick={() => {
           props.onClick('stop')
         }}
@@ -30,7 +30,7 @@ function Control (props) {
 
       <Icon
         hide={!props.end}
-        className='fa-repeat'
+        className="fa-repeat"
         onClick={() => {
           props.onClick('reset')
         }}

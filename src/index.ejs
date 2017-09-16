@@ -8,8 +8,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <% if (htmlWebpackPlugin.options.scripts) htmlWebpackPlugin.options.scripts.forEach(function(x){ %>
-      <script src="<%= x %>"></script>
-    <% }) %>
+    <% if (htmlWebpackPlugin.options.scripts) htmlWebpackPlugin.options.scripts.forEach(function(x){ %><script src="<%= x %>"></script><% }) %>
   </body>
 </html>

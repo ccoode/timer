@@ -1,16 +1,16 @@
 import { h } from 'preact'
 import classNames from 'classnames'
 
-function Icon (props) {
+function Icon(props) {
   const className = classNames({
     'fa-stack': true,
     'fa-2x': true,
-    hide: props.hide
+    hide: props.hide,
   })
   const iconClass = classNames({
     fa: true,
     'fa-stack-1x': true,
-    [props.className]: true
+    [props.className]: true,
   })
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   return (
@@ -20,7 +20,7 @@ function Icon (props) {
         props.onClick()
       }}
     >
-      <i className='fa fa-stack-2x fa-circle' />
+      <i className="fa fa-stack-2x fa-circle" />
       <i className={iconClass} />
     </a>
   )

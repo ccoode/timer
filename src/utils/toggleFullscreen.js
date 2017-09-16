@@ -1,4 +1,4 @@
-function launchFullscreen (element) {
+function launchFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen()
   } else if (element.mozRequestFullScreen) {
@@ -10,7 +10,7 @@ function launchFullscreen (element) {
   }
 }
 
-function exitFullscreen () {
+function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen()
   } else if (document.mozCancelFullScreen) {
@@ -20,7 +20,7 @@ function exitFullscreen () {
   }
 }
 
-function toggleFullscreen () {
+function toggleFullscreen() {
   const fullscreenElement =
     document.fullscreenElement ||
     document.mozFullScreenElement ||

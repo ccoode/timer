@@ -7,16 +7,16 @@ const fullTime = 10000
 const timer = new Timer({ timeout: fullTime })
 const st = {}
 
-timer.watch(state => {
+timer.watch((state) => {
   st.running = state.running
   st.timeout = state.timeout
 })
 
-timer.watch(state => {
+timer.watch((state) => {
   if (state.timeout === 0) assert.equal(state.running, false)
 })
 
-timer.watch(state => {
+timer.watch((state) => {
   if (state.onStart) assert.equal(state.running, true)
 })
 

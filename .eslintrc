@@ -3,20 +3,11 @@
     "browser": true,
     "jest": true
   },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "extends": [
-    "standard",
-    "standard-preact",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "dgeibi/preact"
   ],
-  "plugins": [
-    "import",
-    "react"
-  ]
+  "rules": {
+    "import/no-extraneous-dependencies": "off",
+    "global-require": "off"
+  }
 }

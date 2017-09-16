@@ -1,8 +1,10 @@
 /* eslint-disable global-require */
+import 'babel-polyfill'
 import { h, render } from 'preact'
+import 'font-awesome/css/font-awesome.min.css'
+
 import App from './components/App'
 import './styles/main.css'
-import 'font-awesome/css/font-awesome.min.css'
 
 if (module.hot) {
   require('preact/devtools')
@@ -17,7 +19,4 @@ settings.steps.forEach((step, index) => {
   if (hash === step.name) activeIndex = index
 })
 
-render(
-  <App {...settings} activeIndex={activeIndex} />,
-  document.querySelector('#root')
-)
+render(<App {...settings} activeIndex={activeIndex} />, document.querySelector('#root'))

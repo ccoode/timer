@@ -2,7 +2,7 @@ import { h } from 'preact'
 
 import 'core-js/modules/es7.string.pad-start'
 
-function convertMS (ms) {
+function convertMS(ms) {
   if (ms < 0) return 0
   const s = ms / 1000
   let sec = Math.ceil(s % 60)
@@ -21,12 +21,8 @@ function convertMS (ms) {
 /**
  * timeout(ms) => MM:ss
  */
-function Clock ({ timeout }) {
-  return (
-    <section className='clock'>
-      {convertMS(timeout)}
-    </section>
-  )
+function Clock({ timeout }) {
+  return <section className="clock">{convertMS(timeout)}</section>
 }
 
 export default Clock

@@ -4,10 +4,10 @@ import Meta from './Meta'
 import Control from './Control'
 import Clock from './Clock'
 
-function Team (props) {
+function Team(props) {
   const divClass = classNames({
     team: true,
-    hide: props.hide
+    hide: props.hide,
   })
   return (
     <div className={divClass}>
@@ -18,11 +18,7 @@ function Team (props) {
         hide={props.hideAll}
       />
       <Clock timeout={props.timeout} />
-      <Control
-        onClick={props.controlFn}
-        running={props.running}
-        end={props.end}
-      />
+      <Control onClick={props.controlFn} running={props.running} end={props.end} />
     </div>
   )
 }
