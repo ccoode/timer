@@ -1,6 +1,6 @@
 {
   "name": "timer",
-  "version": "2.2.11",
+  "version": "2.3.0",
   "productName": "Timer",
   "description": "a timer for debate competition",
   "private": true,
