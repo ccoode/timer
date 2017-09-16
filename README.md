@@ -26,7 +26,7 @@ npm install
 
 编译：`npm run build`
 
-调试/启动本地服务器：`npm run dev`
+调试/启动本地服务器：`npm run start`
 
 测试 timer：`npm test`
 
