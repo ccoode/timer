@@ -1,17 +1,14 @@
+/* eslint-disable global-require */
 import { h, render } from 'preact'
 import App from './components/App'
 import './styles/main.css'
 import 'font-awesome/css/font-awesome.min.css'
-import settings from './config'
 
-/* eslint-disable global-require */
 if (module.hot) {
   require('preact/devtools')
 }
-/* eslint-enable global-require */
 
-/* global config:false */
-Object.assign(settings, config)
+const settings = window.config
 
 /* set activeIndex according hash */
 const hash = location.hash.replace('#/', '')

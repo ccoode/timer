@@ -55,6 +55,8 @@ var config = {
   ]
 }
 
+window.config = config
+
 if (typeof module === 'object' && module.exports) {
   module.exports = config
 }
