@@ -19,7 +19,7 @@ class Timer {
     if (typeof timeout !== 'number') {
       timeout = parseInt(timeout, 10)
     }
-    if (isNaN(timeout) || typeof timeout !== 'number') {
+    if (isNaN(timeout)) {
       throw new Error('setup(settings), settings.timeout need to be a number!')
     }
     this._settings = { timeout }
