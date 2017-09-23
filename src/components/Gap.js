@@ -12,9 +12,7 @@ function Gap(props) {
       <Icon
         className="fa-arrows-h"
         hide={props.hideTurnBtn}
-        onClick={() => {
-          props.onClick()
-        }}
+        onClick={props.onClick}
       />
     </div>
   )

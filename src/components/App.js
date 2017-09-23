@@ -17,11 +17,11 @@ class App extends Component {
       stepName: name,
       index: props.activeIndex,
       zf: {
-        timeout: zf * 1000,
+        timeout: zf * 1e3,
         running: false,
       },
       ff: {
-        timeout: ff * 1000,
+        timeout: ff * 1e3,
         running: false,
       },
     }
@@ -50,17 +50,17 @@ class App extends Component {
   changeStep(index) {
     if (index === this.state.index) return
     const { zf, ff, name } = this.props.steps[index]
-    this.zf.timer.setup({ timeout: zf * 1000 })
-    this.ff.timer.setup({ timeout: ff * 1000 })
+    this.zf.timer.setup({ timeout: zf * 1e3 })
+    this.ff.timer.setup({ timeout: ff * 1e3 })
     this.setState({ index, stepName: name })
   }
 
-  next() {
+  next = () => {
     const { index } = this.state
     this.changeStep((index + 1) % this.props.steps.length)
   }
 
-  turn() {
+  turn = () => {
     const { zf, ff } = this.state
     if (zf.running && !ff.running && !this.ff.end) {
       this.pause('zf')
@@ -79,11 +79,11 @@ class App extends Component {
         case state.timeout === 0:
           App.sound.stop.play()
           break
-        case state.timeout <= 30000 && state.timeout > 29000:
-        case state.timeout > 0 && state.timeout <= 5000:
+        case state.timeout <= 30e3 && state.timeout > 29e3:
+        case state.timeout > 0 && state.timeout <= 5e3:
           App.sound.alert.play()
           break
-        case state.onStart === true:
+        case state.onStart:
           App.sound.start.play()
           break
         default:
@@ -108,15 +108,15 @@ class App extends Component {
       timer: new Timer({ timeout, hook }),
     })
 
-    const wrapper = w => ({
+    const makeOpts = w => ({
       w,
-      timeout: steps[activeIndex][w] * 1000,
+      timeout: steps[activeIndex][w] * 1e3,
       hook: getHook(w),
       state: this.state,
     })
 
-    this.zf = createTimer(wrapper('zf'))
-    this.ff = createTimer(wrapper('ff'))
+    this.zf = createTimer(makeOpts('zf'))
+    this.ff = createTimer(makeOpts('ff'))
   }
 
   renderTeam({ w, hideAll }) {
@@ -169,7 +169,7 @@ class App extends Component {
             })}
 
             {/* 间隔 */}
-            <Gap onClick={() => this.turn()} hideTurnBtn={hideTurnBtn} hide={hide} />
+            <Gap onClick={this.turn} hideTurnBtn={hideTurnBtn} hide={hide} />
 
             {/* 反方 */}
             {this.renderTeam({
@@ -182,9 +182,7 @@ class App extends Component {
           <div className="next">
             <a
               href={`#/${stepName}`}
-              onClick={() => {
-                this.next()
-              }}
+              onClick={this.next}
               className="btn"
             >
               {stepName}

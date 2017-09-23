@@ -12,13 +12,10 @@ function Icon(props) {
     'fa-stack-1x': true,
     [props.className]: true,
   })
-  /* eslint-disable jsx-a11y/no-static-element-interactions */
   return (
     <a
       className={className}
-      onClick={() => {
-        props.onClick()
-      }}
+      onClick={props.onClick}
     >
       <i className="fa fa-stack-2x fa-circle" />
       <i className={iconClass} />

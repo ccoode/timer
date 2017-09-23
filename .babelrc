@@ -10,8 +10,7 @@
           ]
         },
         "modules": false,
-        "useBuiltins": true,
-        "debug": true
+        "useBuiltins": true
       }
     ],
     "stage-0",
