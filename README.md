@@ -12,6 +12,15 @@ Timer
 
 修改 `config.js`，打开 `index.html`。
 
+**快捷键**
+
+- `A`：正方开始和暂停
+- `Q`：正方停止和重置
+- `L`：反方开始和暂停
+- `P`：反方停止和重置
+- `G`：双方切换
+- `N`：下一个环节
+
 ## 开发
 
 安装 [Node.js](https://nodejs.org/) 和 [Git](https://git-scm.com/)

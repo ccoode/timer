@@ -53,7 +53,34 @@ class App extends Component {
     const { zf, ff, name } = this.props.steps[index]
     this.zf.timer.setup({ timeout: zf * 1e3 })
     this.ff.timer.setup({ timeout: ff * 1e3 })
-    this.setState({ index, stepName: name })
+    this.setState({ index, stepName: name }, () => {
+      window.location.hash = `/${name}`
+    })
+  }
+
+  handleKeyDown = ({ key }) => {
+    const c = key.toLowerCase()
+    if (c === 'a') {
+      this.zf.timer.toggle()
+    } else if (c === 'l') {
+      this.ff.timer.toggle()
+    } else if (c === 'q') {
+      this.zf.timer.toggleReset()
+    } else if (c === 'p') {
+      this.ff.timer.toggleReset()
+    } else if (c === 'g') {
+      this.turn()
+    } else if (c === 'n') {
+      this.next()
+    }
+  }
+
+  componentWillMount() {
+    window.addEventListener('keydown', this.handleKeyDown)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown)
   }
 
   next = () => {
@@ -161,7 +188,8 @@ class App extends Component {
             >
               {step.name}
             </Button>
-          ))} />
+          ))}
+        />
         <main>
           <div className="timer">
             {/* 正方 */}
@@ -182,11 +210,7 @@ class App extends Component {
 
           {/* 下一个环节按钮 */}
           <div className="next">
-            <Button
-              href={`#/${stepName}`}
-              onClick={this.next}
-              className="btn"
-            >
+            <Button href={`#/${stepName}`} onClick={this.next} className="btn">
               {stepName}
             </Button>
           </div>

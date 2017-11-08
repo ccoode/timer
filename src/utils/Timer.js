@@ -70,6 +70,22 @@ class Timer {
     }
   }
 
+  toggle() {
+    if (this._running) {
+      this.pause()
+    } else if (this._timeout > 0) {
+      this.start()
+    }
+  }
+
+  toggleReset() {
+    if (!this._running && this._timeout <= 0) {
+      this.reset()
+    } else {
+      this.stop()
+    }
+  }
+
   pause() {
     if (this._running) {
       const newTotal = this._total - (now() - this._startTime)
