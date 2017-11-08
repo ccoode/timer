@@ -2,17 +2,17 @@
     font-size: 2.3rem;
     margin-right: 3em;
     float: right;
-    &:hover {
+    &.open, &:hover {
         background: linear-gradient(hsla(0, 0%, 100%, .2), #fff);
     }
 }
 
-.menu .cover {
+.menu-btn {
     font-size: 1em;
-    padding: .5em 1em;
+    padding: .35em 1em;
 }
 
-.menu .item {
+.menu-item {
     font-size: .9em;
     padding: .7em;
     line-height: 1;
@@ -22,14 +22,13 @@
     }
 }
 
-.menu .item, .menu .cover {
-    user-select: none;
+.menu-item, .menu-btn {
     color: inherit;
     text-decoration: none;
     cursor: pointer;
 }
 
-.menu .content {
+.menu-content {
     position: absolute;
     visibility: hidden;
     background-color: #fff;
@@ -38,7 +37,7 @@
     border: 1px solid rgba(0, 0, 0, .08);
 }
 
-.menu:hover > .content {
+.open.menu .menu-content {
     visibility: visible;
     z-index: 99;
 }

@@ -1,5 +1,6 @@
 import { h } from 'preact'
 import classNames from 'classnames'
+import Button from './Button'
 
 function Icon(props) {
   const className = classNames({
@@ -13,13 +14,13 @@ function Icon(props) {
     [props.className]: true,
   })
   return (
-    <a
+    <Button
       className={className}
       onClick={props.onClick}
     >
       <i className="fa fa-stack-2x fa-circle" />
       <i className={iconClass} />
-    </a>
+    </Button>
   )
 }
 

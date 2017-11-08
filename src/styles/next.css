@@ -1,13 +1,12 @@
 .next {
     margin: 2rem 0 0 0;
     text-align: center;
-    & .btn {
-        user-select: none;
+    & .button {
         font-size: 2.2rem;
         transition: opacity .3s;
         opacity: .7;
     }
-    & .btn:hover {
+    & .button:hover {
         opacity: 1;
     }
 }

@@ -61,7 +61,6 @@ main {
 
 .site-title, .menu .cover, .site-header {
   line-height: var(--header-height);
-  height: var(--header-height);
 }
 
 

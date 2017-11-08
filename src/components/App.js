@@ -5,6 +5,7 @@ import Footer from './Footer'
 import Header from './Header'
 import Team from './Team'
 import Gap from './Gap'
+import Button from './Button'
 import alert from '../audio/alert.wav'
 import start from '../audio/start.wav'
 import stop from '../audio/stop.wav'
@@ -146,20 +147,21 @@ class App extends Component {
     const hideTurnBtn = hide || !(zfRffP || ffRzfP)
     return (
       <div>
-        <Header title={this.props.title} subtitle={this.props.subtitle}>
-          {this.props.steps.map((step, index) => (
-            <a
+        <Header
+          title={this.props.title}
+          subtitle={this.props.subtitle}
+          menuItems={this.props.steps.map((step, index) => (
+            <Button
               href={`#/${step.name}`}
               onClick={() => {
                 this.changeStep(index)
               }}
               key={`${step.name}`}
-              className="item"
+              className="menu-item"
             >
               {step.name}
-            </a>
-          ))}
-        </Header>
+            </Button>
+          ))} />
         <main>
           <div className="timer">
             {/* 正方 */}
@@ -180,13 +182,13 @@ class App extends Component {
 
           {/* 下一个环节按钮 */}
           <div className="next">
-            <a
+            <Button
               href={`#/${stepName}`}
               onClick={this.next}
               className="btn"
             >
               {stepName}
-            </a>
+            </Button>
           </div>
         </main>
         <Footer info={this.props.footer} />
