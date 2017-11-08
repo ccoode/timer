@@ -14,10 +14,7 @@ function Icon(props) {
     [props.className]: true,
   })
   return (
-    <Button
-      className={className}
-      onClick={props.onClick}
-    >
+    <Button className={className} onClick={props.onClick}>
       <i className="fa fa-stack-2x fa-circle" />
       <i className={iconClass} />
     </Button>

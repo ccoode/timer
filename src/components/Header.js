@@ -11,22 +11,22 @@ const Header = ({ title, subtitle, menuItems }) => (
       <i className="fa fa-arrows-alt" aria-hidden="true" />
     </Button>
     <Switch
-      render={
-        ({ toggle, on }) => <div
-
-          className={
-            classNames({
-              open: on,
-              menu: true,
-            })
-          }
+      render={({ toggle, on }) => (
+        <div
+          className={classNames({
+            open: on,
+            menu: true,
+          })}
         >
-          <Button className="menu-btn" onClick={() => toggle()}>环节</Button>
+          <Button className="menu-btn" onClick={() => toggle()}>
+            环节
+          </Button>
           <div className="menu-content" onClick={() => toggle(false)}>
             {menuItems}
           </div>
         </div>
-      } />
+      )}
+    />
   </header>
 )
 
