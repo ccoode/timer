@@ -45,7 +45,7 @@ main {
 /** site-header */
 
 .site-header {
-  background-color: #eee;
+  background-color: rgba(238, 238, 238, 0.76);
   border-bottom: 1px solid #c0c0c0;
 }
 

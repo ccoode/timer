@@ -1,5 +1,9 @@
 /* eslint-disable */
 var config = {
+  background: {
+    url: '', // 背景图URL，如 'background.jpg'
+    opacity: 0.5, // 不透明度
+  },
   title: '计算机学院新生杯辩论赛',
   subtitle: '季军争夺赛',
   footer: '© 2017 计算机学院学生会',
