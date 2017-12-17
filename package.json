@@ -63,16 +63,16 @@
     "preact-jsx-chai": "^2.2.1",
     "prettier": "^1.7.0",
     "style-loader": "^0.18.2",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.8.2",
-    "webpack-merge": "^4.1.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "classnames": "^2.2.5",
     "font-awesome": "^4.7.0",
     "normalize.css": "^5.0.0",
     "performance-now": "^2.0.0",
-    "preact": "^8.2.5"
+    "preact": "^8.2.7"
   },
   "jest": {
     "setupFiles": [

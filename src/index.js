@@ -6,10 +6,6 @@ import 'font-awesome/css/font-awesome.min.css'
 import App from './components/App'
 import './styles/main.css'
 
-if (module.hot) {
-  require('preact/devtools')
-}
-
 const settings = window.config
 
 if ('background' in settings) {
@@ -33,4 +29,19 @@ settings.steps.forEach((step, index) => {
   if (hash === step.name) activeIndex = index
 })
 
-render(<App {...settings} activeIndex={activeIndex} />, document.querySelector('#root'))
+main()
+
+if (module.hot) {
+  require('preact/devtools')
+  module.hot.accept('./components/App', main)
+}
+
+function main() {
+  render(
+    <div id="root">
+      <App {...settings} activeIndex={activeIndex} />
+    </div>,
+    document.body,
+    document.getElementById('root')
+  )
+}
