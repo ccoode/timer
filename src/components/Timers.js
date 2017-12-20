@@ -22,7 +22,7 @@ class Timers extends Component {
     const { keys, timeouts, render } = this.props
 
     if (typeof render !== 'function') throw Error('prop render should be a function')
-    if (keys.length < 1) throw Error('prop key should has at least element')
+    if (!keys || keys.length < 1) throw Error('prop key should has at least element')
 
     /**
      * @type {{ [x: string]: number }} millisecond
