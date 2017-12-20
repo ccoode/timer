@@ -1,76 +1,72 @@
 /* eslint-disable no-underscore-dangle */
-const now = require('performance-now')
+import now from 'performance-now'
 
 class Timer {
+  /**
+   * @param {{ timeout: number }} settings
+   */
   constructor(settings) {
-    this._watchQueue = []
-    this._update = this._update.bind(this)
-    if (settings) {
-      this.setup(settings)
-      this.watch(settings.hook)
-    }
+    this.watches = []
+    this.timeout = NaN
+    this.running = false
+    this.end = false
+    this.beginning = false
+    this.disabled = false
+    this.setup(settings)
   }
 
   setup(settings) {
-    if (typeof settings !== 'object') {
+    if (!settings || typeof settings !== 'object') {
       throw new Error('setup(settings), settings need to be a object!')
     }
-    let timeout = settings.timeout
-    if (typeof timeout !== 'number') {
-      timeout = parseInt(timeout, 10)
-    }
+    const timeout = Math.floor(settings.timeout)
     if (isNaN(timeout)) {
       throw new Error('setup(settings), settings.timeout need to be a number!')
     }
-    this._settings = { timeout }
+    this.totalTime = timeout
     this.reset()
   }
 
-  set _total(time) {
-    this._timeout = time
-    this._left = time
-  }
-
-  get _total() {
-    return this._left
-  }
-
-  _setState(total = 0) {
+  setTotal(total = 0) {
     if (this._timeoutId) clearTimeout(this._timeoutId)
     this._timeoutId = null
     this._running = false
-    this._total = total
-    this._tick()
+    this._timeout = total
+    this._left = total
+    this.updateState()
   }
 
-  _tick() {
+  updateState() {
     const state = {
       timeout: this._timeout,
       running: this._running,
-      onStart: this._running && this._timeout === this._settings.timeout,
+      beginning: this._running && this._timeout === this.totalTime,
+      end: this._timeout <= 0,
+      disabled: this.totalTime < 0,
     }
-    this._watchQueue.forEach(fn => fn(state))
+    Object.assign(this, state)
+    this.watches.forEach(fn => fn(state))
   }
 
-  _update() {
-    this._tick()
+  tick = () => {
+    this.updateState()
     if (this._timeout > 0) {
       const timeGap = this._timeout % 1000 || 1000
       this._timeout -= timeGap
       this._running = this._timeout <= 0 ? false : this._running
-      this._timeoutId = setTimeout(this._update, timeGap)
+      this._timeoutId = setTimeout(this.tick, timeGap)
     }
   }
 
-  start() {
+  start = () => {
     if (!this._running) {
       this._running = true
       this._startTime = now()
-      this._update()
+      this.tick()
     }
   }
 
-  toggle() {
+  toggle = () => {
     if (this._running) {
       this.pause()
     } else if (this._timeout > 0) {
@@ -78,7 +74,7 @@ class Timer {
     }
   }
 
-  toggleReset() {
+  toggleReset = () => {
     if (!this._running && this._timeout <= 0) {
       this.reset()
     } else {
@@ -86,26 +82,33 @@ class Timer {
     }
   }
 
-  pause() {
+  pause = () => {
     if (this._running) {
-      const newTotal = this._total - (now() - this._startTime)
-      this._setState(newTotal)
+      this.setTotal(this._left - (now() - this._startTime))
     }
   }
 
-  stop() {
-    this._setState(0)
+  stop = () => {
+    this.setTotal(0)
   }
 
-  reset() {
-    this._setState(this._settings.timeout)
+  reset = () => {
+    this.setTotal(this.totalTime)
   }
 
   watch(fn) {
-    if (typeof fn === 'function') {
-      this._watchQueue.push(fn)
+    if (typeof fn !== 'function') {
+      throw Error('fn should be a function')
+    }
+    this.watches.push(fn)
+    return () => {
+      for (let i = this.watches.length - 1; i > -1; i -= 1) {
+        if (this.watches[i] === fn) {
+          this.watches[i].splice(i, 1)
+        }
+      }
     }
   }
 }
 
-module.exports = Timer
+export default Timer

@@ -18,7 +18,7 @@ function Team(props) {
         hide={props.hideAll}
       />
       <Clock timeout={props.timeout} />
-      <Control onClick={props.controlFn} running={props.running} end={props.end} />
+      <Control controlFns={props.controlFns} running={props.running} end={props.end} />
     </div>
   )
 }

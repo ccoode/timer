@@ -1,7 +1,6 @@
 /* global sleep:false */
-const Timer = require('../Timer.js')
-
-const assert = require('assert')
+import assert from 'assert'
+import Timer from '../Timer'
 
 const fullTime = 10000
 const timer = new Timer({ timeout: fullTime })

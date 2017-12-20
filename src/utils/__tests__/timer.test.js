@@ -18,10 +18,10 @@ describe('timer tick regularly', () => {
   test('timer tick', () => {
     jest.runTimersToTime(3000)
     expect(callback.mock.calls).toEqual([
-      [{ timeout: 2220, running: true, onStart: true }],
-      [{ timeout: 2000, running: true, onStart: false }],
-      [{ timeout: 1000, running: true, onStart: false }],
-      [{ timeout: 0, running: false, onStart: false }],
+      [{ timeout: 2220, running: true, beginning: true, disabled: false, end: false }],
+      [{ timeout: 2000, running: true, beginning: false, disabled: false, end: false }],
+      [{ timeout: 1000, running: true, beginning: false, disabled: false, end: false }],
+      [{ timeout: 0, running: false, beginning: false, disabled: false, end: true }],
     ])
     expect(setTimeout.mock.calls.length).toBe(3)
     expect(setTimeout.mock.calls[0][1]).toBe(220)
@@ -35,11 +35,13 @@ describe('timer method', () => {
     expect(callback.mock.calls[0][0]).toEqual({
       timeout: 2220,
       running: true,
-      onStart: true,
+      beginning: true,
+      end: false,
+      disabled: false,
     })
     expect(clearTimeout).toBeCalled()
     expect(callback.mock.calls[1][0].running).toBeFalsy()
-    expect(callback.mock.calls[1][0].onStart).toBeFalsy()
+    expect(callback.mock.calls[1][0].beginning).toBeFalsy()
   })
 
   test('timer pause', () => {

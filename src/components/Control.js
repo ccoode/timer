@@ -1,40 +1,16 @@
 import { h } from 'preact'
 import Icon from './Icon'
 
-function Control(props) {
+function Control({ running, end, controlFns }) {
   return (
     <section className="control">
-      <Icon
-        hide={props.running || props.end}
-        className="fa-play"
-        onClick={() => {
-          props.onClick('start')
-        }}
-      />
+      <Icon hide={running || end} className="fa-play" onClick={controlFns.start} />
 
-      <Icon
-        hide={!props.running || props.end}
-        className="fa-pause"
-        onClick={() => {
-          props.onClick('pause')
-        }}
-      />
+      <Icon hide={!running || end} className="fa-pause" onClick={controlFns.pause} />
 
-      <Icon
-        hide={props.end}
-        className="fa-stop"
-        onClick={() => {
-          props.onClick('stop')
-        }}
-      />
+      <Icon hide={end} className="fa-stop" onClick={controlFns.stop} />
 
-      <Icon
-        hide={!props.end}
-        className="fa-repeat"
-        onClick={() => {
-          props.onClick('reset')
-        }}
-      />
+      <Icon hide={!end} className="fa-repeat" onClick={controlFns.reset} />
     </section>
   )
 }

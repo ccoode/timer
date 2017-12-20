@@ -2,14 +2,14 @@ import { h } from 'preact'
 import classNames from 'classnames'
 import Icon from './Icon'
 
-function Gap(props) {
+function Gap({ turn, hide, hideTurnBtn }) {
   const divClass = classNames({
     gap: true,
-    hide: props.hide,
+    hide,
   })
   return (
     <div className={divClass}>
-      <Icon className="fa-arrows-h" hide={props.hideTurnBtn} onClick={props.onClick} />
+      <Icon className="fa-arrows-h" hide={hideTurnBtn} onClick={turn} />
     </div>
   )
 }
