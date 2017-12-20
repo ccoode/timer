@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { output: publicPath, productName } = require('./package.json')
 
 module.exports = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-module-eval-source-map',
   entry: {
     config: './src/config',
   },
@@ -20,6 +20,7 @@ module.exports = {
       chunks: ['config', 'app'],
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
   ],
   module: {
     rules: [
