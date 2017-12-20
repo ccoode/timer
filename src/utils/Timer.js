@@ -15,14 +15,8 @@ class Timer {
     this.setup(settings)
   }
 
-  static $$ver = Symbol('timer')
   static isTimer(instance) {
-    return (
-      instance &&
-      instance.constructor &&
-      instance.constructor.$$ver &&
-      instance.constructor.$$ver === this.$$ver
-    )
+    return instance && instance.constructor === this
   }
 
   setup(settings) {
