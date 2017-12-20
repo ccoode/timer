@@ -15,6 +15,16 @@ class Timer {
     this.setup(settings)
   }
 
+  static $$ver = Symbol('timer')
+  static isTimer(instance) {
+    return (
+      instance &&
+      instance.constructor &&
+      instance.constructor.$$ver &&
+      instance.constructor.$$ver === this.$$ver
+    )
+  }
+
   setup(settings) {
     if (!settings || typeof settings !== 'object') {
       throw new Error('setup(settings), settings need to be a object!')
@@ -104,7 +114,7 @@ class Timer {
     return () => {
       for (let i = this.watches.length - 1; i > -1; i -= 1) {
         if (this.watches[i] === fn) {
-          this.watches[i].splice(i, 1)
+          this.watches.splice(i, 1)
         }
       }
     }

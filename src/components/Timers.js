@@ -5,13 +5,17 @@ import shallowEqual from '../utils/shallowEqual'
 /*
 Usage:
   <Timers
-    keys={['zf', 'ff']}
-    timeouts={{ zf: 10000, ff: 130000 }}
+    keys={['zf', 'ff']} // magic keys here
+    timeouts={{ zf: 10, ff: 13 }} // unit: second
     render={({ getControlFns, timers: { zf, ff } }) =>
       <JSX />
     }
   />
 */
+if (module.hot) {
+  global.timers = global.timers || {}
+}
+
 class Timers extends Component {
   constructor(props, context) {
     super(props, context)
@@ -21,34 +25,36 @@ class Timers extends Component {
     if (keys.length < 1) throw Error('prop key should has at least element')
 
     /**
-     * @type {{ [x: string]: number }}
+     * @type {{ [x: string]: number }} millisecond
      */
     this.timeouts = this.map(timeouts, sec => sec * 1e3)
 
     /** @type {function[]} */
     this.unMountings = []
 
-    this.state = {
-      timers: null,
+    /**
+     * @type {{ [x: string]: { [y: string]: function } }}
+     */
+    this.fnsCache = {}
+
+    const update = () => {
+      this.forceUpdate()
     }
 
     /**
      * @type {{ [x: string]: Timer }}
      */
-    this.timers = this.mapKey((key) => {
-      const timer = new Timer({ timeout: this.timeouts[key] })
-      this.unMountings.push(
-        timer.watch((state) => {
-          this.setState({
-            timers: {
-              ...this.state.timers,
-              [key]: state,
-            },
-          })
-        })
-      )
+    this.timers = this.mapKey((oldTimer, key) => {
+      const timeout = this.timeouts[key]
+      const timer = Timer.isTimer(oldTimer) ? oldTimer : new Timer({ timeout })
+      if (oldTimer === timer) {
+        if (oldTimer.totalTime !== timeout) {
+          oldTimer.setup({ timeout })
+        }
+      }
+      this.unMountings.push(timer.watch(update))
       return timer
-    })
+    }, global.timers || {})
   }
 
   map(data, fn) {
@@ -58,11 +64,11 @@ class Timers extends Component {
     }, {})
   }
 
-  mapKey(fn) {
+  mapKey(fn, init) {
     return this.props.keys.reduce((ret, key) => {
-      ret[key] = fn(key) // eslint-disable-line
+      ret[key] = fn(ret[key], key) // eslint-disable-line
       return ret
-    }, {})
+    }, init || {})
   }
 
   forEachKey(fn) {
@@ -83,13 +89,15 @@ class Timers extends Component {
   }
 
   getControlFns = (key) => {
-    const { start, reset, stop, pause } = this.timers[key]
-    return {
-      start,
-      reset,
-      stop,
-      pause,
-    }
+    const { timers } = this
+    this.fnsCache[key] =
+      this.fnsCache[key] ||
+      (function tryGetControlFns() {
+        if (!timers[key]) throw Error(`key ${key} not exists`)
+        const { start, reset, stop, pause } = timers[key]
+        return { start, reset, stop, pause }
+      }())
+    return this.fnsCache[key]
   }
 
   getRenderProps() {
