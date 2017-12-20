@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import 'babel-polyfill'
 import { h, render } from 'preact'
 import 'font-awesome/css/font-awesome.min.css'
@@ -6,7 +5,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import App from './components/App'
 import './styles/main.css'
 
-const settings = window.config
+const settings = global.config
 
 if ('background' in settings) {
   let { opacity } = settings.background
@@ -22,7 +21,6 @@ if ('background' in settings) {
   }
 }
 
-/* set activeIndex according hash */
 const hash = decodeURI(location.hash.replace('#/', ''))
 let defaultIndex = 0
 settings.steps.forEach((step, index) => {
