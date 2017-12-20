@@ -23,10 +23,10 @@ if ('background' in settings) {
 }
 
 /* set activeIndex according hash */
-const hash = location.hash.replace('#/', '')
-let activeIndex = 0
+const hash = decodeURI(location.hash.replace('#/', ''))
+let defaultIndex = 0
 settings.steps.forEach((step, index) => {
-  if (hash === step.name) activeIndex = index
+  if (hash === step.name) defaultIndex = index
 })
 
 main()
@@ -39,7 +39,7 @@ if (module.hot) {
 function main() {
   render(
     <div id="root">
-      <App {...settings} activeIndex={activeIndex} />
+      <App {...settings} defaultIndex={defaultIndex} />
     </div>,
     document.body,
     document.getElementById('root')
