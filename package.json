@@ -78,7 +78,7 @@
   },
   "lint-staged": {
     "*.{css,js}": [
-      "prettier-eslint --write --"
+      "git-exec-and-restage prettier-eslint --write --"
     ]
   },
   "jest": {
