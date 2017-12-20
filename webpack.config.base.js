@@ -16,16 +16,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         use: [
           { loader: 'babel-loader' },
-          {
-            loader: 'eslint-loader',
-            options: {
-              failOnWarning: false,
-              failOnError: false,
-            },
-          },
         ],
         include: defaultInclude,
       },
