@@ -1,43 +1,45 @@
 .menu {
-    font-size: 2.3rem;
-    margin-right: 3em;
-    float: right;
-    &.open, &:hover {
-        background: linear-gradient(hsla(0, 0%, 100%, .2), #fff);
-    }
+  font-size: 2.3rem;
+  margin-right: 3em;
+  float: right;
+  &.open,
+  &:hover {
+    background: linear-gradient(hsla(0, 0%, 100%, 0.2), #fff);
+  }
 }
 
 .menu-btn {
-    font-size: 1em;
-    padding: .35em 1em;
+  font-size: 1em;
+  padding: 0.35em 1em;
 }
 
 .menu-item {
-    font-size: .9em;
-    padding: .7em;
-    line-height: 1;
-    display: block;
-    &:hover {
-        background: #ddeeff;
-    }
+  font-size: 0.9em;
+  padding: 0.7em;
+  line-height: 1;
+  display: block;
+  &:hover {
+    background: #ddeeff;
+  }
 }
 
-.menu-item, .menu-btn {
-    color: inherit;
-    text-decoration: none;
-    cursor: pointer;
+.menu-item,
+.menu-btn {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .menu-content {
-    position: absolute;
-    visibility: hidden;
-    background-color: #fff;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, .05);
-    border-radius: 0 0 5px 5px;
-    border: 1px solid rgba(0, 0, 0, .08);
+  position: absolute;
+  visibility: hidden;
+  background-color: #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 5px 5px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .open.menu .menu-content {
-    visibility: visible;
-    z-index: 99;
+  visibility: visible;
+  z-index: 99;
 }

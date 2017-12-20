@@ -77,7 +77,7 @@
     "preact": "^8.2.7"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{css,js}": [
       "prettier-eslint --write --"
     ]
   },

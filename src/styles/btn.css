@@ -1,18 +1,18 @@
 :root {
-    --dark: #0b2422;
+  --dark: #0b2422;
 }
 
 .btn {
-    border-radius: .4em;
-    border: 1px solid var(--dark);
-    display: inline-block;
-    color: var(--dark);
-    line-height: 1;
-    padding: .6em .7em;
-    text-decoration: none;
+  border-radius: 0.4em;
+  border: 1px solid var(--dark);
+  display: inline-block;
+  color: var(--dark);
+  line-height: 1;
+  padding: 0.6em 0.7em;
+  text-decoration: none;
 }
 
 .button {
-    text-decoration: none;
-    user-select: none;
+  text-decoration: none;
+  user-select: none;
 }

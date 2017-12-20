@@ -8,17 +8,17 @@
 }
 
 .team {
-  flex: 1
+  flex: 1;
 }
 
 .gap {
   flex-basis: 11rem;
 }
 
-
 /* center icon */
 
-.control, .gap {
+.control,
+.gap {
   user-select: none;
   display: flex;
   align-items: center;
@@ -29,7 +29,7 @@
   text-align: center;
   display: block;
   font-size: 15rem;
-  margin: .3em 0;
+  margin: 0.3em 0;
 }
 
 .meta {
@@ -40,19 +40,19 @@
     margin: 0 8% 0 0;
   }
   & .name {
-    margin: .3em 0 0 0;
+    margin: 0.3em 0 0 0;
   }
   &.hide + .clock {
-    font-size: 18rem
+    font-size: 18rem;
   }
 }
 
 .tag {
   background-color: var(--brand-color);
   color: var(--bg-color);
-  font-size: .5em;
+  font-size: 0.5em;
 }
 
 .thought {
-  font-size: .8em;
+  font-size: 0.8em;
 }
