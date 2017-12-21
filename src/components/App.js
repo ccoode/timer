@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import Timers from './Timers'
+import TimerProvider from './TimerProvider'
 import Team from './Team'
 import Gap from './Gap'
 import Footer from './Footer'
@@ -27,6 +27,18 @@ function getUrlFromStepName(name) {
   return `#/${name}`
 }
 
+function mapTimersToContext(timers) {
+  const { zf, ff } = timers
+  const someDisabled = zf.disabled || ff.disabled
+
+  return {
+    someDisabled,
+    canTurn: !someDisabled && isTurnable(zf, ff),
+  }
+}
+
+const { Timer, Scheduler } = TimerProvider
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -43,9 +55,9 @@ class App extends Component {
     defaultIndex: 0,
   }
 
-  renderTeam({ key, timer, controlFns, someDisabled }) {
+  renderTimer = ({ getControlFns, timer, name, custom: { someDisabled } }) => {
     const { timeout, running, beginning, end, disabled } = timer
-    const { name, thought } = this.props[key]
+    const { name: teamName, thought } = this.props[name]
 
     switch (true) {
       case timeout === 0:
@@ -64,70 +76,46 @@ class App extends Component {
 
     return (
       <Team
-        name={name}
+        name={teamName}
         thought={thought}
         hide={disabled}
         end={end}
         timeout={timeout}
         running={running}
         hideAll={someDisabled}
-        controlFns={controlFns}
-        right={key === 'ff'}
+        controlFns={getControlFns()}
+        right={name === 'ff'}
       />
     )
   }
 
-  renderTimers = ({ getControlFns, timers: { zf, ff } }) => {
-    const someDisabled = zf.disabled || ff.disabled
-    const canTurn = !someDisabled && isTurnable(zf, ff)
-    if (!this.turn) {
-      this.turn = () => {
-        if (zf.running && !ff.running && !ff.end) {
-          zf.pause()
-          ff.start()
-        } else if (!zf.running && ff.running && !zf.end) {
-          ff.pause()
-          zf.start()
-        }
+  getTimers = ({ zf, ff }) => {
+    this.turn = () => {
+      if (zf.running && !ff.running && !ff.end) {
+        zf.pause()
+        ff.start()
+      } else if (!zf.running && ff.running && !zf.end) {
+        ff.pause()
+        zf.start()
       }
     }
-    if (!this.handleKeyDown) {
-      this.handleKeyDown = ({ key }) => {
-        const c = key.toLowerCase()
-        if (c === 'a') {
-          zf.toggle()
-        } else if (c === 'l') {
-          ff.toggle()
-        } else if (c === 'q') {
-          zf.toggleReset()
-        } else if (c === 'p') {
-          ff.toggleReset()
-        } else if (c === 'g') {
-          this.turn()
-        } else if (c === 'n') {
-          this.next()
-        }
+    this.handleKeyDown = ({ key }) => {
+      const c = key.toLowerCase()
+      if (c === 'a') {
+        zf.toggle()
+      } else if (c === 'l') {
+        ff.toggle()
+      } else if (c === 'q') {
+        zf.toggleReset()
+      } else if (c === 'p') {
+        ff.toggleReset()
+      } else if (c === 'g') {
+        this.turn()
+      } else if (c === 'n') {
+        this.next()
       }
-      window.addEventListener('keydown', this.handleKeyDown)
     }
-
-    return (
-      <div className="timer">
-        {this.renderTeam({
-          someDisabled,
-          key: 'zf',
-          timer: zf,
-          controlFns: getControlFns('zf'),
-        })}
-        <Gap turn={this.turn} hideTurnBtn={!canTurn} hide={someDisabled} />
-        {this.renderTeam({
-          someDisabled,
-          key: 'ff',
-          timer: ff,
-          controlFns: getControlFns('ff'),
-        })}
-      </div>
-    )
+    window.addEventListener('keydown', this.handleKeyDown)
   }
 
   changeStep(index) {
@@ -175,7 +163,22 @@ class App extends Component {
           menuItems={steps.map(this.renderMenuItem)}
         />
         <main>
-          <Timers keys={magicKeys} timeouts={steps[index]} render={this.renderTimers} />
+          <TimerProvider
+            names={magicKeys}
+            timeouts={steps[index]}
+            getCustomContext={mapTimersToContext}
+            refTimers={this.getTimers}
+          >
+            <div className="timer">
+              <Timer name="zf" render={this.renderTimer} />
+              <Scheduler
+                render={({ custom: { someDisabled, canTurn } }) => (
+                  <Gap turn={this.turn} hideTurnBtn={!canTurn} hide={someDisabled} />
+                )}
+              />
+              <Timer name="ff" render={this.renderTimer} />
+            </div>
+          </TimerProvider>
           {/* 下一个环节按钮 */}
           <div className="next">
             <Button
