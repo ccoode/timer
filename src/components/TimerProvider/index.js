@@ -89,8 +89,7 @@ class TimerProvider extends Component {
 
   render() {
     const { children } = this.props
-
-    return children[0] || children || null
+    return (children && children[0]) || null
   }
 }
 
