@@ -1,4 +1,5 @@
 import { Component } from 'preact'
+import { contextKey } from './index'
 
 class Scheduler extends Component {
   constructor(props, context) {
@@ -9,11 +10,26 @@ class Scheduler extends Component {
     }
   }
 
+  componentWillMount() {
+    this.unsubscribe = this.context[contextKey].subscribe(() => {
+      this.forceUpdate()
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  computeCustomProps() {
+    const { getCustomProps, names, timers } = this.context[contextKey]
+    return getCustomProps(timers, names)
+  }
+
   render() {
-    const { custom, timers } = this.context
+    const { timers } = this.context[contextKey]
     return this.props.render({
+      ...this.computeCustomProps(),
       timers,
-      custom,
     })
   }
 }

@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import TimerProvider from './TimerProvider'
+import TimerProvider, { Timer, Scheduler } from './TimerProvider'
 import Team from './Team'
 import Gap from './Gap'
 import Footer from './Footer'
@@ -27,7 +27,7 @@ function getUrlFromStepName(name) {
   return `#/${name}`
 }
 
-function mapTimersToContext(timers) {
+function mapTimersToProps(timers) {
   const { zf, ff } = timers
   const someDisabled = zf.disabled || ff.disabled
 
@@ -36,8 +36,6 @@ function mapTimersToContext(timers) {
     canTurn: !someDisabled && isTurnable(zf, ff),
   }
 }
-
-const { Timer, Scheduler } = TimerProvider
 
 class App extends Component {
   constructor(props) {
@@ -55,7 +53,7 @@ class App extends Component {
     defaultIndex: 0,
   }
 
-  renderTimer = ({ getControlFns, timer, name, custom: { someDisabled } }) => {
+  renderTimer = ({ getControlFns, timer, name, someDisabled }) => {
     const { timeout, running, beginning, end, disabled } = timer
     const { name: teamName, thought } = this.props[name]
 
@@ -166,13 +164,13 @@ class App extends Component {
           <TimerProvider
             names={magicKeys}
             timeouts={steps[index]}
-            getCustomContext={mapTimersToContext}
+            getCustomProps={mapTimersToProps}
             refTimers={this.getTimers}
           >
             <div className="timer">
               <Timer name="zf" render={this.renderTimer} />
               <Scheduler
-                render={({ custom: { someDisabled, canTurn } }) => (
+                render={({ someDisabled, canTurn }) => (
                   <Gap turn={this.turn} hideTurnBtn={!canTurn} hide={someDisabled} />
                 )}
               />

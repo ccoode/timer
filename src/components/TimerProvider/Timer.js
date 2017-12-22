@@ -1,4 +1,5 @@
 import { Component } from 'preact'
+import { contextKey } from './index'
 
 class Timer extends Component {
   constructor(props, context) {
@@ -8,10 +9,11 @@ class Timer extends Component {
       throw Error('<Timer>: prop render should be a function')
     }
     if (!name) throw Error('<Timer>:prop name should be provided')
-    if (context.names.indexOf(name) < 0) {
+    const { names, timers } = context[contextKey]
+    if (names.indexOf(name) < 0) {
       throw Error('<Timer>: name not providered in provider')
     }
-    this.timer = context.timers[name]
+    this.timer = timers[name]
   }
 
   getControlFns = () => {
@@ -25,14 +27,28 @@ class Timer extends Component {
     return this.fnsCache
   }
 
+  componentWillMount() {
+    this.unsubscribe = this.context[contextKey].subscribe(() => {
+      this.forceUpdate()
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  computeCustomProps() {
+    const { getCustomProps, names, timers } = this.context[contextKey]
+    return getCustomProps(timers, names)
+  }
+
   getRenderProps() {
     const { getControlFns, timer } = this
-    const { custom } = this.context
     const { name } = this.props
     return {
+      ...this.computeCustomProps(),
       timer,
       getControlFns,
-      custom,
       name,
     }
   }

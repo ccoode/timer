@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import now from 'performance-now'
+import unlisten from './unlisten'
 
 class Timer {
   /**
@@ -105,13 +106,7 @@ class Timer {
       throw Error('fn should be a function')
     }
     this.watches.push(fn)
-    return () => {
-      for (let i = this.watches.length - 1; i > -1; i -= 1) {
-        if (this.watches[i] === fn) {
-          this.watches.splice(i, 1)
-        }
-      }
-    }
+    return unlisten(this.watches, fn)
   }
 }
 

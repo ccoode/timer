@@ -1,6 +1,7 @@
 import { Component } from 'preact'
 import TimerLogic from '../../utils/Timer'
 import shallowEqual from '../../utils/shallowEqual'
+import unlisten from '../../utils/unlisten'
 import Timer from './Timer'
 import Scheduler from './Scheduler'
 
@@ -8,9 +9,12 @@ if (module.hot) {
   global.timers = global.timers || {}
 }
 
+const contextKey = '$$timer'
+
 class TimerProvider extends Component {
   static Timer = Timer
   static Scheduler = Scheduler
+  static contextKey = contextKey
 
   constructor(props, context) {
     super(props, context)
@@ -23,6 +27,7 @@ class TimerProvider extends Component {
 
     /** @type {function[]} */
     this.unwatches = []
+    this.subscribes = []
 
     const timersInit = global.timers || {}
 
@@ -66,7 +71,7 @@ class TimerProvider extends Component {
 
   componentWillMount() {
     const update = () => {
-      this.forceUpdate()
+      this.subscribes.forEach(fn => fn())
     }
     this.forEachName((name) => {
       this.unwatches.push(this.timers[name].watch(update))
@@ -78,13 +83,22 @@ class TimerProvider extends Component {
   }
 
   getChildContext() {
-    const { timers } = this
-    const { names, getCustomContext } = this.props
+    const { timers, subscribe } = this
+    const { names, getCustomProps } = this.props
     return {
-      timers,
-      names,
-      custom: getCustomContext && getCustomContext(timers, names),
+      [contextKey]: {
+        timers,
+        names,
+        subscribe,
+        getCustomProps,
+      },
     }
+  }
+
+  subscribe = (fn) => {
+    if (typeof fn !== 'function') throw Error('should pass a function')
+    this.subscribes.push(fn)
+    return unlisten(this.subscribes, fn)
   }
 
   render() {
@@ -92,8 +106,6 @@ class TimerProvider extends Component {
     return (children && children[0]) || null
   }
 }
-
-export default TimerProvider
 
 /**
  * @param {number|string} second
@@ -106,3 +118,5 @@ function convertSecond(second) {
   }
   return millisecond
 }
+
+export { TimerProvider as default, convertSecond, contextKey, Scheduler, Timer }
