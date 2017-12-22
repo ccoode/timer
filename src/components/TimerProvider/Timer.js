@@ -4,9 +4,13 @@ class Timer extends Component {
   constructor(props, context) {
     super(props, context)
     const { name, render } = props
-    if (typeof render !== 'function') { throw Error('<Timer>: prop render should be a function') }
+    if (typeof render !== 'function') {
+      throw Error('<Timer>: prop render should be a function')
+    }
     if (!name) throw Error('<Timer>:prop name should be provided')
-    if (context.names.indexOf(name) < 0) { throw Error('<Timer>: name not providered in provider') }
+    if (context.names.indexOf(name) < 0) {
+      throw Error('<Timer>: name not providered in provider')
+    }
     this.timer = context.timers[name]
   }
 

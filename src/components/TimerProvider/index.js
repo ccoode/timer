@@ -101,6 +101,8 @@ export default TimerProvider
  */
 function convertSecond(second) {
   const millisecond = Math.floor(second) * 1e3
-  if (isNaN(millisecond)) throw Error('<TimerProvider timeouts={{ [name]: number }} >')
+  if (Number.isNaN(millisecond)) {
+    throw Error('<TimerProvider timeouts={{ [name]: number }} >')
+  }
   return millisecond
 }

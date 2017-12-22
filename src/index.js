@@ -13,7 +13,7 @@ if ('background' in settings) {
   if (typeof url === 'string' && url !== '') {
     opacity = Number(opacity)
     let rule = ''
-    if (!isNaN(opacity)) {
+    if (!Number.isNaN(opacity)) {
       rule += `linear-gradient(rgba(255,255,255,${opacity}),rgba(255,255,255,${opacity})),`
     }
     rule += `url(${url})`
@@ -21,7 +21,7 @@ if ('background' in settings) {
   }
 }
 
-const hash = decodeURI(location.hash.replace('#/', ''))
+const hash = decodeURI(window.location.hash.replace('#/', ''))
 let defaultIndex = 0
 settings.steps.forEach((step, index) => {
   if (hash === step.name) defaultIndex = index
