@@ -28,8 +28,8 @@ npm install
 
 编译：`npm run build`
 
-调试/启动本地服务器：`npm run start`
+调试/启动本地服务器：`npm run dev`
 
-测试 timer：`npm test`
+测试：`npm test`
 
 其它内容见 [Wiki](https://github.com/ccoode/timer/wiki)
