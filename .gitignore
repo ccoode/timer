@@ -3,4 +3,4 @@ npm-debug.log
 /.publish
 __snapshots__
 /coverage
-public/*
+/dist

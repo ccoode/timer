@@ -1,5 +1,5 @@
 /* eslint-disable */
-var config = {
+export default {
   background: {
     url: '', // 背景图URL，如 'background.jpg'
     opacity: 0.5, // 不透明度
@@ -57,10 +57,4 @@ var config = {
       ff: 240,
     },
   ],
-}
-
-window.config = config
-
-if (typeof module === 'object' && module.exports) {
-  module.exports = config
 }

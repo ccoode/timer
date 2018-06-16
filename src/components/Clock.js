@@ -1,4 +1,4 @@
-import { h } from 'preact'
+import React from 'react'
 
 function convertMS(ms) {
   if (ms < 0) return 0

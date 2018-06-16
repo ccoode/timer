@@ -1,5 +1,5 @@
-import { h } from 'preact'
 import classNames from 'classnames'
+import React from 'react'
 
 function Meta({ right, teamName, hide, thought }) {
   const name = right ? (

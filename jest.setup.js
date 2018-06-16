@@ -1,10 +1,9 @@
-import chai from 'chai'
-import assertJsx, { options } from 'preact-jsx-chai'
+import Enzyme, { shallow, render, mount } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 
-// when checking VDOM assertions, don't compare functions, just nodes and attributes:
-options.functions = false
-
-// activate the JSX assertion extension:
-chai.use(assertJsx)
+Enzyme.configure({ adapter: new Adapter() })
+global.shallow = shallow
+global.render = render
+global.mount = mount
 
 global.sleep = ms => new Promise(resolve => setTimeout(resolve, ms))

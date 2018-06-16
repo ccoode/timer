@@ -5,13 +5,6 @@ Timer
 
 ## 使用
 
-下载：
-
-* [百度网盘](https://pan.baidu.com/s/1gfJniDH#list/path=%2FShared%2Ftimer&parentPath=%2FShared)
-* [Releases · ccoode/timer](https://github.com/ccoode/timer/releases)
-
-修改 `config.js`，打开 `index.html`。
-
 **快捷键**
 
 - `A`：正方开始和暂停

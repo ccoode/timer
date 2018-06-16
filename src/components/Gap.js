@@ -1,4 +1,6 @@
-import { h } from 'preact'
+import React from 'react'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faArrowsAltH from '@fortawesome/fontawesome-free-solid/faArrowsAltH'
 import classNames from 'classnames'
 import Icon from './Icon'
 
@@ -7,9 +9,12 @@ function Gap({ turn, hide, hideTurnBtn }) {
     gap: true,
     hide,
   })
+
   return (
     <div className={divClass}>
-      <Icon className="fa-arrows-h" hide={hideTurnBtn} onClick={turn} />
+      <Icon hide={hideTurnBtn} onClick={turn}>
+        <FontAwesomeIcon icon={faArrowsAltH} size="2x" />
+      </Icon>
     </div>
   )
 }

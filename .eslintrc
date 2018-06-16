@@ -1,14 +1,28 @@
 {
-  "env": {
-    "browser": true,
-    "jest": true
-  },
-  "extends": [
-    "dgeibi/preact"
-  ],
+  "extends": ["dgeibi/react"],
   "rules": {
     "import/no-extraneous-dependencies": "off",
-    "global-require": "off",
     "no-script-url": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/__tests__/**/*.js",
+        "**/__tests__/**/*.jsx"
+      ],
+      "env": {
+        "jest": true
+      },
+      "globals": {
+        "shallow": false,
+        "render": false,
+        "mount": false,
+        "sleep": false
+      }
+    }
+  ]
 }

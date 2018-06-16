@@ -1,5 +1,7 @@
-import { h, Component } from 'preact'
-import TimerProvider, { Timer, Scheduler } from './TimerProvider'
+import React, { Component } from 'react'
+import { Timer, Scheduler, TimerProvider } from 'react-timer-group'
+import { hot } from 'react-hot-loader'
+
 import Team from './Team'
 import Gap from './Gap'
 import Footer from './Footer'
@@ -53,7 +55,7 @@ class App extends Component {
     defaultIndex: 0,
   }
 
-  renderTimer = ({ getControlFns, timer, name, someDisabled }) => {
+  makeRender = someDisabled => ({ timer, name }) => {
     const { timeout, running, beginning, end, disabled } = timer
     const { name: teamName, thought } = this.props[name]
 
@@ -81,13 +83,13 @@ class App extends Component {
         timeout={timeout}
         running={running}
         hideAll={someDisabled}
-        controlFns={getControlFns()}
+        controlFns={timer}
         right={name === 'ff'}
       />
     )
   }
 
-  getTimers = ({ zf, ff }) => {
+  refTimers = ({ zf, ff }) => {
     this.turn = () => {
       if (zf.running && !ff.running && !ff.end) {
         zf.pause()
@@ -124,7 +126,7 @@ class App extends Component {
     })
   }
 
-  handleMenuItemClick = (e) => {
+  handleMenuItemClick = e => {
     this.changeStep(e.target.dataset.index)
   }
 
@@ -152,7 +154,13 @@ class App extends Component {
   }
 
   // eslint-disable-next-line
-  render({ steps, title, subtitle, footer }, { stepName, index }) {
+  render() {
+    const {
+      props: { steps, title, subtitle, footer },
+      state: { stepName, index },
+    } = this
+
+    const { zf, ff } = steps[index]
     return (
       <div>
         <Header
@@ -161,20 +169,24 @@ class App extends Component {
           menuItems={steps.map(this.renderMenuItem)}
         />
         <main>
-          <TimerProvider
-            names={magicKeys}
-            timeouts={steps[index]}
-            getCustomProps={mapTimersToProps}
-            refTimers={this.getTimers}
-          >
+          <TimerProvider names={magicKeys} timeouts={{ zf, ff }}>
             <div className="timer">
-              <Timer name="zf" render={this.renderTimer} />
               <Scheduler
-                render={({ someDisabled, canTurn }) => (
-                  <Gap turn={this.turn} hideTurnBtn={!canTurn} hide={someDisabled} />
-                )}
+                render={({ timers }) => {
+                  if (!this.turn) {
+                    this.refTimers(timers)
+                  }
+                  const { canTurn, someDisabled } = mapTimersToProps(timers)
+                  const render = this.makeRender(someDisabled)
+                  return (
+                    <>
+                      <Timer name="zf" render={render} />
+                      <Gap turn={this.turn} hideTurnBtn={!canTurn} hide={someDisabled} />
+                      <Timer name="ff" render={render} />
+                    </>
+                  )
+                }}
               />
-              <Timer name="ff" render={this.renderTimer} />
             </div>
           </TimerProvider>
           {/* 下一个环节按钮 */}
@@ -194,4 +206,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default hot(module)(App)

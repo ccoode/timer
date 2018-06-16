@@ -1,22 +1,15 @@
-import { h } from 'preact'
-import classNames from 'classnames'
+import React from 'react'
 import Button from './Button'
 
+const style = {
+  fontSize: '3.5rem',
+  color: 'inherit',
+}
+
 function Icon(props) {
-  const className = classNames({
-    'fa-stack': true,
-    'fa-2x': true,
-    hide: props.hide,
-  })
-  const iconClass = classNames({
-    fa: true,
-    'fa-stack-1x': true,
-    [props.className]: true,
-  })
   return (
-    <Button className={className} onClick={props.onClick}>
-      <i className="fa fa-stack-2x fa-circle" />
-      <i className={iconClass} />
+    <Button style={style} onClick={props.onClick} className={props.hide ? 'hide' : ''}>
+      {props.children}
     </Button>
   )
 }

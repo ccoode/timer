@@ -1,11 +1,11 @@
-import { Component } from 'preact'
+import { Component } from 'react'
 
 class Switch extends Component {
   state = {
     on: Boolean(this.props.defaultOn),
   }
 
-  toggle = (on) => {
+  toggle = on => {
     this.setState({
       on: on === undefined ? !this.state.on : !!on,
     })

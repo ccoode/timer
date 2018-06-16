@@ -1,11 +1,16 @@
-import 'babel-polyfill'
-import { h, render } from 'preact'
-import 'font-awesome/css/font-awesome.min.css'
+import 'core-js/modules/es6.set'
+import 'core-js/modules/es6.map'
+import 'core-js/modules/es7.string.pad-start'
+
+import { render } from 'react-dom'
+import React from 'react'
 
 import App from './components/App'
+import config from './config'
+
 import './styles/main.css'
 
-const settings = global.config
+const settings = window.settings || config
 
 if ('background' in settings) {
   let { opacity } = settings.background
@@ -27,19 +32,4 @@ settings.steps.forEach((step, index) => {
   if (hash === step.name) defaultIndex = index
 })
 
-main()
-
-if (module.hot) {
-  require('preact/devtools')
-  module.hot.accept('./components/App', main)
-}
-
-function main() {
-  render(
-    <div id="root">
-      <App {...settings} defaultIndex={defaultIndex} />
-    </div>,
-    document.body,
-    document.getElementById('root')
-  )
-}
+render(<App {...settings} defaultIndex={defaultIndex} />, document.getElementById('root'))

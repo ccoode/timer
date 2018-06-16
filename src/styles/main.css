@@ -1,10 +1,11 @@
 @import 'normalize.css';
-@import 'fonts.css';
-@import 'menu.css';
-@import 'timer.css';
-@import 'next.css';
-@import 'btn.css';
-@import 'helper.css';
+@import './fonts.css';
+@import './menu.css';
+@import './next.css';
+@import './btn.css';
+@import './helper.css';
+@import './timer.css';
+
 :root {
   --brand-color: #123748;
   --bg-color: #fff;
@@ -73,24 +74,6 @@ main {
   margin-top: 2rem;
   line-height: 1.5;
   padding: 1rem 0;
-}
-
-/** fa */
-
-.fa-stack-1x {
-  color: var(--bg-color);
-}
-
-.fa {
-  cursor: pointer;
-}
-
-.fa-2x {
-  color: inherit;
-}
-
-#root .fa-stack.fa-2x {
-  font-size: 3.5rem;
 }
 
 /** fullscreen btn */

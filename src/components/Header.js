@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { h } from 'preact'
+import React from 'react'
+
 import Button from './Button'
 import Switch from './Switch'
 import toggleFullscreen from '../utils/toggleFullscreen'
